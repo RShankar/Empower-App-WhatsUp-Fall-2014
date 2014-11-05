@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">WhatsUp</string>
+    <string name="title_activity_login_screen">LoginScreen</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Text Box Placeholders -->
+    <string name="placeholder_email_address">Email</string>
+    <string name="placeholder_password">Password</string>
+
+    <!-- Button Labels -->
+    <string name="label_log_in">Log In</string>
+    <string name="title_activity_map_screen">MapScreen</string>
+    <string name="title_activity_event_details">EventDetails</string>
+    <string name="title_activity_event_list">EventList</string>
+    <string name="List">List</string>
+    <string name="Map">Map</string>
+    <string name="Event">Event</string>
+
+</resources>

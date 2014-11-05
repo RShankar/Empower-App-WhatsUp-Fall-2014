@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pre-dex-items>
+
+    <item
+        dex="/Users/phalpin/Dev/workspace/WhatsUp/app/build/intermediates/pre-dexed/debug/classes-0711f5424947b22f7e4cf923706a6d0d211a9809.jar"
+        jar="/Users/phalpin/Dev/workspace/WhatsUp/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.0/classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="686344a780033e4ba22b926cd225f8d4941247e6"/>
+    <item
+        dex="/Users/phalpin/Dev/workspace/WhatsUp/app/build/intermediates/pre-dexed/debug/Parse-1.7.1-b1e1442990320968e2939db72d2c7c74dadfed2e.jar"
+        jar="/Users/phalpin/Dev/workspace/WhatsUp/app/libs/Parse-1.7.1.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="87c45f9f66da531a65f065ee32f603c7e6db1528"/>
+    <item
+        dex="/Users/phalpin/Dev/workspace/WhatsUp/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.0-063e66b7c05e5e4deb381e7bf80848f3b0c75772.jar"
+        jar="/Users/phalpin/Dev/sdks/android-sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.0/support-annotations-21.0.0.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="1a578b9607b36266c63d43a4fa0ab5664dbe911e"/>
+    <item
+        dex="/Users/phalpin/Dev/workspace/WhatsUp/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.0-d6aaa3a0c4c5f2b5fd27a4b9ca209eb48c44172c.jar"
+        jar="/Users/phalpin/Dev/workspace/WhatsUp/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.0/libs/internal_impl-21.0.0.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="1609e6d42d0480b0f4188e2c29f75388fa12a8f0"/>
+    <item
+        dex="/Users/phalpin/Dev/workspace/WhatsUp/app/build/intermediates/pre-dexed/debug/bolts-android-1.1.3-b9fb1e45f61c0ead4b5d7dc1895367d64c15c2ab.jar"
+        jar="/Users/phalpin/Dev/workspace/WhatsUp/app/libs/bolts-android-1.1.3.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="e61e3dfc57eaa5c97f9e7061db5608fc7d02d39e"/>
+
+</pre-dex-items>
