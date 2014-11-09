@@ -18,5 +18,6 @@
     <string name="List">List</string>
     <string name="Map">Map</string>
     <string name="Event">Event</string>
+    <string name="title_activity_signup">Signup</string>
 
 </resources>

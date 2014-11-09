@@ -5,7 +5,7 @@ import android.content.Context;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
 
-public class ParseManager {
+public class ParseManager extends BaseManager {
     private static final String APPLICATION_ID = "cSFUnYQek0bcgdweZK8DTFoNJFMajrjqQ2L4ih6B";
     private static final String CLIENT_KEY = "XZquqoQqitx6Brc4wXrQoJHO29BRFNJeMIHHeZEP";
 
@@ -22,6 +22,7 @@ public class ParseManager {
     //endregion
 
     private ParseManager(Context c){
+        super(c);
         Parse.initialize(c, APPLICATION_ID, CLIENT_KEY);
     }
 }

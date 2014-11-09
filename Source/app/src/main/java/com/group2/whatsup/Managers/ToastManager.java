@@ -6,7 +6,7 @@ import android.content.Context;
 import com.group2.whatsup.ServiceContracts.IToastService;
 import com.group2.whatsup.Services.ToastService;
 
-public class ToastManager {
+public class ToastManager extends BaseManager {
 
     //region Singleton BS
     private static ToastManager _instance;
@@ -24,12 +24,8 @@ public class ToastManager {
     private IToastService _service;
 
     private ToastManager(Context c){
-        _context = c;
-        initializeServices();
-    }
-
-    private void initializeServices(){
-        _service = new ToastService(_context);
+        super(c);
+        _service = new ToastService(c);
     }
 
     public void SendMessage(String message, boolean longDuration){

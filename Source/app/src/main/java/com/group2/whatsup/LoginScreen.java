@@ -9,7 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.group2.whatsup.Entities.Authentication.User;
+import com.group2.whatsup.Helpers.ActionResult;
 import com.group2.whatsup.Interop.WUBaseActivity;
+import com.group2.whatsup.Managers.AuthenticationManager;
+import com.group2.whatsup.Managers.Entities.UserManager;
 import com.group2.whatsup.Managers.ParseManager;
 import com.group2.whatsup.Managers.SettingsManager;
 import com.group2.whatsup.Managers.ToastManager;
@@ -20,6 +24,7 @@ public class LoginScreen extends WUBaseActivity {
     private EditText _emailField;
     private EditText _passwordField;
     private Button _loginButton;
+    private Button _signupButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +38,13 @@ public class LoginScreen extends WUBaseActivity {
         _emailField = (EditText) findViewById(R.id.login_email_field);
         _passwordField = (EditText) findViewById(R.id.login_password_field);
         _loginButton = (Button)findViewById(R.id.login_btnLogIn);
+        _signupButton = (Button)findViewById(R.id.login_btnSignup);
     }
 
     @Override
     protected void setViewTheme() {
         super.setViewTheme();
+        final LoginScreen ref = this;
 
         //Add placeholders.
         _emailField.setHint(R.string.placeholder_email_address);
@@ -46,6 +53,13 @@ public class LoginScreen extends WUBaseActivity {
             @Override
             public void onClick(View v) {
                 attemptLogin();
+            }
+        });
+        _signupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(ref, Signup.class);
+                startActivity(i);
             }
         });
     }
@@ -72,12 +86,22 @@ public class LoginScreen extends WUBaseActivity {
     }
 
     private void attemptLogin(){
-        String msg = UIUtils.getText(_emailField);
-        ToastManager.Instance().SendMessage(msg, true);
+        String email = UIUtils.getText(_emailField);
+        String password = UIUtils.getText(_passwordField);
+        ActionResult<User> authResult = AuthenticationManager.Instance().Authenticate(email, password);
+        if(authResult.Success){
+            UserManager.Instance().SetActiveUser(authResult.Result);
+            ToastManager.Instance().SendMessage("Successfully Logged in", true);
 
-        /* Just temporary to get from one activity to another */
-        Intent intent = new Intent(this, MapScreen.class);
-        startActivity(intent);
+            /* Just temporary to get from one activity to another */
+            Intent intent = new Intent(this, MapScreen.class);
+            startActivity(intent);
+        }
+        else{
+            ToastManager.Instance().SendMessage(authResult.Message, true);
+        }
+
+
     }
 
 
@@ -87,7 +111,9 @@ public class LoginScreen extends WUBaseActivity {
     private void InitializeManagers(Bundle state){
         Context appContext = getApplicationContext();
         ParseManager.Initialize(appContext);
-        SettingsManager.Initialize(state);
+        SettingsManager.Initialize(state, appContext);
         ToastManager.Initialize(appContext);
+        AuthenticationManager.Initialize(appContext);
+        UserManager.Initialize(appContext);
     }
 }
