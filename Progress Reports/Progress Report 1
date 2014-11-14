@@ -1,0 +1,22 @@
+(1) What will be in Processing (the part that can be customized) and what will be in Java? If you wish, identify this on the mockup screens and indicate here textually which ones wil be done in which part of the App.
+
+- Any and all appearance properties - primary colors, button colors, rounded corners.
+
+
+
+
+(2) What are the empowerment/customizability aspects that you are providing the middle school students (next summer, when I teach them Processing so they can go and cusotmize the code)? Which member of your team is responsible for this separation? This person will also be responsible for the Processing part of the App.
+
+- Both of us are building in the customization functions through the bundle that will eventually be passed into tghe app from the intent. Basically we intend to allow them to set aspects of the app up (colors, etc as listed above) in variables, construct an intent, and start our app through that intent.
+
+
+
+(3) What assets (graphics, music, animation) are being planned for your App? List them. Who will do them in your group? If you need help from Prof. McAfee or his students, list clearly what you want. I will give them the links to Github so they can see what you are seeking. They will send them to you and you can upload them to the site. Or. they can post them at their Github site and  you can 'copy' them over. Which team member is reponsible for this communication and build up of assets? This person also will be responsible for the UI parts built in XML.
+
+- Several custom made background images, custom buttons, logos, etc. Both of us are working on them depending on implementation, but Keith is taking care of most of the graphical assets. Keith has also assembled the XML & Codebehind for each of the activities.
+
+
+
+(4) The other member (please idenfity here) will be responsible for the Java code. This may include sections on parse.com, Wifi, LBS, maps, Bluetooth, data analytics, etc. Some such as LBS, Wifi, and Bluetooth may also be incorporated at the Processing level.
+
+- Keith is handling activity logic, Phillip will be handling Manager, Service and Entity layer functionality. We are using Parse.com, Google Maps, and potentially either flurry or google analytics depending on time.
