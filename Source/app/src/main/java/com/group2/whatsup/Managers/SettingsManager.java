@@ -40,12 +40,18 @@ public class SettingsManager extends BaseManager {
 
 
     private void populateInitialSettings(Bundle state) {
-        doPut(PRIMARY_COLOR_KEY, state.getString(PRIMARY_COLOR_KEY), PRIMARY_COLOR_DEFAULT_VALUE);
-        doPut(DISTANCE_PREF_KEY, state.getInt(DISTANCE_PREF_KEY), DISTANCE_PREF_DEFAULT_VALUE);
+        doPut(PRIMARY_COLOR_KEY, state, PRIMARY_COLOR_DEFAULT_VALUE);
+        doPut(DISTANCE_PREF_KEY, state, DISTANCE_PREF_DEFAULT_VALUE);
     }
 
-    private void doPut(String key, Object value, Object defVal){
-        _settings.put(key, value == null ? defVal : value);
+    private void doPut(String key, Bundle state, Object defVal){
+        if(state != null){
+            Object resultantVal = state.get(key);
+            _settings.put(key, resultantVal == null ? defVal : resultantVal);
+        }
+        else{
+            _settings.put(key, defVal);
+        }
     }
 
 
@@ -64,7 +70,7 @@ public class SettingsManager extends BaseManager {
     }
 
     public void SetDistancePreference(int distance){
-        doPut(DISTANCE_PREF_KEY, distance, DISTANCE_PREF_DEFAULT_VALUE);
+        _settings.put(DISTANCE_PREF_KEY, distance);
     }
     //endregion
 

@@ -52,6 +52,9 @@ public class AuthenticationManager extends BaseManager {
             result.Success = true;
             result.Result = finalUser;
         }
+        else{
+            result.Message = "That email address already exists! Please try a different one.";
+        }
 
         return result;
     }

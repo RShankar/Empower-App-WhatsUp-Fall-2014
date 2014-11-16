@@ -16,8 +16,10 @@ public class EventDetails extends WUBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Object possContext = savedInstanceState.get(EVENT_CONTEXT_KEY);
-        if(possContext != null) _context = (Event) possContext;
+        if(savedInstanceState != null){
+            Object possContext = savedInstanceState.get(EVENT_CONTEXT_KEY);
+            if(possContext != null) _context = (Event) possContext;
+        }
         super.onCreate(savedInstanceState, R.layout.activity_event_details);
     }
 

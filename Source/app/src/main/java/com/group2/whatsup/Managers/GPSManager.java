@@ -6,6 +6,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import com.group2.whatsup.Debug.Log;
 import com.group2.whatsup.Entities.Location.LatLon;
 
 public class GPSManager extends BaseManager{
@@ -25,6 +26,7 @@ public class GPSManager extends BaseManager{
     private GPSManager(Context c){
         super(c);
         _locMgr = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
+
         _locMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 0, new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
@@ -47,6 +49,7 @@ public class GPSManager extends BaseManager{
 
             }
         });
+
     }
 
 
