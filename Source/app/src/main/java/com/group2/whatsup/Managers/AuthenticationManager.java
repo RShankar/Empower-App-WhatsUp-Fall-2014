@@ -33,6 +33,7 @@ public class AuthenticationManager extends BaseManager {
             if(attemptingUser.get_password().equals(Encoding.SHAHash(password))){
                 result.Success = true;
                 result.Result = attemptingUser;
+                UserManager.Instance().SetActiveUser(attemptingUser);
             }
             else result.Message = "Invalid Password.";
         }

@@ -6,45 +6,52 @@ import com.group2.whatsup.ServiceContracts.Entities.IUserService;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
 import java.util.List;
 
 public class ParseUserService extends BaseParseService implements IUserService {
 
-    private final static String _entityName = "WUUser";
 
     @Override
     public User GetByUsername(String username) {
-        ParseQuery<ParseObject> query = queryFor(_entityName).whereEqualTo("userName", username);
+        ParseQuery<ParseObject> query = queryFor(User.ENTITY_NAME).whereEqualTo("userName", username);
         List<ParseObject> objs = doQuery(query);
         return objs.isEmpty() ? null : ParseToEntityConversion.ConvertUser(objs.get(0));
     }
 
     @Override
     public User GetByEmailAddress(String emailAddress) {
-        ParseQuery<ParseObject> query = queryFor(_entityName).whereEqualTo("emailAddress", emailAddress);
+        ParseQuery<ParseObject> query = queryFor(User.ENTITY_NAME).whereEqualTo("emailAddress", emailAddress);
         List<ParseObject> objs = doQuery(query);
         return objs.isEmpty() ? null : ParseToEntityConversion.ConvertUser(objs.get(0));
     }
 
     @Override
-    public User GetById(int id) {
-        ParseQuery<ParseObject> query = queryFor(_entityName).whereEqualTo("id", id);
-        List<ParseObject> objs = doQuery(query);
-        return objs.isEmpty() ? null : ParseToEntityConversion.ConvertUser(objs.get(0));
+    public User GetById(String id) {
+        ParseQuery<ParseObject> query = queryFor(User.ENTITY_NAME);
+        ParseObject obj = null;
+        try{
+             obj = query.get(id);
+        }
+        catch(ParseException ex){
+            Log.Error("Failed to retrieve from parse: {0}", ex.getMessage());
+        }
+
+        return obj == null ? null : ParseToEntityConversion.ConvertUser(obj);
     }
 
     @Override
     public User Save(User arg) {
         ParseObject objToSave = EntityToParseConversion.UserToParseObject(arg);
-
-        try{
-            objToSave.save();
-            arg.set_id(objToSave.getInt("Id"));
-        }
-        catch(ParseException ex){
-            Log.Error("Error saving user: {0}", ex.getMessage());
-        }
+        final User userRef = arg;
+        final ParseObject objRef = objToSave;
+        objToSave.saveEventually(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                userRef.set_entityId(objRef.getObjectId());
+            }
+        });
 
         return arg;
     }

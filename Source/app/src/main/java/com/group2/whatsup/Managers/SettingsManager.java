@@ -9,8 +9,11 @@ import java.util.HashMap;
 
 public class SettingsManager extends BaseManager {
 
-    static final String PRIMARY_COLOR_KEY = "";
+    static final String PRIMARY_COLOR_KEY = "PRIMARY_COLOR";
     static final String PRIMARY_COLOR_DEFAULT_VALUE = "#FF0000";
+
+    static final String DISTANCE_PREF_KEY = "DISTANCE_PREF";
+    static final int DISTANCE_PREF_DEFAULT_VALUE = 5;
 
     //region Singleton Stuff
     private static SettingsManager _instance;
@@ -38,6 +41,7 @@ public class SettingsManager extends BaseManager {
 
     private void populateInitialSettings(Bundle state) {
         doPut(PRIMARY_COLOR_KEY, state.getString(PRIMARY_COLOR_KEY), PRIMARY_COLOR_DEFAULT_VALUE);
+        doPut(DISTANCE_PREF_KEY, state.getInt(DISTANCE_PREF_KEY), DISTANCE_PREF_DEFAULT_VALUE);
     }
 
     private void doPut(String key, Object value, Object defVal){
@@ -51,6 +55,16 @@ public class SettingsManager extends BaseManager {
     }
     public int PrimaryColor(){
         return HexColor.GetColor(PrimaryColorHex());
+    }
+    //endregion
+
+    //region PreferredDistance
+    public int DistancePreference(){
+        return _settings.containsKey(DISTANCE_PREF_KEY) ? (Integer) _settings.get(DISTANCE_PREF_KEY) : DISTANCE_PREF_DEFAULT_VALUE;
+    }
+
+    public void SetDistancePreference(int distance){
+        doPut(DISTANCE_PREF_KEY, distance, DISTANCE_PREF_DEFAULT_VALUE);
     }
     //endregion
 

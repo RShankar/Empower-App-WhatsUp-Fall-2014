@@ -8,4 +8,6 @@ public abstract class BaseManager {
     public BaseManager(Context c){
         _context = c;
     }
+
+    public Context get_context(){ return _context; }
 }

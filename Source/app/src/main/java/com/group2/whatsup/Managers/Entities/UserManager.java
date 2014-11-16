@@ -25,7 +25,7 @@ public class UserManager {
         _userService = new ParseUserService();
     }
 
-    public User GetUserById(int id){
+    public User GetUserById(String id){
         return _userService.GetById(id);
     }
 
