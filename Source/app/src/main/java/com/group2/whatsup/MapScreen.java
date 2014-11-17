@@ -18,7 +18,8 @@ public class MapScreen extends WUBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_screen);
-        _EventButton = (Button)findViewById(R.id.button);
+        /*
+        _EventButton = (Button)findViewById(R.id.navigate);
         _EventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -26,6 +27,7 @@ public class MapScreen extends WUBaseActivity {
                 changeIntent();
             }
         });
+        */
     }
 
     public void changeIntent()

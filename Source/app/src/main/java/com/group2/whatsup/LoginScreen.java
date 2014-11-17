@@ -49,7 +49,7 @@ public class LoginScreen extends WUBaseActivity {
         //Add placeholders.
         _emailField.setHint(R.string.placeholder_email_address);
         _passwordField.setHint(R.string.placeholder_password);
-        _signupButton.setBackgroundColor(SettingsManager.Instance().PrimaryColor());
+        //_signupButton.setBackgroundColor(SettingsManager.Instance().PrimaryColor());
         _loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

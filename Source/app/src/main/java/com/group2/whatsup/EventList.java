@@ -1,5 +1,22 @@
 package com.group2.whatsup;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.group2.whatsup.ExpandableListAdapter;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Menu;
+import android.view.View;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.Toast;
+
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,21 +29,98 @@ import com.group2.whatsup.Interop.WUBaseActivity;
 
 public class EventList extends WUBaseActivity {
 
-    private Button _EventButton;
+    List<String> groupList;
+    List<String> childList;
+    Map<String, List<String>> laptopCollection;
+    ExpandableListView expListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list);
-        _EventButton = (Button)findViewById(R.id.button);
-        _EventButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // launch intent
+
+        createGroupList();
+
+        createCollection();
+
+        expListView = (ExpandableListView) findViewById(R.id.expandableListView);
+        final ExpandableListAdapter expListAdapter = new ExpandableListAdapter(
+                this, groupList, laptopCollection);
+        expListView.setAdapter(expListAdapter);
+
+        //setGroupIndicatorToRight();
+
+        expListView.setOnChildClickListener(new OnChildClickListener() {
+
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
+                final String selected = (String) expListAdapter.getChild(
+                        groupPosition, childPosition);
+                Toast.makeText(getBaseContext(), selected, Toast.LENGTH_LONG)
+                        .show();
+                // Show a mock up of the event
                 changeIntent();
+                return true;
             }
         });
     }
+
+    private void createGroupList() {
+        groupList = new ArrayList<String>();
+        groupList.add("Community");
+        groupList.add("Recreation");
+        groupList.add("School");
+    }
+
+    private void createCollection() {
+        // preparing laptops collection(child)
+        String[] community = { "HP Pavilion G6-2014TX", "ProBook HP 4540",
+                "HP Envy 4-1025TX" };
+        String[] recreation = { "HCL S2101", "HCL L2102", "HCL V2002" };
+        String[] school = { "IdeaPad Z Series", "Essential G Series",
+                "ThinkPad X Series", "Ideapad Z Series" };
+
+
+        laptopCollection = new LinkedHashMap<String, List<String>>();
+
+        for (String laptop : groupList) {
+            if (laptop.equals("HP")) {
+                loadChild(community);
+            } else if (laptop.equals("Dell"))
+                loadChild(recreation);
+            else
+                loadChild(school);
+            
+
+            laptopCollection.put(laptop, childList);
+        }
+    }
+
+    private void loadChild(String[] laptopModels) {
+        childList = new ArrayList<String>();
+        for (String model : laptopModels)
+            childList.add(model);
+    }
+
+    private void setGroupIndicatorToRight() {
+        /* Get the screen width */
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int width = dm.widthPixels;
+
+        expListView.setIndicatorBounds(width - getDipsFromPixel(35), width
+                - getDipsFromPixel(5));
+    }
+
+    // Convert pixel to dip
+    public int getDipsFromPixel(float pixels) {
+        // Get the screen's density scale
+        final float scale = getResources().getDisplayMetrics().density;
+        // Convert the dps to pixels, based on density scale
+        return (int) (pixels * scale + 0.5f);
+    }
+
+
 
     public void changeIntent()
     {
