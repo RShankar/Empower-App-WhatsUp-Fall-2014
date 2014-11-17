@@ -39,9 +39,9 @@ public class EventList extends WUBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(GPSManager.Instance().HasLocation()){
-            EventManager.Instance().FindEventsNear(GPSManager.Instance().CurrentLocation());
-        }
+        //if(GPSManager.Instance().HasLocation()){
+        //    EventManager.Instance().FindEventsNear(GPSManager.Instance().CurrentLocation());
+        //}
         setContentView(R.layout.activity_event_list);
 
         createGroupList();

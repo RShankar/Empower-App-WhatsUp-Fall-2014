@@ -27,6 +27,7 @@ public class GPSManager extends BaseManager{
         super(c);
         _locMgr = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
 
+        //The following seems to throw the exception --Keith
         _locMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 0, new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {

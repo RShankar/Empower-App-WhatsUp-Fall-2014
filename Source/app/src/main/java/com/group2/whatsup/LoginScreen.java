@@ -128,7 +128,7 @@ public class LoginScreen extends WUBaseActivity {
         AuthenticationManager.Initialize(appContext);
         UserManager.Initialize(appContext);
         EventManager.Initialize(appContext);
-        GPSManager.Initialize(appContext);
+        //GPSManager.Initialize(appContext);
 
     }
 }
