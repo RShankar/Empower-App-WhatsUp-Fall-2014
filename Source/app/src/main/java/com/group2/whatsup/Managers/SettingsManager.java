@@ -40,22 +40,6 @@ public class SettingsManager extends BaseManager {
 
 
     private void populateInitialSettings(Bundle state) {
-        /*
-<<<<<<< HEAD
-        // ************************* This was throwing an error for me if state was found to be null, so I changed it.
-        if (state != null) {
-            doPut(PRIMARY_COLOR_KEY, state.getString(PRIMARY_COLOR_KEY));
-        } else {
-            doPut(PRIMARY_COLOR_KEY, PRIMARY_COLOR_DEFAULT_VALUE);
-        }
-    }
-
-    private void doPut(String key, Object value){
-        // I had to make a change upstream, and there was some redundant code here produced
-        // It was removed
-        _settings.put(key, value);
-=======
-    */
         doPut(PRIMARY_COLOR_KEY, state, PRIMARY_COLOR_DEFAULT_VALUE);
         doPut(DISTANCE_PREF_KEY, state, DISTANCE_PREF_DEFAULT_VALUE);
     }
@@ -68,7 +52,6 @@ public class SettingsManager extends BaseManager {
         else{
             _settings.put(key, defVal);
         }
-//>>>>>>> origin/master
     }
 
 
