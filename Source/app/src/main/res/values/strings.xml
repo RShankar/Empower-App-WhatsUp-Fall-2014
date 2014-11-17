@@ -9,6 +9,11 @@
     <!-- Text Box Placeholders -->
     <string name="placeholder_email_address">Email</string>
     <string name="placeholder_password">Password</string>
+    <string name="placeholder_title">Title</string>
+    <string name="placeholder_address">Address</string>
+    <string name="placeholder_website">Website</string>
+    <string name="placeholder_starttime">Start</string>
+    <string name="placeholder_endtime">End</string>
 
     <!-- Button Labels -->
     <string name="label_log_in">Log In</string>
@@ -19,5 +24,6 @@
     <string name="Map">Map</string>
     <string name="Event">Event</string>
     <string name="title_activity_signup">Signup</string>
+    <string name="title_activity_event_add_edit">EventAddEdit</string>
 
 </resources>

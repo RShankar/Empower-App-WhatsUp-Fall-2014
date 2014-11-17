@@ -48,10 +48,15 @@ public class LoginScreen extends WUBaseActivity {
         super.setViewTheme();
         final LoginScreen ref = this;
 
+        //Temporary debug crap.
+        _emailField.setText("test@test.com");
+        _passwordField.setText("test");
+
+
         //Add placeholders.
         _emailField.setHint(R.string.placeholder_email_address);
         _passwordField.setHint(R.string.placeholder_password);
-        //_signupButton.setBackgroundColor(SettingsManager.Instance().PrimaryColor());
+
         _loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +70,10 @@ public class LoginScreen extends WUBaseActivity {
                 startActivity(i);
             }
         });
+
+
+        _signupButton.setBackgroundColor(SettingsManager.Instance().PrimaryColor());
+        _loginButton.setBackgroundColor(SettingsManager.Instance().PrimaryColor());
     }
 
 
