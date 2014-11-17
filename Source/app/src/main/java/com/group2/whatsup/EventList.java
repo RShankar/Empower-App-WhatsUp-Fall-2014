@@ -25,6 +25,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.group2.whatsup.Interop.WUBaseActivity;
+import com.group2.whatsup.Managers.Entities.EventManager;
+import com.group2.whatsup.Managers.GPSManager;
 
 
 public class EventList extends WUBaseActivity {
@@ -37,6 +39,9 @@ public class EventList extends WUBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(GPSManager.Instance().HasLocation()){
+            EventManager.Instance().FindEventsNear(GPSManager.Instance().CurrentLocation());
+        }
         setContentView(R.layout.activity_event_list);
 
         createGroupList();

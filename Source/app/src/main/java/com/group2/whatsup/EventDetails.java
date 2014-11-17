@@ -4,15 +4,23 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.group2.whatsup.Entities.Event;
 import com.group2.whatsup.Interop.WUBaseActivity;
 
 
 public class EventDetails extends WUBaseActivity {
 
+    public static final String EVENT_CONTEXT_KEY = "CONTEXT";
+
+    private Event _context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event_details);
+        if(savedInstanceState != null){
+            Object possContext = savedInstanceState.get(EVENT_CONTEXT_KEY);
+            if(possContext != null) _context = (Event) possContext;
+        }
+        super.onCreate(savedInstanceState, R.layout.activity_event_details);
     }
 
 

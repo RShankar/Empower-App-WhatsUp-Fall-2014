@@ -5,8 +5,10 @@ import com.group2.whatsup.Security.Encoding;
 
 public class User extends BaseEntity {
 
+    public static final String ENTITY_NAME = "WUUser";
+
     public User(){
-        super("WUUser");
+        super(ENTITY_NAME);
     }
 
     //region First Name

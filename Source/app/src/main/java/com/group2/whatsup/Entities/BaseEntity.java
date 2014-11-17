@@ -13,13 +13,9 @@ public abstract class BaseEntity {
     private String _entityName;
     //endregion
 
-    //region ID
-    private int _id;
-    public int get_id(){
-        return _id;
-    }
-    public void set_id(int id){
-        _id = id;
-    }
+    //region EntityID
+    private String _entityId;
+    public String get_entityId() { return _entityId; }
+    public void set_entityId(String entityId) { _entityId = entityId; }
     //endregion
 }

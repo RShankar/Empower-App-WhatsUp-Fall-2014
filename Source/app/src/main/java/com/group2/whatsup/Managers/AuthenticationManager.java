@@ -33,6 +33,7 @@ public class AuthenticationManager extends BaseManager {
             if(attemptingUser.get_password().equals(Encoding.SHAHash(password))){
                 result.Success = true;
                 result.Result = attemptingUser;
+                UserManager.Instance().SetActiveUser(attemptingUser);
             }
             else result.Message = "Invalid Password.";
         }
@@ -50,6 +51,9 @@ public class AuthenticationManager extends BaseManager {
             User finalUser = UserManager.Instance().SaveUser(attemptingUser);
             result.Success = true;
             result.Result = finalUser;
+        }
+        else{
+            result.Message = "That email address already exists! Please try a different one.";
         }
 
         return result;

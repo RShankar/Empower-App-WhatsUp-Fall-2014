@@ -9,8 +9,11 @@ import java.util.HashMap;
 
 public class SettingsManager extends BaseManager {
 
-    static final String PRIMARY_COLOR_KEY = "";
+    static final String PRIMARY_COLOR_KEY = "PRIMARY_COLOR";
     static final String PRIMARY_COLOR_DEFAULT_VALUE = "#FF0000";
+
+    static final String DISTANCE_PREF_KEY = "DISTANCE_PREF";
+    static final int DISTANCE_PREF_DEFAULT_VALUE = 5;
 
     //region Singleton Stuff
     private static SettingsManager _instance;
@@ -37,6 +40,7 @@ public class SettingsManager extends BaseManager {
 
 
     private void populateInitialSettings(Bundle state) {
+<<<<<<< HEAD
         // ************************* This was throwing an error for me if state was found to be null, so I changed it.
         if (state != null) {
             doPut(PRIMARY_COLOR_KEY, state.getString(PRIMARY_COLOR_KEY));
@@ -49,6 +53,20 @@ public class SettingsManager extends BaseManager {
         // I had to make a change upstream, and there was some redundant code here produced
         // It was removed
         _settings.put(key, value);
+=======
+        doPut(PRIMARY_COLOR_KEY, state, PRIMARY_COLOR_DEFAULT_VALUE);
+        doPut(DISTANCE_PREF_KEY, state, DISTANCE_PREF_DEFAULT_VALUE);
+    }
+
+    private void doPut(String key, Bundle state, Object defVal){
+        if(state != null){
+            Object resultantVal = state.get(key);
+            _settings.put(key, resultantVal == null ? defVal : resultantVal);
+        }
+        else{
+            _settings.put(key, defVal);
+        }
+>>>>>>> origin/master
     }
 
 
@@ -58,6 +76,16 @@ public class SettingsManager extends BaseManager {
     }
     public int PrimaryColor(){
         return HexColor.GetColor(PrimaryColorHex());
+    }
+    //endregion
+
+    //region PreferredDistance
+    public int DistancePreference(){
+        return _settings.containsKey(DISTANCE_PREF_KEY) ? (Integer) _settings.get(DISTANCE_PREF_KEY) : DISTANCE_PREF_DEFAULT_VALUE;
+    }
+
+    public void SetDistancePreference(int distance){
+        _settings.put(DISTANCE_PREF_KEY, distance);
     }
     //endregion
 

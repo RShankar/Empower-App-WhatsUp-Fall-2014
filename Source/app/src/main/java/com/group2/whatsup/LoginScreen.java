@@ -13,7 +13,9 @@ import com.group2.whatsup.Entities.Authentication.User;
 import com.group2.whatsup.Helpers.ActionResult;
 import com.group2.whatsup.Interop.WUBaseActivity;
 import com.group2.whatsup.Managers.AuthenticationManager;
+import com.group2.whatsup.Managers.Entities.EventManager;
 import com.group2.whatsup.Managers.Entities.UserManager;
+import com.group2.whatsup.Managers.GPSManager;
 import com.group2.whatsup.Managers.ParseManager;
 import com.group2.whatsup.Managers.SettingsManager;
 import com.group2.whatsup.Managers.ToastManager;
@@ -28,8 +30,8 @@ public class LoginScreen extends WUBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState, R.layout.activity_login_screen);
         InitializeManagers(savedInstanceState);
+        super.onCreate(savedInstanceState, R.layout.activity_login_screen);
     }
 
     @Override
@@ -116,5 +118,8 @@ public class LoginScreen extends WUBaseActivity {
         ToastManager.Initialize(appContext);
         AuthenticationManager.Initialize(appContext);
         UserManager.Initialize(appContext);
+        EventManager.Initialize(appContext);
+        GPSManager.Initialize(appContext);
+
     }
 }
