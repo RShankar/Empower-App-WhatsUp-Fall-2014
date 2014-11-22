@@ -3,14 +3,14 @@ package com.group2.whatsup.Managers;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.group2.whatsup.Graphics.HexColor;
+import com.group2.whatsup.Graphics.ColorHelpers;
 
 import java.util.HashMap;
 
 public class SettingsManager extends BaseManager {
 
     static final String PRIMARY_COLOR_KEY = "PRIMARY_COLOR";
-    static final String PRIMARY_COLOR_DEFAULT_VALUE = "#FF0000";
+    static final String PRIMARY_COLOR_DEFAULT_VALUE = "#d23660";
 
     static final String DISTANCE_PREF_KEY = "DISTANCE_PREF";
     static final int DISTANCE_PREF_DEFAULT_VALUE = 5;
@@ -60,7 +60,16 @@ public class SettingsManager extends BaseManager {
         return _settings.containsKey(PRIMARY_COLOR_KEY) ? _settings.get(PRIMARY_COLOR_KEY).toString() : PRIMARY_COLOR_DEFAULT_VALUE;
     }
     public int PrimaryColor(){
-        return HexColor.GetColor(PrimaryColorHex());
+        return ColorHelpers.GetColor(PrimaryColorHex());
+    }
+    //endregion
+
+    //region Secondary Color
+    public String SecondaryColorHex(){
+        return ColorHelpers.GetHexCompliment(PrimaryColorHex());
+    }
+    public int SecondaryColor(){
+        return ColorHelpers.GetColor(SecondaryColorHex());
     }
     //endregion
 

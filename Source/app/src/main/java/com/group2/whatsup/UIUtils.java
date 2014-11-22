@@ -1,6 +1,7 @@
 package com.group2.whatsup;
 
 
+import android.graphics.Color;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -36,9 +37,14 @@ public class UIUtils {
     //region Theme Methods
     public static void ThemeButton(Button b){
         b.setBackgroundColor(SettingsManager.Instance().PrimaryColor());
-        //TODO: Complete this, get the Secondary Color up and running properly.
-        //b.setTextColor(SettingsManager.Instance().SecondaryColor());
+        b.setTextColor(SettingsManager.Instance().SecondaryColor());
     }
+
+    public static void ThemeTextbox(EditText txt){
+        txt.setBackgroundColor(Color.WHITE);
+        txt.setTextColor(Color.BLACK);
+    }
+    //endregion
 }
 
 
