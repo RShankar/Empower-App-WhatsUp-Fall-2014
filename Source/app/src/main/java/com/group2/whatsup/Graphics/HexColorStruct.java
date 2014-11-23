@@ -9,6 +9,6 @@ public class HexColorStruct{
 
     @Override
     public String toString(){
-        return MessageFormat.format("#{0}{1}{2}", Integer.toHexString(Red), Integer.toHexString(Green), Integer.toHexString(Blue));
+        return MessageFormat.format("#{0}{1}{2}", Integer.toHexString(Red), Integer.toHexString(Green), Integer.toHexString(Blue)).toUpperCase();
     }
 }

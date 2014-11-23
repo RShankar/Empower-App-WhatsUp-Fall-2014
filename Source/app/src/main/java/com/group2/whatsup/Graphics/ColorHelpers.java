@@ -8,49 +8,31 @@ public class ColorHelpers {
         return Color.parseColor(hex);
     }
 
-    public static HSLColorStruct RGBtoHSL(String hex) {
-        return RGBtoHSL(GetHexColorStruct(hex));
-    }
-
     public static String GetHexCompliment(String hex) {
-        HSLColorStruct sourceHSL = RGBtoHSL(hex);
-        sourceHSL.Hue += 180;
-        if(sourceHSL.Hue >= 360) sourceHSL.Hue -= 360;
-        HexColorStruct newColor = HSLtoRGB(sourceHSL);
-        return newColor.toString();
-    }
+        int color = Color.parseColor(hex);
+        // get existing colors
+        int alpha = Color.alpha(color);
+        int red = Color.red(color);
+        int blue = Color.blue(color);
+        int green = Color.green(color);
 
-    public static HSLColorStruct RGBtoHSL(HexColorStruct hex){
-        HSLColorStruct retVal = new HSLColorStruct();
-        float[] hsv = new float[3];
+        // find compliments
+        red = (~red) & 0xff;
+        blue = (~blue) & 0xff;
+        green = (~green) & 0xff;
 
-        Color.RGBToHSV(hex.Red, hex.Green, hex.Blue, hsv);
-        retVal.Hue = hsv[0];
-        retVal.Saturation = hsv[1];
-        retVal.Luminance = hsv[2];
+        HexColorStruct retVal = new HexColorStruct();
+        retVal.Red = red;
+        retVal.Green = green;
+        retVal.Blue = blue;
 
-        return retVal;
-    }
-
-    public static HexColorStruct HSLtoRGB(HSLColorStruct hsl){
-        HexColorStruct retVal = null;
-
-        float[] hslArr = new float[3];
-        hslArr[0] = (float)hsl.Hue;
-        hslArr[1] = (float)hsl.Saturation;
-        hslArr[2] = (float)hsl.Luminance;
-
-        int color = Color.HSVToColor(hslArr);
-        retVal = GetHexColorStruct("#" + Integer.toHexString(color));
-
-
-        return retVal;
+        return retVal.toString();
     }
 
     public static HexColorStruct GetHexColorStruct(String hex){
-        String rStr = hex.substring(1, 2);
-        String gStr = hex.substring(3, 2);
-        String bStr = hex.substring(5, 2);
+        String rStr = hex.substring(1, 3);
+        String gStr = hex.substring(3, 5);
+        String bStr = hex.substring(5, 7);
 
         HexColorStruct retVal = new HexColorStruct();
 
