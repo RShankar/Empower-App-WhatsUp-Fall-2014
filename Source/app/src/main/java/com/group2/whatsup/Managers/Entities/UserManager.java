@@ -49,7 +49,7 @@ public class UserManager {
         _user = u;
     }
 
-    public User GetActiveUser(User u){
+    public User GetActiveUser(){
         return _user;
     }
 

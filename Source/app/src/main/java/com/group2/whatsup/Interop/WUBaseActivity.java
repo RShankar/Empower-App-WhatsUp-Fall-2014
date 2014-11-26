@@ -2,8 +2,11 @@ package com.group2.whatsup.Interop;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.Menu;
 
 import com.group2.whatsup.Debug.Log;
+import com.group2.whatsup.Managers.Entities.UserManager;
+import com.group2.whatsup.R;
 
 public class WUBaseActivity extends Activity {
 
@@ -21,5 +24,16 @@ public class WUBaseActivity extends Activity {
 
     protected void setViewTheme(){
         Log.Info("setViewTheme");
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //if authenticated, add the menu.
+        if(UserManager.Instance().GetActiveUser() != null){
+            getMenuInflater().inflate(R.menu.authenticated_menu, menu);
+            return true;
+        }
+
+        return false;
     }
 }

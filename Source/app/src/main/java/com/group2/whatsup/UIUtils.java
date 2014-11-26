@@ -2,6 +2,13 @@ package com.group2.whatsup;
 
 
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
+import android.graphics.drawable.shapes.Shape;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -40,9 +47,40 @@ public class UIUtils {
         b.setTextColor(SettingsManager.Instance().SecondaryColor());
     }
 
-    public static void ThemeTextbox(EditText txt){
-        txt.setBackgroundColor(Color.WHITE);
+    public static void ThemeTextbox(EditText txt) {
+        ApplyTheme(txt, "#333333", "#FFFFFF", 1);
         txt.setTextColor(Color.BLACK);
+    }
+
+    private static void ApplyTheme(View targetView, String borderColor, String backgroundColor, int width){
+
+        //Border
+        RectShape borderRect = new RectShape();
+        ShapeDrawable rectShapeDrawable = new ShapeDrawable(borderRect);
+        Paint paint = rectShapeDrawable.getPaint();
+        paint.setColor(Color.parseColor(borderColor));
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(width);
+
+        //Background
+        RectShape backgroundRect = new RectShape();
+        ShapeDrawable backgroundDrawable = new ShapeDrawable(backgroundRect);
+        Paint bgPaint = backgroundDrawable.getPaint();
+        bgPaint.setColor(Color.parseColor(backgroundColor));
+        bgPaint.setStyle(Paint.Style.FILL);
+        bgPaint.setStrokeWidth(0);
+
+
+        Drawable[] layers = {backgroundDrawable, rectShapeDrawable};
+
+        //Full Layers.
+        LayerDrawable fullLayers = new LayerDrawable(layers);
+
+        // apply to layout
+        // my singleButton here is actually a relative layout
+        targetView.setBackground(fullLayers);
+        int viewPadding = 10;
+        targetView.setPadding(viewPadding, viewPadding, viewPadding, viewPadding);
     }
     //endregion
 }

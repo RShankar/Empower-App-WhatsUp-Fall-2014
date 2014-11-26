@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import com.group2.whatsup.Entities.Authentication.User;
 import com.group2.whatsup.Helpers.ActionResult;
@@ -27,6 +28,7 @@ public class LoginScreen extends WUBaseActivity {
     private EditText _passwordField;
     private Button _loginButton;
     private Button _signupButton;
+    private RelativeLayout _background;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +43,19 @@ public class LoginScreen extends WUBaseActivity {
         _passwordField = (EditText) findViewById(R.id.login_password_field);
         _loginButton = (Button)findViewById(R.id.login_btnLogIn);
         _signupButton = (Button)findViewById(R.id.login_btnSignup);
+        _background = (RelativeLayout)findViewById(R.id.login_loginBackground);
     }
 
     @Override
     protected void setViewTheme() {
         super.setViewTheme();
         final LoginScreen ref = this;
+
+        UIUtils.ThemeButton(_signupButton);
+        UIUtils.ThemeButton(_loginButton);
+
+        UIUtils.ThemeTextbox(_emailField);
+        UIUtils.ThemeTextbox(_passwordField);
 
         //Temporary debug crap.
         _emailField.setText("test@test.com");
@@ -71,30 +80,7 @@ public class LoginScreen extends WUBaseActivity {
             }
         });
 
-
-        _signupButton.setBackgroundColor(SettingsManager.Instance().PrimaryColor());
-        _loginButton.setBackgroundColor(SettingsManager.Instance().PrimaryColor());
-    }
-
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.login_screen, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        _background.setBackgroundColor(SettingsManager.Instance().SecondaryColor());
     }
 
     private void attemptLogin(){

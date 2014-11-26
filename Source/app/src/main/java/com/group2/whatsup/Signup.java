@@ -42,6 +42,9 @@ public class Signup extends WUBaseActivity {
     protected void setViewTheme(){
         _emailBox.setHint(R.string.placeholder_email_address);
         _passwordBox.setHint(R.string.placeholder_password);
+
+        UIUtils.ThemeButton(_signupButton);
+
         final Signup ref = this;
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
