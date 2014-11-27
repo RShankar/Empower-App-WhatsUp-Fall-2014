@@ -109,4 +109,11 @@ public class Event extends BaseEntity {
     public ArrayList<User> get_attendees(){ return _attendees; }
     public void set_attendees(ArrayList<User> attendees) { _attendees = attendees; }
     //endregion
+
+    //Event Category
+    private EventCategory _category;
+    public EventCategory get_category() { return _category; }
+    public void set_category(EventCategory category) { _category = category; }
+    public String get_category_name(){ return _category.getName(); }
+    //endregion
 }

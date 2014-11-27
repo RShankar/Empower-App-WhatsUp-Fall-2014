@@ -5,6 +5,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.group2.whatsup.Controls.AccordionList;
+import com.group2.whatsup.Controls.AccordionListItemChild;
+import com.group2.whatsup.Controls.IAccordionItemSelected;
+import com.group2.whatsup.Entities.Event;
 import com.group2.whatsup.ExpandableListAdapter;
 
 import android.app.Activity;
@@ -39,9 +43,7 @@ public class EventList extends WUBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //if(GPSManager.Instance().HasLocation()){
-        //    EventManager.Instance().FindEventsNear(GPSManager.Instance().CurrentLocation());
-        //}
+
         setContentView(R.layout.activity_event_list);
 
         createGroupList();

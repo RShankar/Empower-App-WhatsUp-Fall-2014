@@ -5,6 +5,7 @@ import android.content.Context;
 import com.group2.whatsup.Entities.Event;
 import com.group2.whatsup.Entities.Location.LatLon;
 import com.group2.whatsup.Managers.BaseManager;
+import com.group2.whatsup.Managers.GPSManager;
 import com.group2.whatsup.ServiceContracts.Entities.IEventService;
 import com.group2.whatsup.Services.Entities.ParseEventService;
 
@@ -30,6 +31,10 @@ public class EventManager extends BaseManager {
 
     public ArrayList<Event> FindEventsNear(LatLon location){
         return _service.RetrieveEventsNear(location);
+    }
+
+    public ArrayList<Event> FindEventsNearLastKnownLocation(){
+        return _service.RetrieveEventsNear(GPSManager.Instance().CurrentLocation());
     }
 
     public Event GetEvent(String id){
