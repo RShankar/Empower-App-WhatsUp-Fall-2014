@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 20
-    buildToolsVersion "20.0.0"
+    buildToolsVersion '20.0.0'
 
     defaultConfig {
         applicationId "com.group2.whatsup"
@@ -20,8 +20,9 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile files('libs/Parse-1.7.1.jar')
     compile files('libs/bolts-android-1.1.3.jar')
     compile 'com.android.support:support-v4:21.0.0'
+    compile 'com.google.android.gms:play-services:6.1.71'
 }
