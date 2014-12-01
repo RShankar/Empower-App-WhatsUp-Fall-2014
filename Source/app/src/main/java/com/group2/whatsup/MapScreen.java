@@ -1,5 +1,6 @@
 package com.group2.whatsup;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,6 +13,14 @@ import com.group2.whatsup.Interop.WUBaseActivity;
 
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
+import com.group2.whatsup.Managers.AuthenticationManager;
+import com.group2.whatsup.Managers.Entities.EventManager;
+import com.group2.whatsup.Managers.Entities.UserManager;
+import com.group2.whatsup.Managers.GPSManager;
+import com.group2.whatsup.Managers.ParseManager;
+import com.group2.whatsup.Managers.SettingsManager;
+import com.group2.whatsup.Managers.ToastManager;
+
 import android.app.Activity;
 import android.os.Bundle;
 
@@ -23,22 +32,40 @@ public class MapScreen extends WUBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        InitializeManagers(savedInstanceState);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_screen);
+        mapStart();
+    }
 
-        // Get a handle to the Map Fragment
+    private void mapStart() {
         GoogleMap map = ((MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map)).getMap();
 
-        LatLng sydney = new LatLng(-33.867, 151.206);
+        LatLng current_location = new LatLng(
+                GPSManager.Instance().CurrentLocation().get_latitude(),
+                GPSManager.Instance().CurrentLocation().get_longitude()
+        );
 
         map.setMyLocationEnabled(true);
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(current_location, 13));
 
         map.addMarker(new MarkerOptions()
-                .title("Sydney")
-                .snippet("The most populous city in Australia.")
-                .position(sydney));
+                .title("You are here")
+                .snippet("Hopefully")
+                .position(current_location));
+
+    }
+
+    private void InitializeManagers(Bundle state) {
+        Context appContext = getApplicationContext();
+        ParseManager.Initialize(appContext);
+        SettingsManager.Initialize(state, appContext);
+        ToastManager.Initialize(appContext);
+        AuthenticationManager.Initialize(appContext);
+        UserManager.Initialize(appContext);
+        EventManager.Initialize(appContext);
+        GPSManager.Initialize(appContext);
     }
 
     /*
