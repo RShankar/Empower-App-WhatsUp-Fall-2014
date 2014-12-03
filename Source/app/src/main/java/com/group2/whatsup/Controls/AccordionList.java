@@ -18,6 +18,7 @@ public class AccordionList<T> {
     private ArrayList<AccordionListItem<T>> _itemsList;
 
     private IAccordionItemSelected<T> clickAction;
+    private IAccordionItemView<T> itemView;
 
     public AccordionList(){
         _itemMap = new HashMap<String, AccordionListItem<T>>();
@@ -88,6 +89,10 @@ public class AccordionList<T> {
 
     public void SetActionOnClick(IAccordionItemSelected<T> clickAction){
         this.clickAction = clickAction;
+    }
+
+    public void SetViewToAppear(IAccordionItemView<T> view){
+        itemView = view;
     }
 
     public void InitializeExpandableListView(ExpandableListView lv){
@@ -184,4 +189,6 @@ public class AccordionList<T> {
             }
         };
     }
+
+
 }
