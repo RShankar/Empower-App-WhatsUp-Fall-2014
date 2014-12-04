@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/map"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:name="com.google.android.gms.maps.MapFragment"/>
+    tools:context="com.group2.whatsup.MapScreen"
+    android:id="@+id/map_mapBackground">
+
+
+    <View android:id="@+id/dummyView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true"
+    />
+
+    <!-- Map Fragment -->
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/map"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_alignBottom="@id/dummyView"
+    />
+
+    <RelativeLayout
+        android:id="@+id/map_contentArea"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignTop="@id/dummyView">
+
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

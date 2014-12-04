@@ -10,6 +10,8 @@ import android.os.Handler;
 import com.group2.whatsup.Debug.Log;
 import com.group2.whatsup.Entities.Location.LatLon;
 
+import java.util.ArrayList;
+
 public class GPSManager extends BaseManager{
     //region Singleton Crap
     private static GPSManager _instance;
@@ -25,7 +27,8 @@ public class GPSManager extends BaseManager{
     private LocationManager _locMgr;
     private Handler _handler;
     private LocationListener _updateListener;
-    private final static int SECONDS_BETWEEN_GPS_POLLS = 60;
+    private ArrayList<Runnable> _waitingCallbacks;
+    private final static int SECONDS_BETWEEN_GPS_POLLS = 10;
     private final Runnable _reenableGps = new Runnable(){
 
         @Override
@@ -39,6 +42,7 @@ public class GPSManager extends BaseManager{
         super(c);
         _locMgr = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
         _handler = new Handler();
+        _waitingCallbacks = new ArrayList<Runnable>();
 
         //region Update Listener Instantiation.
         _updateListener = new LocationListener(){
@@ -46,6 +50,7 @@ public class GPSManager extends BaseManager{
             public void onLocationChanged(Location location) {
                 LatLon newLoc = new LatLon(location.getLatitude(), location.getLongitude());
                 _currentLocation = newLoc;
+                notifyAwaitingCallbacks();
                 _locMgr.removeUpdates(_updateListener);
                 _handler.postDelayed(_reenableGps, SECONDS_BETWEEN_GPS_POLLS * 1000);
             }
@@ -70,6 +75,15 @@ public class GPSManager extends BaseManager{
         _locMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 0, _updateListener);
     }
 
+    private void notifyAwaitingCallbacks(){
+        if(_waitingCallbacks != null){
+            for(Runnable r : _waitingCallbacks){
+                r.run();
+            }
+        }
+
+        _waitingCallbacks = null;
+    }
 
     public boolean HasLocation(){
         return _currentLocation != null;
@@ -77,6 +91,15 @@ public class GPSManager extends BaseManager{
 
     public LatLon CurrentLocation(){
         return _currentLocation;
+    }
+
+    public void WhenLocationSet(Runnable r){
+        if(!HasLocation()){
+            if(_waitingCallbacks == null){
+                _waitingCallbacks = new ArrayList<Runnable>();
+            }
+            _waitingCallbacks.add(r);
+        }
     }
 
 }

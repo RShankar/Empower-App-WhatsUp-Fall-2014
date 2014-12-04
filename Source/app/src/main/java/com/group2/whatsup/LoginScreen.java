@@ -32,7 +32,6 @@ public class LoginScreen extends WUBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        InitializeManagers(savedInstanceState);
         super.onCreate(savedInstanceState, R.layout.activity_login_screen);
     }
 
@@ -98,23 +97,5 @@ public class LoginScreen extends WUBaseActivity {
         else{
             ToastManager.Instance().SendMessage(authResult.Message, true);
         }
-
-
-    }
-
-
-    /**
-     * Initializes all the managers we need for the application.
-     */
-    private void InitializeManagers(Bundle state){
-        Context appContext = getApplicationContext();
-        ParseManager.Initialize(appContext);
-        SettingsManager.Initialize(state, appContext);
-        ToastManager.Initialize(appContext);
-        AuthenticationManager.Initialize(appContext);
-        UserManager.Initialize(appContext);
-        EventManager.Initialize(appContext);
-        GPSManager.Initialize(appContext);
-
     }
 }

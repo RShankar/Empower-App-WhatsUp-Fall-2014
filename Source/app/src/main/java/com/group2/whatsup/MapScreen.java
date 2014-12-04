@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 
 import com.group2.whatsup.Interop.WUBaseActivity;
@@ -13,77 +12,57 @@ import com.group2.whatsup.Interop.WUBaseActivity;
 
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
-import com.group2.whatsup.Managers.AuthenticationManager;
-import com.group2.whatsup.Managers.Entities.EventManager;
-import com.group2.whatsup.Managers.Entities.UserManager;
 import com.group2.whatsup.Managers.GPSManager;
-import com.group2.whatsup.Managers.ParseManager;
-import com.group2.whatsup.Managers.SettingsManager;
-import com.group2.whatsup.Managers.ToastManager;
-
-import android.app.Activity;
-import android.os.Bundle;
 
 
 public class MapScreen extends WUBaseActivity {
-
-    private Button _EventButton;
+    private GoogleMap _googleMap;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        InitializeManagers(savedInstanceState);
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map_screen);
-        mapStart();
+        super.onCreate(savedInstanceState, R.layout.activity_map_screen);
     }
 
-    private void mapStart() {
-        GoogleMap map = ((MapFragment) getFragmentManager()
-                .findFragmentById(R.id.map)).getMap();
-
-        LatLng current_location = new LatLng(
-                GPSManager.Instance().CurrentLocation().get_latitude(),
-                GPSManager.Instance().CurrentLocation().get_longitude()
-        );
-
-        map.setMyLocationEnabled(true);
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(current_location, 13));
-
-        map.addMarker(new MarkerOptions()
-                .title("You are here")
-                .snippet("Hopefully")
-                .position(current_location));
-
+    protected void initializeViewControls(){
+        _googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
     }
 
-    private void InitializeManagers(Bundle state) {
-        Context appContext = getApplicationContext();
-        ParseManager.Initialize(appContext);
-        SettingsManager.Initialize(state, appContext);
-        ToastManager.Initialize(appContext);
-        AuthenticationManager.Initialize(appContext);
-        UserManager.Initialize(appContext);
-        EventManager.Initialize(appContext);
-        GPSManager.Initialize(appContext);
+    protected void setViewTheme(){
+        mapInit();
     }
 
-    /*
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map_screen);
-        /*
-        _EventButton = (Button)findViewById(R.id.navigate);
-        _EventButton.setOnClickListener(new View.OnClickListener() {
+
+    private void mapInit() {
+
+
+        Runnable whenDone = new Runnable(){
+
             @Override
-            public void onClick(View v) {
-                // launch intent
-                changeIntent();
-            }
-        });
+            public void run() {
 
-    }*/
+                LatLng current_location = new LatLng(
+                        GPSManager.Instance().CurrentLocation().get_latitude(),
+                        GPSManager.Instance().CurrentLocation().get_longitude()
+                );
+
+                _googleMap.setMyLocationEnabled(true);
+                _googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current_location, 13));
+
+                _googleMap.addMarker(new MarkerOptions().title("You are here").snippet("Hopefully").position(current_location));
+            }
+        };
+
+
+        if(GPSManager.Instance().HasLocation()){
+            whenDone.run();
+        }
+        else{
+            GPSManager.Instance().WhenLocationSet(whenDone);
+        }
+
+
+    }
 
     public void changeIntent()
     {
