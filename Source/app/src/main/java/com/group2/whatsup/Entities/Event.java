@@ -1,5 +1,8 @@
 package com.group2.whatsup.Entities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.group2.whatsup.Entities.Authentication.User;
 import com.group2.whatsup.Entities.Location.Address;
@@ -110,6 +113,7 @@ public class Event extends BaseEntity {
     private ArrayList<User> _attendees;
     public ArrayList<User> get_attendees(){ return _attendees; }
     public void set_attendees(ArrayList<User> attendees) { _attendees = attendees; }
+    public int get_attendeesCount() { return _attendees.size(); }
     //endregion
 
     //Event Category

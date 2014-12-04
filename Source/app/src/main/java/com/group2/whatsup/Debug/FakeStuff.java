@@ -21,8 +21,13 @@ public class FakeStuff {
         event1.set_title("event 1");
         ArrayList<String> s = new ArrayList<String>();
         event1.set_imageNames(s);
-        //Address A = new Address();
-        //event1.set_address();
+        Address A = new Address();
+        A.StreetLine1 = "sl1";
+        A.StreetLine2 = "sl2";
+        A.City = "citys";
+        A.State = "st";
+        A.PostalCode = "33334";
+        event1.set_address(A);
         ArrayList<User> U = new ArrayList<User>();
         event1.set_attendees(U);
         event1.set_category(EventCategory.Fitness);

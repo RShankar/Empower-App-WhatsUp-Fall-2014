@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 
 import com.group2.whatsup.Debug.FakeStuff;
+import com.group2.whatsup.Debug.Log;
 import com.group2.whatsup.Entities.Event;
 import com.group2.whatsup.Entities.Location.LatLon;
 import com.group2.whatsup.Interop.WUBaseActivity;
@@ -121,7 +122,8 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
     public boolean onMarkerClick(final Marker marker) {
         ToastManager.Instance().SendMessage("Clicked", true);
         ToastManager.Instance().SendMessage(marker.getId(), true);
-        if (marker.getId() == "m0") {
+        Log.Info(marker.getId());
+        if (marker.getId().equals("m0")) {
             changeActivity(EventAddEdit.class);
         }
         else
@@ -136,14 +138,6 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
         ToastManager.Instance().SendMessage(latLng.toString(), true);
         changeActivity(EventAddEdit.class);
     }
-
-    /*
-    public void changeActivity(Class<?> cls)
-    {
-        Intent intent = new Intent(this, cls);
-        startActivity(intent);
-    }
-    */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

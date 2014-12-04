@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 
 import com.group2.whatsup.Debug.Log;
+import com.group2.whatsup.Entities.Event;
 import com.group2.whatsup.Managers.Entities.UserManager;
 import com.group2.whatsup.R;
 
@@ -25,6 +26,14 @@ public class WUBaseActivity extends Activity {
 
     protected void setViewTheme(){
         Log.Info("setViewTheme");
+    }
+
+    public void changeActivity(Event e, Class<?> cls)
+    {
+        Intent intent = new Intent(this, cls);
+        intent.putExtra("event_title", e.get_title());
+        intent.putExtra("event_ID", e.get_entityId());
+        startActivity(intent);
     }
 
     public void changeActivity(Class<?> cls)
