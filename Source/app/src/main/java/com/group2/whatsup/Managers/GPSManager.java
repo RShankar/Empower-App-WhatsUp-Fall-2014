@@ -28,7 +28,7 @@ public class GPSManager extends BaseManager{
     private Handler _handler;
     private LocationListener _updateListener;
     private ArrayList<Runnable> _waitingCallbacks;
-    private final static int SECONDS_BETWEEN_GPS_POLLS = 10;
+    private final static int SECONDS_BETWEEN_GPS_POLLS = 60;
     private final Runnable _reenableGps = new Runnable(){
 
         @Override
