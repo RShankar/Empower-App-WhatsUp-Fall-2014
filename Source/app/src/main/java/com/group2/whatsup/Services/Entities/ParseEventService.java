@@ -22,7 +22,8 @@ public class ParseEventService extends BaseParseService implements IEventService
     public ArrayList<Event> RetrieveEventsNear(LatLon loc) {
         ParseQuery<ParseObject> query = queryFor(Event.ENTITY_NAME);
         ParseGeoPoint targetPoint = new ParseGeoPoint(loc.get_latitude(), loc.get_longitude());
-        query.whereWithinMiles("location", targetPoint, SettingsManager.Instance().DistancePreference());
+        query.whereWithinMiles("location", targetPoint, 500);
+        //query.whereWithinMiles("location", targetPoint, SettingsManager.Instance().DistancePreference());
 
         List<ParseObject> objs = null;
         try{

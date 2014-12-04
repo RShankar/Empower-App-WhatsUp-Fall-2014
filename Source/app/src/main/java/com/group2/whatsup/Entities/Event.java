@@ -1,5 +1,6 @@
 package com.group2.whatsup.Entities;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.group2.whatsup.Entities.Authentication.User;
 import com.group2.whatsup.Entities.Location.Address;
 import com.group2.whatsup.Entities.Location.LatLon;
@@ -42,6 +43,7 @@ public class Event extends BaseEntity {
     public LatLon get_location() {
         return _location;
     }
+    public LatLng get_location_LatLng() { return _location.get_LatLng(); }
     public void set_location(LatLon _location) {
         this._location = _location;
     }

@@ -1,10 +1,12 @@
 package com.group2.whatsup;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.group2.whatsup.Controls.Accordion.AccordionList;
 import com.group2.whatsup.Controls.Accordion.AccordionListItem;
 import com.group2.whatsup.Controls.Accordion.IAccordionGroupView;
 import com.group2.whatsup.Controls.Accordion.IAccordionItemSelected;
 import com.group2.whatsup.Controls.Accordion.IAccordionItemView;
+import com.group2.whatsup.Entities.Event;
 import com.group2.whatsup.Interop.WUBaseActivity;
 import com.group2.whatsup.Managers.ToastManager;
 
@@ -59,6 +61,7 @@ public class EventList extends WUBaseActivity {
             @Override
             public void ItemSelected(String selectedItem) {
                 ToastManager.Instance().SendMessage(selectedItem, true);
+                // changeIntent(event id or something);
             }
         });
         //endregion
@@ -102,7 +105,7 @@ public class EventList extends WUBaseActivity {
 
 
 
-    public void changeIntent(){
+    public void changeIntent(Event event){
         Intent intent = new Intent(this, EventDetails.class);
         startActivity(intent);
     }

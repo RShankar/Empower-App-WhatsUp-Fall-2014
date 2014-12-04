@@ -1,6 +1,7 @@
 package com.group2.whatsup.Interop;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 
@@ -24,6 +25,12 @@ public class WUBaseActivity extends Activity {
 
     protected void setViewTheme(){
         Log.Info("setViewTheme");
+    }
+
+    public void changeActivity(Class<?> cls)
+    {
+        Intent intent = new Intent(this, cls);
+        startActivity(intent);
     }
 
     @Override

@@ -7,21 +7,32 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
+import com.group2.whatsup.Debug.FakeStuff;
+import com.group2.whatsup.Entities.Event;
+import com.group2.whatsup.Entities.Location.LatLon;
 import com.group2.whatsup.Interop.WUBaseActivity;
 
 
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
+import com.group2.whatsup.Managers.Entities.EventManager;
 import com.group2.whatsup.Managers.GPSManager;
+import com.group2.whatsup.Managers.ToastManager;
+
+import java.util.ArrayList;
 
 
-public class MapScreen extends WUBaseActivity {
+public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener {
     private GoogleMap _googleMap;
-
+    ArrayList<Event> list = new ArrayList<Event>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.activity_map_screen);
+        _googleMap.setOnMarkerClickListener(this);
+        _googleMap.setOnMapClickListener(this);
+
+
     }
 
     protected void initializeViewControls(){
@@ -41,6 +52,15 @@ public class MapScreen extends WUBaseActivity {
             @Override
             public void run() {
 
+                //do fake stuff
+                list = FakeStuff.CreateFakeEvents(GPSManager.Instance());
+                for (Event event: list) {
+                    EventManager.Instance().Save(event);
+                }
+                // end of fake stuff
+
+
+
                 LatLng current_location = new LatLng(
                         GPSManager.Instance().CurrentLocation().get_latitude(),
                         GPSManager.Instance().CurrentLocation().get_longitude()
@@ -50,6 +70,8 @@ public class MapScreen extends WUBaseActivity {
                 _googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current_location, 13));
 
                 _googleMap.addMarker(new MarkerOptions().title("You are here").snippet("Hopefully").position(current_location));
+
+                addEventMarkers();
             }
         };
 
@@ -64,11 +86,64 @@ public class MapScreen extends WUBaseActivity {
 
     }
 
-    public void changeIntent()
+    private void addEventMarkers() {
+        ArrayList<Event> _eventsList = EventManager.Instance().FindEventsNearLastKnownLocation();
+
+        // this is just temporary until the event manager is working
+        // ******######*****#######
+        for (Event event: list)  // shouldn't be using list
+        {
+            _googleMap.addMarker(new MarkerOptions()
+                            .title(event.get_title())
+                            .snippet(event.get_description())
+                            .position(event.get_location_LatLng())
+                                    //.icon()
+                            .draggable(false)
+
+            );
+        }
+
+        /*  This doesn't work yet because I can't get parse to save my list of events.
+        for (Event event: _eventsList)
+        {
+            _googleMap.addMarker(new MarkerOptions()
+                            .title(event.get_title())
+                            .snippet(event.get_description())
+                            .position(event.get_location_LatLng())
+                            //.icon()
+                            .draggable(false)
+            );
+        }
+        */
+    }
+
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+        ToastManager.Instance().SendMessage("Clicked", true);
+        ToastManager.Instance().SendMessage(marker.getId(), true);
+        if (marker.getId() == "m0") {
+            changeActivity(EventAddEdit.class);
+        }
+        else
+        {
+            changeActivity(EventDetails.class);
+        }
+        return true;
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        ToastManager.Instance().SendMessage(latLng.toString(), true);
+        changeActivity(EventAddEdit.class);
+    }
+
+    /*
+    public void changeActivity(Class<?> cls)
     {
-        Intent intent = new Intent(this, EventDetails.class);
+        Intent intent = new Intent(this, cls);
         startActivity(intent);
     }
+    */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -86,8 +161,7 @@ public class MapScreen extends WUBaseActivity {
         switch (item.getItemId()) {
             case R.id.list:
                 // open activity
-                Intent intent = new Intent(this, EventList.class);
-                startActivity(intent);
+                changeActivity(EventList.class);
                 return true;
         }
         /* This is the default thing, I'm just going to leave it */
@@ -97,4 +171,6 @@ public class MapScreen extends WUBaseActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }
