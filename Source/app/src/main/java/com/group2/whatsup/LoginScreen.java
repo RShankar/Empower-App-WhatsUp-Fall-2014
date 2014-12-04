@@ -32,6 +32,9 @@ public class LoginScreen extends WUBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(UserManager.Instance().GetActiveUser() != null){
+            switchToNextScreen();
+        }
         super.onCreate(savedInstanceState, R.layout.activity_login_screen);
     }
 
@@ -89,13 +92,16 @@ public class LoginScreen extends WUBaseActivity {
         if(authResult.Success){
             UserManager.Instance().SetActiveUser(authResult.Result);
             ToastManager.Instance().SendMessage("Successfully Logged in", true);
-
-            /* Just temporary to get from one activity to another */
-            Intent intent = new Intent(this, MapScreen.class);
-            startActivity(intent);
+            switchToNextScreen();
         }
         else{
             ToastManager.Instance().SendMessage(authResult.Message, true);
         }
+    }
+
+    private void switchToNextScreen(){
+        /* Just temporary to get from one activity to another */
+        Intent intent = new Intent(this, MapScreen.class);
+        startActivity(intent);
     }
 }

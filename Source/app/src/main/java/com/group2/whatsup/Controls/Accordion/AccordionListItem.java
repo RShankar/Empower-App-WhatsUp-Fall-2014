@@ -1,9 +1,10 @@
-package com.group2.whatsup.Controls;
+package com.group2.whatsup.Controls.Accordion;
+
+import com.group2.whatsup.Controls.BaseControl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-public class AccordionListItem<T> {
+public class AccordionListItem<T> extends BaseControl {
     private ArrayList<AccordionListItemChild<T>> items;
     private String label;
 
@@ -23,6 +24,14 @@ public class AccordionListItem<T> {
                 items.remove(item);
             }
         }
+    }
+
+    public T GetItem(int index){
+        if(items.size() > index){
+            return items.get(index).GetData();
+        }
+
+        return null;
     }
 
     public void SetLabel(String label){

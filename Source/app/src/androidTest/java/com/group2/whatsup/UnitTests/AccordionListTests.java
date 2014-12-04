@@ -2,7 +2,7 @@ package com.group2.whatsup.UnitTests;
 
 import android.test.InstrumentationTestCase;
 
-import com.group2.whatsup.Controls.AccordionList;
+import com.group2.whatsup.Controls.Accordion.AccordionList;
 import com.group2.whatsup.Entities.Event;
 import com.group2.whatsup.Entities.EventCategory;
 

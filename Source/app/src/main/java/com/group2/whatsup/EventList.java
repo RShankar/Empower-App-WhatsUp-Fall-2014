@@ -1,136 +1,108 @@
 package com.group2.whatsup;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import com.group2.whatsup.Controls.Accordion.AccordionList;
+import com.group2.whatsup.Controls.Accordion.AccordionListItem;
+import com.group2.whatsup.Controls.Accordion.IAccordionGroupView;
+import com.group2.whatsup.Controls.Accordion.IAccordionItemSelected;
+import com.group2.whatsup.Controls.Accordion.IAccordionItemView;
+import com.group2.whatsup.Interop.WUBaseActivity;
+import com.group2.whatsup.Managers.ToastManager;
 
-import com.group2.whatsup.Controls.AccordionList;
-import com.group2.whatsup.Controls.AccordionListItemChild;
-import com.group2.whatsup.Controls.IAccordionItemSelected;
-import com.group2.whatsup.Entities.Event;
-import com.group2.whatsup.ExpandableListAdapter;
-
-import android.app.Activity;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.ExpandableListView.OnChildClickListener;
-import android.widget.Toast;
-
-
+import android.widget.TextView;
 import android.content.Intent;
-import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
-import com.group2.whatsup.Interop.WUBaseActivity;
-import com.group2.whatsup.Managers.Entities.EventManager;
-import com.group2.whatsup.Managers.GPSManager;
+
 
 
 public class EventList extends WUBaseActivity {
-
-    List<String> groupList;
-    List<String> childList;
-    Map<String, List<String>> laptopCollection;
-    ExpandableListView expListView;
+    private ExpandableListView expListView;
+    private AccordionList<String> laptopsReplacement;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState, R.layout.activity_event_list);
+    }
 
-        setContentView(R.layout.activity_event_list);
-
-        createGroupList();
-
-        createCollection();
-
+    @Override
+    protected void initializeViewControls() {
+        super.initializeViewControls();
         expListView = (ExpandableListView) findViewById(R.id.expandableListView);
-        final ExpandableListAdapter expListAdapter = new ExpandableListAdapter(
-                this, groupList, laptopCollection);
-        expListView.setAdapter(expListAdapter);
+        laptopsReplacement = new AccordionList<String>();
+    }
 
-        //setGroupIndicatorToRight();
+    @Override
+    protected void setViewTheme() {
+        super.setViewTheme();
 
-        expListView.setOnChildClickListener(new OnChildClickListener() {
+        AccordionListItem<String> comm = laptopsReplacement.AddSection("Community");
+        AccordionListItem<String> rec = laptopsReplacement.AddSection("Recreation");
+        AccordionListItem<String> sch = laptopsReplacement.AddSection("School");
 
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                final String selected = (String) expListAdapter.getChild(
-                        groupPosition, childPosition);
-                Toast.makeText(getBaseContext(), selected, Toast.LENGTH_LONG)
-                        .show();
-                // Show a mock up of the event
-                changeIntent();
-                return true;
+        comm.AddItem("Test1a");
+        comm.AddItem("Test1b");
+
+        rec.AddItem("Test2a");
+        rec.AddItem("Test2b");
+
+        sch.AddItem("Test3a");
+        sch.AddItem("Test3b");
+
+        //region Action On Click
+        laptopsReplacement.SetActionOnClick(new IAccordionItemSelected<String>() {
+            @Override
+            public void ItemSelected(String selectedItem) {
+                ToastManager.Instance().SendMessage(selectedItem, true);
             }
         });
-    }
+        //endregion
 
-    private void createGroupList() {
-        groupList = new ArrayList<String>();
-        groupList.add("Community");
-        groupList.add("Recreation");
-        groupList.add("School");
-    }
+        //region Group View
+        laptopsReplacement.SetGroupViewToAppear(new IAccordionGroupView<String>() {
+            @Override
+            public View viewToAppear(AccordionListItem<String> item, View convertView) {
+                if (convertView == null) {
+                    convertView = getLayoutInflater().inflate(R.layout.event_group, null);
+                }
+                TextView txt = (TextView) convertView.findViewById(R.id.group);
+                txt.setTypeface(null, Typeface.BOLD);
+                txt.setText(item.GetLabel());
+                return convertView;
+            }
+        });
+        //endregion
 
-    private void createCollection() {
-        // preparing laptops collection(child)
-        String[] community = { "HP Pavilion G6-2014TX", "ProBook HP 4540",
-                "HP Envy 4-1025TX" };
-        String[] recreation = { "HCL S2101", "HCL L2102", "HCL V2002" };
-        String[] school = { "IdeaPad Z Series", "Essential G Series",
-                "ThinkPad X Series", "Ideapad Z Series" };
+        //region Item View
+        laptopsReplacement.SetViewToAppear(new IAccordionItemView<String>() {
+            @Override
+            public View viewToDisplay(String item, View convertView) {
 
+                LayoutInflater inflater = getLayoutInflater();
 
-        laptopCollection = new LinkedHashMap<String, List<String>>();
+                if (convertView == null) {
+                    convertView = inflater.inflate(R.layout.event_child, null);
+                }
 
-        for (String laptop : groupList) {
-            if (laptop.equals("HP")) {
-                loadChild(community);
-            } else if (laptop.equals("Dell"))
-                loadChild(recreation);
-            else
-                loadChild(school);
-            
+                TextView txt = (TextView) convertView.findViewById(R.id.child);
+                txt.setText(item);
 
-            laptopCollection.put(laptop, childList);
-        }
-    }
+                return convertView;
+            }
+        });
+        //endregion
 
-    private void loadChild(String[] laptopModels) {
-        childList = new ArrayList<String>();
-        for (String model : laptopModels)
-            childList.add(model);
-    }
-
-    private void setGroupIndicatorToRight() {
-        /* Get the screen width */
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-        int width = dm.widthPixels;
-
-        expListView.setIndicatorBounds(width - getDipsFromPixel(35), width
-                - getDipsFromPixel(5));
-    }
-
-    // Convert pixel to dip
-    public int getDipsFromPixel(float pixels) {
-        // Get the screen's density scale
-        final float scale = getResources().getDisplayMetrics().density;
-        // Convert the dps to pixels, based on density scale
-        return (int) (pixels * scale + 0.5f);
+        laptopsReplacement.InitializeExpandableListView(expListView);
     }
 
 
 
-    public void changeIntent()
-    {
+    public void changeIntent(){
         Intent intent = new Intent(this, EventDetails.class);
         startActivity(intent);
     }

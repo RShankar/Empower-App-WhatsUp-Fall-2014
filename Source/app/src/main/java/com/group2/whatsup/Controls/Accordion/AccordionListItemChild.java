@@ -1,4 +1,4 @@
-package com.group2.whatsup.Controls;
+package com.group2.whatsup.Controls.Accordion;
 
 public class AccordionListItemChild<T> {
     T data;

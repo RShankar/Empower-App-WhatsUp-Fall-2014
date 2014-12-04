@@ -1,11 +1,10 @@
-package com.group2.whatsup.Controls;
+package com.group2.whatsup.Controls.Accordion;
 
-import android.database.DataSetObserver;
+import android.content.Context;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 
+import com.group2.whatsup.Controls.BaseControl;
 import com.group2.whatsup.Debug.Log;
 
 import java.lang.reflect.Method;
@@ -13,12 +12,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AccordionList<T> {
+public class AccordionList<T> extends BaseControl {
     private HashMap<String, AccordionListItem<T>> _itemMap;
     private ArrayList<AccordionListItem<T>> _itemsList;
 
     private IAccordionItemSelected<T> clickAction;
     private IAccordionItemView<T> itemView;
+    private IAccordionGroupView<T> groupView;
 
     public AccordionList(){
         _itemMap = new HashMap<String, AccordionListItem<T>>();
@@ -28,13 +28,16 @@ public class AccordionList<T> {
         //this.clickAction.ItemSelected(GetSection("asdf").GetItems().get(0).GetData());
     }
 
-    public void AddSection(String item){
-        if(!_itemMap.containsKey(item)){
+    public AccordionListItem<T> AddSection(String item){
+        if(!_itemMap.containsKey(item)) {
             AccordionListItem<T> newItem = new AccordionListItem<T>();
             newItem.SetLabel(item);
             _itemMap.put(item, newItem);
             _itemsList.add(newItem);
+            return newItem;
         }
+
+        return _itemMap.get(item);
     }
 
     public void RemoveSection(String item){
@@ -44,9 +47,21 @@ public class AccordionList<T> {
         }
     }
 
+    public ArrayList<AccordionListItem<T>> GetSections(){
+        return _itemsList;
+    }
+
     public AccordionListItem<T> GetSection(String item){
         if(_itemMap.containsKey(item)){
             return _itemMap.get(item);
+        }
+
+        return null;
+    }
+
+    public AccordionListItem<T> GetSection(int index){
+        if(_itemsList.size() > index){
+            return _itemsList.get(index);
         }
 
         return null;
@@ -91,103 +106,53 @@ public class AccordionList<T> {
         this.clickAction = clickAction;
     }
 
+    //region Item View Func
     public void SetViewToAppear(IAccordionItemView<T> view){
         itemView = view;
     }
 
+    public IAccordionItemView<T> GetViewToAppear(){
+        return itemView;
+    }
+    //endregion
+
+    //region Group View Func
+    public void SetGroupViewToAppear(IAccordionGroupView<T> view) {
+        groupView = view;
+    }
+
+    public IAccordionGroupView<T> GetGroupViewToAppear(){
+        return groupView;
+    }
+    //endregion
+
     public void InitializeExpandableListView(ExpandableListView lv){
-        ExpandableListAdapter ela = new ExpandableListAdapter(){
+        if(clickAction != null){
+            lv.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+                public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                    T item = GetSection(groupPosition).GetItem(childPosition);
+                    clickAction.ItemSelected(item);
+                    return true;
+                }
+            });
 
-            @Override
-            public void registerDataSetObserver(DataSetObserver observer) {
+            lv.setAdapter(GetAdapter(lv.getContext()));
+        }
+        else{
+            Log.Error("clickAction is not set! Make sure to call SetActionOnClick with an action to take on each click!!!");
+        }
 
-            }
+    }
 
-            @Override
-            public void unregisterDataSetObserver(DataSetObserver observer) {
+    public AccordionListAdapter GetAdapter(Context c){
+        if(itemView != null && groupView != null){
+            return new AccordionListAdapter(this, c);
+        }
+        else{
+            Log.Error("No item view or group view specified! Please make sure to initialize these via SetViewToAppear and SetGroupViewToAppear");
+        }
 
-            }
-
-            @Override
-            public int getGroupCount() {
-                return 0;
-            }
-
-            @Override
-            public int getChildrenCount(int groupPosition) {
-                return 0;
-            }
-
-            @Override
-            public Object getGroup(int groupPosition) {
-                return null;
-            }
-
-            @Override
-            public Object getChild(int groupPosition, int childPosition) {
-                return null;
-            }
-
-            @Override
-            public long getGroupId(int groupPosition) {
-                return 0;
-            }
-
-            @Override
-            public long getChildId(int groupPosition, int childPosition) {
-                return 0;
-            }
-
-            @Override
-            public boolean hasStableIds() {
-                return false;
-            }
-
-            @Override
-            public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-                return null;
-            }
-
-            @Override
-            public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-                return null;
-            }
-
-            @Override
-            public boolean isChildSelectable(int groupPosition, int childPosition) {
-                return false;
-            }
-
-            @Override
-            public boolean areAllItemsEnabled() {
-                return false;
-            }
-
-            @Override
-            public boolean isEmpty() {
-                return false;
-            }
-
-            @Override
-            public void onGroupExpanded(int groupPosition) {
-
-            }
-
-            @Override
-            public void onGroupCollapsed(int groupPosition) {
-
-            }
-
-            @Override
-            public long getCombinedChildId(long groupId, long childId) {
-                return 0;
-            }
-
-            @Override
-            public long getCombinedGroupId(long groupId) {
-                return 0;
-            }
-        };
+        return null;
     }
 
 
