@@ -36,4 +36,9 @@ public class WUBaseActivity extends Activity {
 
         return false;
     }
+
+    protected void runThread(Runnable run){
+        Thread thread = new Thread(run);
+        thread.start();
+    }
 }

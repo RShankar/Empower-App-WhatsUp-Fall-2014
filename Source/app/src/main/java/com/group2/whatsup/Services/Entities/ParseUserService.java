@@ -3,6 +3,7 @@ package com.group2.whatsup.Services.Entities;
 import com.group2.whatsup.Debug.Log;
 import com.group2.whatsup.Entities.Authentication.User;
 import com.group2.whatsup.ServiceContracts.Entities.IUserService;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
