@@ -23,7 +23,7 @@ import android.view.MenuItem;
 
 public class EventList extends WUBaseActivity {
     private ExpandableListView expListView;
-    private AccordionList<String> laptopsReplacement;
+    private AccordionList<String> stringExample;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,16 +34,16 @@ public class EventList extends WUBaseActivity {
     protected void initializeViewControls() {
         super.initializeViewControls();
         expListView = (ExpandableListView) findViewById(R.id.expandableListView);
-        laptopsReplacement = new AccordionList<String>();
+        stringExample = new AccordionList<String>();
     }
 
     @Override
     protected void setViewTheme() {
         super.setViewTheme();
 
-        AccordionListItem<String> comm = laptopsReplacement.AddSection("Community");
-        AccordionListItem<String> rec = laptopsReplacement.AddSection("Recreation");
-        AccordionListItem<String> sch = laptopsReplacement.AddSection("School");
+        AccordionListItem<String> comm = stringExample.AddSection("Community");
+        AccordionListItem<String> rec = stringExample.AddSection("Recreation");
+        AccordionListItem<String> sch = stringExample.AddSection("School");
 
         comm.AddItem("Test1a");
         comm.AddItem("Test1b");
@@ -55,7 +55,7 @@ public class EventList extends WUBaseActivity {
         sch.AddItem("Test3b");
 
         //region Action On Click
-        laptopsReplacement.SetActionOnClick(new IAccordionItemSelected<String>() {
+        stringExample.SetActionOnClick(new IAccordionItemSelected<String>() {
             @Override
             public void ItemSelected(String selectedItem) {
                 ToastManager.Instance().SendMessage(selectedItem, true);
@@ -64,7 +64,7 @@ public class EventList extends WUBaseActivity {
         //endregion
 
         //region Group View
-        laptopsReplacement.SetGroupViewToAppear(new IAccordionGroupView<String>() {
+        stringExample.SetGroupViewToAppear(new IAccordionGroupView<String>() {
             @Override
             public View viewToAppear(AccordionListItem<String> item, View convertView) {
                 if (convertView == null) {
@@ -79,7 +79,7 @@ public class EventList extends WUBaseActivity {
         //endregion
 
         //region Item View
-        laptopsReplacement.SetViewToAppear(new IAccordionItemView<String>() {
+        stringExample.SetViewToAppear(new IAccordionItemView<String>() {
             @Override
             public View viewToDisplay(String item, View convertView) {
 
@@ -97,7 +97,7 @@ public class EventList extends WUBaseActivity {
         });
         //endregion
 
-        laptopsReplacement.InitializeExpandableListView(expListView);
+        stringExample.InitializeExpandableListView(expListView);
     }
 
 
