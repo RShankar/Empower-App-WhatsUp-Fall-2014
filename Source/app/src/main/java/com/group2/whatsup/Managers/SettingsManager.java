@@ -13,7 +13,7 @@ public class SettingsManager extends BaseManager {
     static final String PRIMARY_COLOR_DEFAULT_VALUE = "#d23660";
 
     static final String DISTANCE_PREF_KEY = "DISTANCE_PREF";
-    static final int DISTANCE_PREF_DEFAULT_VALUE = 5;
+    static final int DISTANCE_PREF_DEFAULT_VALUE = 30;
 
     //region Singleton Stuff
     private static SettingsManager _instance;

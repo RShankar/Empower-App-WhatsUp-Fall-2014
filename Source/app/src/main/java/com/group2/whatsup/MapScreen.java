@@ -2,11 +2,21 @@ package com.group2.whatsup;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ExpandableListView;
+import android.widget.TextView;
 
+import com.group2.whatsup.Controls.Accordion.AccordionList;
+import com.group2.whatsup.Controls.Accordion.AccordionListItem;
+import com.group2.whatsup.Controls.Accordion.IAccordionGroupView;
+import com.group2.whatsup.Controls.Accordion.IAccordionItemSelected;
+import com.group2.whatsup.Controls.Accordion.IAccordionItemView;
 import com.group2.whatsup.Debug.FakeStuff;
 import com.group2.whatsup.Debug.Log;
 import com.group2.whatsup.Entities.Event;
@@ -24,8 +34,11 @@ import java.util.ArrayList;
 
 
 public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener {
+    private final static int DEFAULT_ZOOMIN_LEVEL = 15;
     private GoogleMap _googleMap;
-    ArrayList<Event> list = new ArrayList<Event>();
+    ArrayList<Event> _eventsList = null;
+    AccordionList<Event> _eventsAccordion = null;
+    ExpandableListView _expListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +51,64 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
 
     protected void initializeViewControls(){
         _googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+        _expListView = (ExpandableListView) findViewById(R.id.map_listView);
     }
 
     protected void setViewTheme(){
         mapInit();
+    }
+
+    private void accordionInit(){
+        _eventsAccordion = new AccordionList<Event>();
+        _eventsAccordion.CreateFromListAndSectionSpecification(_eventsList, "get_category_name");
+
+        //region Action On Click
+        _eventsAccordion.SetActionOnClick(new IAccordionItemSelected<Event>() {
+            @Override
+            public void ItemSelected(Event selectedItem) {
+                LatLng coordinate = selectedItem.get_location().get_LatLng();
+                CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(coordinate, DEFAULT_ZOOMIN_LEVEL);
+                _googleMap.animateCamera(yourLocation);
+                ToastManager.Instance().SendMessage(selectedItem.get_title() + " clicked, zooming to location.", false);
+            }
+        });
+        //endregion
+
+        //region Group View
+        _eventsAccordion.SetGroupViewToAppear(new IAccordionGroupView<Event>() {
+            @Override
+            public View viewToAppear(AccordionListItem<Event> item, View convertView) {
+                if (convertView == null) {
+                    convertView = getLayoutInflater().inflate(R.layout.event_group, null);
+                }
+                TextView txt = (TextView) convertView.findViewById(R.id.group);
+                txt.setTypeface(null, Typeface.BOLD);
+                txt.setText(item.GetLabel());
+                return convertView;
+            }
+        });
+        //endregion
+
+        //region Item View
+        _eventsAccordion.SetViewToAppear(new IAccordionItemView<Event>() {
+            @Override
+            public View viewToDisplay(Event item, View convertView) {
+
+                LayoutInflater inflater = getLayoutInflater();
+
+                if (convertView == null) {
+                    convertView = inflater.inflate(R.layout.event_child, null);
+                }
+
+                TextView txt = (TextView) convertView.findViewById(R.id.child);
+                txt.setText(item.get_title());
+
+                return convertView;
+            }
+        });
+        //endregion
+
+        _eventsAccordion.InitializeExpandableListView(_expListView);
     }
 
 
@@ -52,15 +119,8 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
 
             @Override
             public void run() {
-
-                //do fake stuff
-                list = FakeStuff.CreateFakeEvents(GPSManager.Instance());
-                for (Event event: list) {
-                    EventManager.Instance().Save(event);
-                }
-                // end of fake stuff
-
-
+                addEventMarkers();
+                accordionInit();
 
                 LatLng current_location = new LatLng(
                         GPSManager.Instance().CurrentLocation().get_latitude(),
@@ -71,8 +131,6 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
                 _googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current_location, 13));
 
                 _googleMap.addMarker(new MarkerOptions().title("You are here").snippet("Hopefully").position(current_location));
-
-                addEventMarkers();
             }
         };
 
@@ -88,12 +146,12 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
     }
 
     private void addEventMarkers() {
-        ArrayList<Event> _eventsList = EventManager.Instance().FindEventsNearLastKnownLocation();
+        _eventsList = EventManager.Instance().FindEventsNearLastKnownLocation();
 
-        // this is just temporary until the event manager is working
-        // ******######*****#######
-        for (Event event: list)  // shouldn't be using list
+        Log.Info("Found {0} Events!", _eventsList.size());
+        for (Event event: _eventsList)
         {
+            Log.Info("Adding event with title: {0}", event.get_title());
             _googleMap.addMarker(new MarkerOptions()
                             .title(event.get_title())
                             .snippet(event.get_description())
@@ -103,19 +161,6 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
 
             );
         }
-
-        /*  This doesn't work yet because I can't get parse to save my list of events.
-        for (Event event: _eventsList)
-        {
-            _googleMap.addMarker(new MarkerOptions()
-                            .title(event.get_title())
-                            .snippet(event.get_description())
-                            .position(event.get_location_LatLng())
-                            //.icon()
-                            .draggable(false)
-            );
-        }
-        */
     }
 
     @Override
