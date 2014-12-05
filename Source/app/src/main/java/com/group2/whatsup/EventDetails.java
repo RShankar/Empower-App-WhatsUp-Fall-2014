@@ -7,9 +7,11 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.group2.whatsup.Debug.FakeStuff;
+import com.group2.whatsup.Debug.Log;
 import com.group2.whatsup.Entities.Event;
 import com.group2.whatsup.Entities.Location.Address;
 import com.group2.whatsup.Interop.WUBaseActivity;
+import com.group2.whatsup.Managers.Entities.EventManager;
 import com.group2.whatsup.Managers.GPSManager;
 import com.group2.whatsup.Managers.SettingsManager;
 import com.group2.whatsup.Managers.ToastManager;
@@ -37,7 +39,6 @@ public class EventDetails extends WUBaseActivity {
             if(possContext != null) _context = (Event) possContext;
         }
         super.onCreate(savedInstanceState, R.layout.activity_event_details);
-        retrieveEvent();
         setViewContent();
     }
 
@@ -53,6 +54,8 @@ public class EventDetails extends WUBaseActivity {
     }
 
     private void setViewContent() {
+        retrieveEvent();  // get event ID from the map marker clicked
+
         _eventTitle.setText(_context.get_title());
         _amountAttendees.setText(Integer.toString(_context.get_attendeesCount()));
         _time.setText(_context.get_startTime().toString());
@@ -62,17 +65,12 @@ public class EventDetails extends WUBaseActivity {
         _website.setText(_context.get_website());
     }
 
-
+    // get event ID from the marker that was clicked.
     private void retrieveEvent() {
         Intent i = getIntent();
-        ToastManager.Instance().SendMessage(i.getStringExtra("event_title"), true);
-        ToastManager.Instance().SendMessage(i.getStringExtra("event_ID"), true);
-
-        // get the event based on its ID or title
-
-        // do some fake stuff
-        ArrayList<Event> _fakeList = FakeStuff.CreateFakeEvents(GPSManager.Instance());
-        _context = _fakeList.get(0);
+        Log.Info(i.getStringExtra("event_title"));
+        Log.Info(i.getStringExtra("event_ID"));
+        _context = EventManager.Instance().GetEvent(i.getStringExtra("event_ID"));
     }
 
     // pull out later?

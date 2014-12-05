@@ -10,6 +10,7 @@ import android.widget.Button;
 import com.group2.whatsup.Debug.FakeStuff;
 import com.group2.whatsup.Debug.Log;
 import com.group2.whatsup.Entities.Event;
+import com.group2.whatsup.Entities.EventCategory;
 import com.group2.whatsup.Entities.Location.LatLon;
 import com.group2.whatsup.Interop.WUBaseActivity;
 
@@ -30,14 +31,12 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.activity_map_screen);
-        _googleMap.setOnMarkerClickListener(this);
-        _googleMap.setOnMapClickListener(this);
-
-
     }
 
     protected void initializeViewControls(){
         _googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+        _googleMap.setOnMarkerClickListener(this);
+        _googleMap.setOnMapClickListener(this);
     }
 
     protected void setViewTheme(){
@@ -92,6 +91,7 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
 
         // this is just temporary until the event manager is working
         // ******######*****#######
+        /*
         for (Event event: list)  // shouldn't be using list
         {
             _googleMap.addMarker(new MarkerOptions()
@@ -103,19 +103,26 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
 
             );
         }
-
-        /*  This doesn't work yet because I can't get parse to save my list of events.
+        */
+        /*  This doesn't work yet because I can't get parse to save my list of events. */
         for (Event event: _eventsList)
         {
-            _googleMap.addMarker(new MarkerOptions()
+            Marker m = _googleMap.addMarker(new MarkerOptions()
                             .title(event.get_title())
-                            .snippet(event.get_description())
+                            .snippet(event.get_entityId())
                             .position(event.get_location_LatLng())
-                            //.icon()
                             .draggable(false)
             );
+
+            if (event.get_category() == EventCategory.Fitness)
+                m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.fitness));
+            else if (event.get_category() == EventCategory.Scholastic)
+                m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.schoolastic));
+            else if (event.get_category() == EventCategory.Sports)
+                m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.sports));
+            else if (event.get_category() == EventCategory.Volunteering)
+                m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.volunteer));
         }
-        */
     }
 
     @Override
@@ -128,7 +135,7 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
         }
         else
         {
-            changeActivity(EventDetails.class);
+            changeActivity(EventManager.Instance().GetEvent(marker.getSnippet()), EventDetails.class);
         }
         return true;
     }
