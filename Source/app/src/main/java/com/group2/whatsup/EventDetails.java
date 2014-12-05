@@ -6,17 +6,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.group2.whatsup.Debug.FakeStuff;
 import com.group2.whatsup.Debug.Log;
 import com.group2.whatsup.Entities.Event;
 import com.group2.whatsup.Entities.Location.Address;
 import com.group2.whatsup.Interop.WUBaseActivity;
 import com.group2.whatsup.Managers.Entities.EventManager;
-import com.group2.whatsup.Managers.GPSManager;
-import com.group2.whatsup.Managers.SettingsManager;
-import com.group2.whatsup.Managers.ToastManager;
-
-import java.util.ArrayList;
 
 
 public class EventDetails extends WUBaseActivity {
@@ -27,9 +21,14 @@ public class EventDetails extends WUBaseActivity {
 
     private TextView _eventTitle;
     private TextView _amountAttendees;
-    private TextView _time;
-    private TextView _address;
-    private TextView _telephone;
+    private TextView _timeStart;
+    private TextView _timeEnd;
+    private TextView _stl1;
+    private TextView _stl2;
+    private TextView _city;
+    private TextView _state;
+    private TextView _zip;
+    private TextView _description;
     private TextView _website;
 
     @Override
@@ -47,9 +46,14 @@ public class EventDetails extends WUBaseActivity {
         super.initializeViewControls();
         _eventTitle = (TextView) findViewById(R.id.eventTitle);
         _amountAttendees = (TextView) findViewById(R.id.amountAttendees);
-        _time = (TextView) findViewById(R.id.time);
-        _address = (TextView) findViewById(R.id.address);
-        _telephone = (TextView) findViewById(R.id.telephone);
+        _timeStart = (TextView) findViewById(R.id.time);
+        _timeEnd = (TextView) findViewById(R.id.timeEnd);
+        _stl1 = (TextView) findViewById(R.id.stl1);
+        _stl2 = (TextView) findViewById(R.id.stl2);
+        _city = (TextView) findViewById(R.id.city);
+        _state = (TextView) findViewById(R.id.state);
+        _zip = (TextView) findViewById(R.id.zip);
+        _description = (TextView) findViewById(R.id.description);
         _website = (TextView) findViewById(R.id.website);
     }
 
@@ -58,11 +62,17 @@ public class EventDetails extends WUBaseActivity {
 
         _eventTitle.setText(_context.get_title());
         _amountAttendees.setText(Integer.toString(_context.get_attendeesCount()));
-        _time.setText(_context.get_startTime().toString());
-        Address a = _context.get_address();
-        _address.setText(a.StreetLine1);
-        //_telephone.setText(_context.get_);
+        _timeStart.setText(_context.get_startTime().toString());
+        _timeEnd.setText(_context.get_endTime().toString());
+        _description.setText(_context.get_description());
         _website.setText(_context.get_website());
+
+        Address a = _context.get_address();
+        _stl2.setText(a.StreetLine2);
+        _stl1.setText(a.StreetLine1);
+        _city.setText(a.City + ",");
+        _state.setText(a.State);
+        _zip.setText(a.PostalCode);
     }
 
     // get event ID from the marker that was clicked.

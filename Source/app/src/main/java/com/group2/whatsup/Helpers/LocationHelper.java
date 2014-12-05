@@ -2,6 +2,7 @@ package com.group2.whatsup.Helpers;
 
 import android.location.Geocoder;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.group2.whatsup.Debug.Log;
 import com.group2.whatsup.Entities.Location.Address;
 import com.group2.whatsup.Entities.Location.LatLon;
@@ -37,4 +38,6 @@ public class LocationHelper {
 
         return result;
     }
+
+
 }
