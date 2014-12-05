@@ -127,11 +127,9 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
-        ToastManager.Instance().SendMessage("Clicked", true);
-        ToastManager.Instance().SendMessage(marker.getId(), true);
         Log.Info(marker.getId());
         if (marker.getId().equals("m0")) {
-            changeActivity(EventAddEdit.class);
+            changeActivity(marker.getPosition(), EventAddEdit.class);
         }
         else
         {
@@ -142,8 +140,7 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
 
     @Override
     public void onMapClick(LatLng latLng) {
-        ToastManager.Instance().SendMessage(latLng.toString(), true);
-        changeActivity(EventAddEdit.class);
+        changeActivity(latLng, EventAddEdit.class);
     }
 
     @Override
