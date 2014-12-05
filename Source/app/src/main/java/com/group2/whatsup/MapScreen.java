@@ -12,6 +12,7 @@ import com.group2.whatsup.Debug.Log;
 import com.group2.whatsup.Entities.Event;
 import com.group2.whatsup.Entities.EventCategory;
 import com.group2.whatsup.Entities.Location.LatLon;
+import com.group2.whatsup.Helpers.IDHelper;
 import com.group2.whatsup.Interop.WUBaseActivity;
 
 
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener {
     private GoogleMap _googleMap;
     ArrayList<Event> list = new ArrayList<Event>();
+    IDHelper _id_helper = new IDHelper();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,39 +45,21 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
         mapInit();
     }
 
-
     private void mapInit() {
-
-
         Runnable whenDone = new Runnable(){
 
             @Override
             public void run() {
-
-                //do fake stuff
-                list = FakeStuff.CreateFakeEvents(GPSManager.Instance());
-                for (Event event: list) {
-                    EventManager.Instance().Save(event);
-                }
-                // end of fake stuff
-
-
-
                 LatLng current_location = new LatLng(
                         GPSManager.Instance().CurrentLocation().get_latitude(),
                         GPSManager.Instance().CurrentLocation().get_longitude()
                 );
-
                 _googleMap.setMyLocationEnabled(true);
                 _googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current_location, 13));
-
                 _googleMap.addMarker(new MarkerOptions().title("You are here").snippet("Hopefully").position(current_location));
-
                 addEventMarkers();
             }
         };
-
-
         if(GPSManager.Instance().HasLocation()){
             whenDone.run();
         }
@@ -89,30 +73,16 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
     private void addEventMarkers() {
         ArrayList<Event> _eventsList = EventManager.Instance().FindEventsNearLastKnownLocation();
 
-        // this is just temporary until the event manager is working
-        // ******######*****#######
-        /*
-        for (Event event: list)  // shouldn't be using list
-        {
-            _googleMap.addMarker(new MarkerOptions()
-                            .title(event.get_title())
-                            .snippet(event.get_description())
-                            .position(event.get_location_LatLng())
-                                    //.icon()
-                            .draggable(false)
-
-            );
-        }
-        */
-        /*  This doesn't work yet because I can't get parse to save my list of events. */
         for (Event event: _eventsList)
         {
             Marker m = _googleMap.addMarker(new MarkerOptions()
                             .title(event.get_title())
-                            .snippet(event.get_entityId())
+                            .snippet(event.get_description())
                             .position(event.get_location_LatLng())
                             .draggable(false)
             );
+
+            _id_helper.pushPair(m.getId(), event.get_entityId());
 
             if (event.get_category() == EventCategory.Fitness)
                 m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.fitness));
@@ -133,7 +103,8 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
         }
         else
         {
-            changeActivity(EventManager.Instance().GetEvent(marker.getSnippet()), EventDetails.class);
+            // use helper hashmap to return an ID so the event manager can return the event
+            changeActivity(EventManager.Instance().GetEvent(_id_helper.getID(marker.getId())), EventDetails.class);
         }
         return true;
     }

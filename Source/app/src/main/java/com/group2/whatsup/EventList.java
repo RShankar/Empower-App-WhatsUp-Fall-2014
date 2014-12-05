@@ -10,6 +10,7 @@ import com.group2.whatsup.Entities.Event;
 import com.group2.whatsup.Entities.EventCategory;
 import com.group2.whatsup.Interop.WUBaseActivity;
 import com.group2.whatsup.Managers.Entities.EventManager;
+import com.group2.whatsup.Managers.GPSManager;
 import com.group2.whatsup.Managers.ToastManager;
 
 import android.graphics.Typeface;
@@ -46,25 +47,31 @@ public class EventList extends WUBaseActivity {
     protected void setViewTheme() {
         super.setViewTheme();
 
-        retrieveEvents();
-        displayEvents();
+        //Wait for location
+        Runnable whenDone = new Runnable(){
+            @Override
+            public void run() {
+                retrieveEvents();
+                displayEvents();
+                setClickers();
+            }
+        };
+        if(GPSManager.Instance().HasLocation()){
+            whenDone.run();
+        }
+        else{
+            GPSManager.Instance().WhenLocationSet(whenDone);
+        }
+    }
 
+    private  void setClickers()
+    {
         //region Action On Click
         stringExample.SetActionOnClick(new IAccordionItemSelected<String>() {
             @Override
-            public void ItemSelected(String selectedItem) {
+            public void ItemSelected(String selectedItem, String id) {
                 ToastManager.Instance().SendMessage(selectedItem, true);
-                // get event by title
-                // I'm not sure how else to do it; Is there way to pass the ID?
-                // Or use parse to query based on title
-                // Can we make title's be unique?
-                for (Event event: _eventList)
-                {
-                    if (event.get_title().equals(selectedItem)) {
-                        changeActivity(event, EventDetails.class);
-                        break;  // just in case...
-                    }
-                }
+                changeActivity(EventManager.Instance().GetEvent(id), EventDetails.class);
             }
         });
         //endregion
@@ -121,18 +128,15 @@ public class EventList extends WUBaseActivity {
         for (Event event: _eventList)
         {
             if (event.get_category().equals(EventCategory.Fitness))
-                fit.AddItem(event.get_title());
+                fit.AddItem(event.get_title(), event.get_entityId());
             else if (event.get_category().equals(EventCategory.Volunteering))
-                vol.AddItem(event.get_title());
+                vol.AddItem(event.get_title(), event.get_entityId());
             else if (event.get_category().equals(EventCategory.Sports))
-                spo.AddItem(event.get_title());
+                spo.AddItem(event.get_title(), event.get_entityId());
             else if (event.get_category().equals(EventCategory.Scholastic))
-                sch.AddItem(event.get_title());
+                sch.AddItem(event.get_title(), event.get_entityId());
         }
     }
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
