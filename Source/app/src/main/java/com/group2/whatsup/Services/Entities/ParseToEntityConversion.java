@@ -1,7 +1,9 @@
 package com.group2.whatsup.Services.Entities;
 
+import com.group2.whatsup.Debug.Log;
 import com.group2.whatsup.Entities.Authentication.User;
 import com.group2.whatsup.Entities.Event;
+import com.group2.whatsup.Entities.EventCategory;
 import com.group2.whatsup.Entities.Location.Address;
 import com.group2.whatsup.Entities.Location.LatLon;
 import com.parse.ParseGeoPoint;
@@ -44,6 +46,7 @@ public class ParseToEntityConversion {
     public static Event ConvertEvent(ParseObject obj){
         Event e = new Event();
 
+        e.set_entityId(obj.getObjectId());
         e.set_title(obj.getString("title"));
 
         ParseGeoPoint pgp = obj.getParseGeoPoint("location");
@@ -72,14 +75,22 @@ public class ParseToEntityConversion {
         ParseObject ownerObj = (ParseObject) obj.get("owner");
         e.set_owner(ConvertUser(ownerObj));
 
-        ParseObject[] attendees = (ParseObject[]) obj.get("attendees");
-        if(attendees != null){
-            ArrayList<User> attendeesToAdd = new ArrayList<User>();
-            for(ParseObject user : attendees){
-                attendeesToAdd.add(ConvertUser(user));
+        e.set_category(EventCategory.valueOf(obj.getString("category")));
+
+        try{
+            ArrayList<ParseObject> attendees = (ArrayList<ParseObject>) obj.get("attendees");
+            if(attendees != null){
+                ArrayList<User> attendeesToAdd = new ArrayList<User>();
+                for(ParseObject user : attendees){
+                    attendeesToAdd.add(ConvertUser(user));
+                }
+                e.set_attendees(attendeesToAdd);
             }
-            e.set_attendees(attendeesToAdd);
         }
+        catch(Exception ex){
+            Log.Error("Failed to parse attendees: {0}", ex.getMessage());
+        }
+
 
         return e;
     }

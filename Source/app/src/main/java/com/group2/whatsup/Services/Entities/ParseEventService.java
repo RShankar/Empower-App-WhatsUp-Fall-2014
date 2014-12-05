@@ -18,12 +18,19 @@ public class ParseEventService extends BaseParseService implements IEventService
 
     private static Event eventRef = new Event();
 
+    private void includeOwnerAndAttendees(ParseQuery<ParseObject> query){
+        query.include("owner");
+        query.include("attendees");
+    }
+
     @Override
     public ArrayList<Event> RetrieveEventsNear(LatLon loc) {
         ParseQuery<ParseObject> query = queryFor(Event.ENTITY_NAME);
         ParseGeoPoint targetPoint = new ParseGeoPoint(loc.get_latitude(), loc.get_longitude());
-        query.whereWithinMiles("location", targetPoint, 500);
-        //query.whereWithinMiles("location", targetPoint, SettingsManager.Instance().DistancePreference());
+        //query.whereWithinMiles("location", targetPoint, 500);
+        query.whereWithinMiles("location", targetPoint, SettingsManager.Instance().DistancePreference());
+        includeOwnerAndAttendees(query);
+
 
         List<ParseObject> objs = null;
         try{
@@ -38,14 +45,14 @@ public class ParseEventService extends BaseParseService implements IEventService
 
     @Override
     public Event GetById(String id) {
-        ParseObject obj = new ParseObject(Event.ENTITY_NAME);
-        obj.setObjectId(id);
-
-        try{
-            obj.fetch();
-        }
-        catch(Exception ex){
-            Log.Error("Error fetching event by ID: {0}", ex.getMessage());
+        ParseObject obj = null;
+        ParseQuery<ParseObject> query = queryFor(Event.ENTITY_NAME);
+        includeOwnerAndAttendees(query);
+        try {
+            obj = query.get(id);
+        } catch (ParseException e) {
+            Log.Error("Error fetching event by ID: {0}", e.getMessage());
+            return null;
         }
 
         return ParseToEntityConversion.ConvertEvent(obj);
@@ -56,12 +63,12 @@ public class ParseEventService extends BaseParseService implements IEventService
         ParseObject obj = EntityToParseConversion.EventToParseObject(arg);
         final ParseObject objRef = obj;
         final Event eventRef = arg;
-        obj.saveEventually(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                eventRef.set_entityId(objRef.getObjectId());
-            }
-        });
+        try {
+            obj.save();
+            arg.set_entityId(obj.getObjectId());
+        } catch (ParseException e) {
+            Log.Error("Failed saving event. from parse is {0}", e.getMessage());
+        }
         return arg;
     }
 
@@ -69,7 +76,12 @@ public class ParseEventService extends BaseParseService implements IEventService
     public boolean Delete(Event arg) {
         ParseObject obj = new ParseObject(Event.ENTITY_NAME);
         obj.setObjectId(arg.get_entityId());
-        obj.deleteEventually();
+        try {
+            obj.delete();
+        } catch (ParseException e) {
+            Log.Error("Failed to delete event: {0}", e.getMessage());
+            return false;
+        }
         return true;
     }
 }

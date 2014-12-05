@@ -41,17 +41,18 @@ public class EntityToParseConversion {
 
         Address tgtAddress = e.get_address();
         if(tgtAddress != null){
-            obj.put("street1", tgtAddress.StreetLine1);
-            obj.put("street2", tgtAddress.StreetLine2);
-            obj.put("city", tgtAddress.City);
-            obj.put("state", tgtAddress.State);
-            obj.put("postalCode", tgtAddress.PostalCode);
+            if(tgtAddress.StreetLine1 != null) obj.put("street1", tgtAddress.StreetLine1);
+            if(tgtAddress.StreetLine2 != null) obj.put("street2", tgtAddress.StreetLine2);
+            if(tgtAddress.City != null) obj.put("city", tgtAddress.City);
+            if(tgtAddress.State != null) obj.put("state", tgtAddress.State);
+            if(tgtAddress.PostalCode != null) obj.put("postalCode", tgtAddress.PostalCode);
         }
 
         obj.put("description", e.get_description());
         obj.put("website", e.get_website());
         obj.put("startTime", e.get_startTime().getTime());
         obj.put("endTime", e.get_endTime().getTime());
+        obj.put("category", e.get_category_name());
 
         ParseObject userObj = new ParseObject(User.ENTITY_NAME);
         userObj.setObjectId(e.get_owner().get_entityId());

@@ -19,9 +19,17 @@ public class LocationHelper {
 
         try{
             List<android.location.Address> adds = coder.getFromLocationName(address.GeoCoderFriendlyName(), 1);
-            if(adds.size() > 0){
-                result = new LatLon(adds.get(0).getLatitude(), adds.get(0).getLongitude());
+
+            for(int i = 0;i < 10; i++){
+                if(adds.size() > 0){
+                    result = new LatLon(adds.get(0).getLatitude(), adds.get(0).getLongitude());
+                    break;
+                }
+
+                adds = coder.getFromLocationName(address.GeoCoderFriendlyName(), 1);
             }
+
+
         }
         catch(Exception ex){
             Log.Error("Exception occurred attempting to retrieve Latitude & Longitude from address: {0}", ex.getMessage());

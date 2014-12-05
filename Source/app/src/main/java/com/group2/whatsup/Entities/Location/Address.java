@@ -11,12 +11,12 @@ public class Address {
 
     public String GeoCoderFriendlyName(){
         return MessageFormat.format(
-                "{0} {1} {2} {3} {4}",
-                /*00*/StreetLine1,
-                /*01*/StreetLine2,
-                /*02*/City,
-                /*03*/State,
-                /*04*/PostalCode
+                "{0} {1} {2}, {3} {4}",
+                /*00*/StreetLine1 == null ? "" : StreetLine1,
+                /*01*/StreetLine2 == null ? "" : StreetLine2,
+                /*02*/City == null ? "" : City,
+                /*03*/State == null ? "" : State,
+                /*04*/PostalCode == null ? "" : PostalCode
         );
     }
 }

@@ -41,6 +41,10 @@ public class EventManager extends BaseManager {
         return _service.GetById(id);
     }
 
+    public boolean Delete(Event event){
+        return _service.Delete(event);
+    }
+
     public void Save(Event event){
         _service.Save(event);
     }
