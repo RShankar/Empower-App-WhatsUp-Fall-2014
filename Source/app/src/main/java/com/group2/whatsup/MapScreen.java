@@ -27,7 +27,7 @@ import com.group2.whatsup.Managers.ToastManager;
 import java.util.ArrayList;
 
 
-public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener {
+public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClickListener, GoogleMap.OnMapLongClickListener {
     private GoogleMap _googleMap;
     ArrayList<Event> list = new ArrayList<Event>();
     LookupTable<Marker, Event> _lookup = new LookupTable<Marker, Event>();
@@ -40,7 +40,7 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
     protected void initializeViewControls(){
         _googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         _googleMap.setOnMarkerClickListener(this);
-        //_googleMap.setOnMapClickListener(this);
+        _googleMap.setOnMapLongClickListener(this);
     }
 
     protected void setViewTheme(){
@@ -58,7 +58,7 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
                 );
                 _googleMap.setMyLocationEnabled(true);
                 _googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current_location, 13));
-                //_googleMap.addMarker(new MarkerOptions().title("You are here").snippet("Hopefully").position(current_location).icon(BitmapDescriptorFactory.fromResource(R.drawable.plus)));
+                _googleMap.addMarker(new MarkerOptions().title("Add new event!").snippet("You are here").position(current_location).icon(BitmapDescriptorFactory.fromResource(R.drawable.plus)));
                 addEventMarkers();
             }
         };
@@ -111,12 +111,19 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
                 changeActivity(targetedEvent, EventDetails.class);
             }
         }
+        else {
+            // add a new event
+            // user clicked their current location
+            Event new_E = new Event();
+            new_E.set_location(GPSManager.Instance().CurrentLocation());
+            changeActivity(new_E, EventAddEdit.class);
+        }
 
         return targetedEvent == null;
     }
 
     @Override
-    public void onMapClick(LatLng latLng) {
+    public void onMapLongClick(LatLng latLng) {
         changeActivity(latLng, EventAddEdit.class);
     }
 
