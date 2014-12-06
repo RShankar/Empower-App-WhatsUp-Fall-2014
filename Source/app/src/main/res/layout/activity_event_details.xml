@@ -7,7 +7,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.group2.whatsup.EventDetails"
-    android:background="#444">
+    android:background="#444"
+    android:id="@+id/relative_event_layout">
 
     <TextView
         android:layout_width="wrap_content"
@@ -22,116 +23,51 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Amount Attendees"
-        android:id="@+id/amountAttendees"
+        android:text="People attending:  "
+        android:id="@+id/attendeesHead"
         android:layout_below="@+id/eventTitle"
         android:layout_alignStart="@+id/eventTitle" />
 
-    <HorizontalScrollView
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Amount Attendees"
+        android:id="@+id/amountAttendees"
+        android:layout_below="@+id/eventTitle"
+        android:layout_toRightOf="@+id/attendeesHead" />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
         android:id="@+id/horizontalScrollView"
-        android:layout_below="@+id/amountAttendees"
-        android:layout_alignStart="@+id/amountAttendees">
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/amountAttendees">
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_below="@+id/horizontalScrollView"
-            android:layout_toEndOf="@+id/horizontalScrollView"
-            android:layout_marginTop="50dp">
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            >
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView4"
-                android:src="@drawable/ic_launcher" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView3"
-                android:src="@drawable/ic_launcher" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView2"
-                android:layout_above="@+id/navigate"
-                android:layout_alignStart="@+id/navigate"
-                android:layout_marginBottom="68dp"
-                android:src="@drawable/ic_launcher" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView"
-                android:src="@drawable/ic_launcher"
-                android:contentDescription="fun stuff" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView5"
-                android:src="@drawable/ic_launcher" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView6"
-                android:src="@drawable/ic_launcher" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView7"
-                android:src="@drawable/ic_launcher" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView8"
-                android:src="@drawable/ic_launcher" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView9"
-                android:src="@drawable/ic_launcher" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView10"
-                android:src="@drawable/ic_launcher" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView11"
-                android:src="@drawable/ic_launcher" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView12"
-                android:src="@drawable/ic_launcher" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:id="@+id/imageView13"
                 android:src="@drawable/ic_launcher" />
         </LinearLayout>
     </HorizontalScrollView>
 
 
+
+    <!-- Address -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Time"
-        android:id="@+id/timeHead"
+        android:text="Address"
+        android:id="@+id/addressHead"
         android:layout_below="@+id/horizontalScrollView"
         android:layout_alignParentStart="true" />
 
@@ -139,79 +75,59 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="HHAM to HHPM"
-        android:id="@+id/time"
-        android:layout_below="@+id/timeHead"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Address"
-        android:id="@+id/addressHead"
-        android:layout_below="@+id/time"
-        android:layout_alignStart="@+id/time"
-        android:layout_marginTop="44dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="44 st"
-        android:id="@+id/address"
-        android:layout_alignParentStart="true"
+        android:text="stl1"
+        android:id="@+id/stl1"
         android:layout_below="@+id/addressHead"
-        android:layout_alignLeft="@+id/time" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Telephone"
-        android:id="@+id/telephoneHead"
-        android:layout_below="@+id/address"
-        android:layout_alignEnd="@+id/eventTitle"
-        android:layout_marginTop="43dp"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignStart="@+id/addressHead" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="(555) 555-5555"
-        android:id="@+id/telephone"
-        android:layout_below="@+id/telephoneHead"
-        android:layout_alignParentStart="true" />
-    <Button
+        android:text="stl2"
+        android:id="@+id/stl2"
+        android:layout_below="@+id/stl1"
+        android:layout_alignStart="@+id/addressHead" />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Navigate"
-        android:id="@+id/navigate"
-        android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/amountAttendees"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="city"
+        android:id="@+id/city"
+        android:layout_below="@+id/stl2"
+        android:layout_alignStart="@+id/addressHead" />
 
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Bus Routes"
-        android:id="@+id/busRoutes"
-        android:layout_alignBottom="@+id/navigate"
-        android:layout_alignEnd="@+id/horizontalScrollView"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true" />
+        android:layout_marginLeft="10dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="state"
+        android:id="@+id/state"
+        android:layout_toRightOf="@+id/city"
+        android:layout_alignTop="@+id/city" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="zip"
+        android:id="@+id/zip"
+        android:layout_toRightOf="@+id/state"
+        android:layout_alignTop="@+id/city" />
+    <!-- End of Address -->
+
+    <!-- Website -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Web Site"
         android:id="@+id/websiteHead"
-        android:layout_above="@+id/telephone"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true" />
+        android:layout_alignTop="@+id/addressHead"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -220,6 +136,79 @@
         android:text="Go to web"
         android:id="@+id/website"
         android:layout_below="@+id/websiteHead"
+        android:layout_alignEnd="@+id/websiteHead" />
+    <!-- End Website -->
+
+    <!-- Time -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Time"
+        android:id="@+id/timeHead"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/zip"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="HHAM"
+        android:id="@+id/time"
+        android:layout_below="@+id/timeHead"
+        android:layout_alignLeft="@+id/timeHead" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="until HHPM"
+        android:id="@+id/timeEnd"
+        android:layout_below="@+id/time"
+        android:layout_alignLeft="@+id/timeHead" />
+    <!-- End Time -->
+
+    <!-- Description -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Description"
+        android:id="@+id/descriptionHead"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/timeEnd"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="No Description"
+        android:id="@+id/description"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/descriptionHead"
+        android:layout_alignLeft="@+id/navigate" />
+    <!-- End of description -->
+
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Navigate"
+        android:id="@+id/navigate"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bus Routes"
+        android:id="@+id/busRoutes"
+        android:layout_alignBottom="@+id/navigate"
         android:layout_alignParentEnd="true" />
+
+
 
 </RelativeLayout>

@@ -2,25 +2,17 @@ package com.group2.whatsup;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
-import android.widget.ExpandableListView;
-import android.widget.TextView;
 
-import com.group2.whatsup.Controls.Accordion.AccordionList;
-import com.group2.whatsup.Controls.Accordion.AccordionListItem;
-import com.group2.whatsup.Controls.Accordion.IAccordionGroupView;
-import com.group2.whatsup.Controls.Accordion.IAccordionItemSelected;
-import com.group2.whatsup.Controls.Accordion.IAccordionItemView;
 import com.group2.whatsup.Debug.FakeStuff;
 import com.group2.whatsup.Debug.Log;
 import com.group2.whatsup.Entities.Event;
+import com.group2.whatsup.Entities.EventCategory;
 import com.group2.whatsup.Entities.Location.LatLon;
+import com.group2.whatsup.Helpers.IDHelper;
 import com.group2.whatsup.Interop.WUBaseActivity;
 
 
@@ -34,107 +26,40 @@ import java.util.ArrayList;
 
 
 public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener {
-    private final static int DEFAULT_ZOOMIN_LEVEL = 15;
     private GoogleMap _googleMap;
-    ArrayList<Event> _eventsList = null;
-    AccordionList<Event> _eventsAccordion = null;
-    ExpandableListView _expListView;
+    ArrayList<Event> list = new ArrayList<Event>();
+    IDHelper _id_helper = new IDHelper();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.activity_map_screen);
-        _googleMap.setOnMarkerClickListener(this);
-        _googleMap.setOnMapClickListener(this);
-
-
     }
 
     protected void initializeViewControls(){
         _googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-        _expListView = (ExpandableListView) findViewById(R.id.map_listView);
+        _googleMap.setOnMarkerClickListener(this);
+        _googleMap.setOnMapClickListener(this);
     }
 
     protected void setViewTheme(){
         mapInit();
     }
 
-    private void accordionInit(){
-        _eventsAccordion = new AccordionList<Event>();
-        _eventsAccordion.CreateFromListAndSectionSpecification(_eventsList, "get_category_name");
-
-        //region Action On Click
-        _eventsAccordion.SetActionOnClick(new IAccordionItemSelected<Event>() {
-            @Override
-            public void ItemSelected(Event selectedItem) {
-                LatLng coordinate = selectedItem.get_location().get_LatLng();
-                CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(coordinate, DEFAULT_ZOOMIN_LEVEL);
-                _googleMap.animateCamera(yourLocation);
-                ToastManager.Instance().SendMessage(selectedItem.get_title() + " clicked, zooming to location.", false);
-            }
-        });
-        //endregion
-
-        //region Group View
-        _eventsAccordion.SetGroupViewToAppear(new IAccordionGroupView<Event>() {
-            @Override
-            public View viewToAppear(AccordionListItem<Event> item, View convertView) {
-                if (convertView == null) {
-                    convertView = getLayoutInflater().inflate(R.layout.event_group, null);
-                }
-                TextView txt = (TextView) convertView.findViewById(R.id.group);
-                txt.setTypeface(null, Typeface.BOLD);
-                txt.setText(item.GetLabel());
-                return convertView;
-            }
-        });
-        //endregion
-
-        //region Item View
-        _eventsAccordion.SetViewToAppear(new IAccordionItemView<Event>() {
-            @Override
-            public View viewToDisplay(Event item, View convertView) {
-
-                LayoutInflater inflater = getLayoutInflater();
-
-                if (convertView == null) {
-                    convertView = inflater.inflate(R.layout.event_child, null);
-                }
-
-                TextView txt = (TextView) convertView.findViewById(R.id.child);
-                txt.setText(item.get_title());
-
-                return convertView;
-            }
-        });
-        //endregion
-
-        _eventsAccordion.InitializeExpandableListView(_expListView);
-    }
-
-
     private void mapInit() {
-
-
         Runnable whenDone = new Runnable(){
 
             @Override
             public void run() {
-                addEventMarkers();
-                accordionInit();
-
                 LatLng current_location = new LatLng(
                         GPSManager.Instance().CurrentLocation().get_latitude(),
                         GPSManager.Instance().CurrentLocation().get_longitude()
                 );
-
                 _googleMap.setMyLocationEnabled(true);
                 _googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current_location, 13));
-
                 _googleMap.addMarker(new MarkerOptions().title("You are here").snippet("Hopefully").position(current_location));
+                addEventMarkers();
             }
         };
-
-
         if(GPSManager.Instance().HasLocation()){
             whenDone.run();
         }
@@ -146,42 +71,47 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
     }
 
     private void addEventMarkers() {
-        _eventsList = EventManager.Instance().FindEventsNearLastKnownLocation();
+        ArrayList<Event> _eventsList = EventManager.Instance().FindEventsNearLastKnownLocation();
 
-        Log.Info("Found {0} Events!", _eventsList.size());
         for (Event event: _eventsList)
         {
-            Log.Info("Adding event with title: {0}", event.get_title());
-            _googleMap.addMarker(new MarkerOptions()
+            Marker m = _googleMap.addMarker(new MarkerOptions()
                             .title(event.get_title())
                             .snippet(event.get_description())
                             .position(event.get_location_LatLng())
-                                    //.icon()
                             .draggable(false)
-
             );
+
+            _id_helper.pushPair(m.getId(), event.get_entityId());
+
+            if (event.get_category() == EventCategory.Fitness)
+                m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.fitness));
+            else if (event.get_category() == EventCategory.Scholastic)
+                m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.schoolastic));
+            else if (event.get_category() == EventCategory.Sports)
+                m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.sports));
+            else if (event.get_category() == EventCategory.Volunteering)
+                m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.volunteer));
         }
     }
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
-        ToastManager.Instance().SendMessage("Clicked", true);
-        ToastManager.Instance().SendMessage(marker.getId(), true);
         Log.Info(marker.getId());
         if (marker.getId().equals("m0")) {
-            changeActivity(EventAddEdit.class);
+            changeActivity(marker.getPosition(), EventAddEdit.class);
         }
         else
         {
-            changeActivity(EventDetails.class);
+            // use helper hashmap to return an ID so the event manager can return the event
+            changeActivity(EventManager.Instance().GetEvent(_id_helper.getID(marker.getId())), EventDetails.class);
         }
         return true;
     }
 
     @Override
     public void onMapClick(LatLng latLng) {
-        ToastManager.Instance().SendMessage(latLng.toString(), true);
-        changeActivity(EventAddEdit.class);
+        changeActivity(latLng, EventAddEdit.class);
     }
 
     @Override

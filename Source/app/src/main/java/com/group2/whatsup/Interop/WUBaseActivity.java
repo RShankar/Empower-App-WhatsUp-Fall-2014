@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.group2.whatsup.Debug.Log;
 import com.group2.whatsup.Entities.Event;
 import com.group2.whatsup.Managers.Entities.UserManager;
@@ -26,6 +27,16 @@ public class WUBaseActivity extends Activity {
 
     protected void setViewTheme(){
         Log.Info("setViewTheme");
+    }
+
+    public void changeActivity(LatLng LL, Class<?> cls)
+    {
+        Intent intent = new Intent(this, cls);
+        Bundle b = new Bundle();
+        b.putDouble("event_lat", LL.latitude);
+        b.putDouble("event_long", LL.longitude);
+        intent.putExtras(b);
+        startActivity(intent);
     }
 
     public void changeActivity(Event e, Class<?> cls)

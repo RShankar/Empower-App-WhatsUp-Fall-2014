@@ -131,7 +131,9 @@ public class AccordionList<T> extends BaseControl {
             lv.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
                 public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                     T item = GetSection(groupPosition).GetItem(childPosition);
-                    clickAction.ItemSelected(item);
+                    T e_id = GetSection(groupPosition).GetItemId(childPosition);
+                    // return the ID here
+                    clickAction.ItemSelected(item, e_id);
                     return true;
                 }
             });

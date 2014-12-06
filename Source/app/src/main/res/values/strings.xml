@@ -28,5 +28,6 @@
 
     <!-- Menu Stuff -->
     <string name="menu_add_event">+</string>
+    <string name="navigate_button">Navigate</string>
 
 </resources>

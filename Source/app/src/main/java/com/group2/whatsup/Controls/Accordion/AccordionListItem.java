@@ -12,6 +12,12 @@ public class AccordionListItem<T> extends BaseControl {
         items = new ArrayList<AccordionListItemChild<T>>();
     }
 
+    public void AddItem(T item, T id){
+        AccordionListItemChild<T> addContainer = new AccordionListItemChild<T>();
+        addContainer.SetData(item, id);
+        items.add(addContainer);
+    }
+
     public void AddItem(T item){
         AccordionListItemChild<T> addContainer = new AccordionListItemChild<T>();
         addContainer.SetData(item);
@@ -26,9 +32,18 @@ public class AccordionListItem<T> extends BaseControl {
         }
     }
 
+    // this might only be for displaying the stuff.
     public T GetItem(int index){
         if(items.size() > index){
             return items.get(index).GetData();
+        }
+
+        return null;
+    }
+
+    public T GetItemId(int index){
+        if(items.size() > index){
+            return items.get(index).GetId();
         }
 
         return null;
