@@ -20,6 +20,7 @@ import com.group2.whatsup.Interop.WUBaseActivity;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 import com.group2.whatsup.Managers.Entities.EventManager;
+import com.group2.whatsup.Managers.Entities.UserManager;
 import com.group2.whatsup.Managers.GPSManager;
 import com.group2.whatsup.Managers.ToastManager;
 
@@ -39,7 +40,7 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
     protected void initializeViewControls(){
         _googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         _googleMap.setOnMarkerClickListener(this);
-        _googleMap.setOnMapClickListener(this);
+        //_googleMap.setOnMapClickListener(this);
     }
 
     protected void setViewTheme(){
@@ -57,7 +58,7 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
                 );
                 _googleMap.setMyLocationEnabled(true);
                 _googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current_location, 13));
-                _googleMap.addMarker(new MarkerOptions().title("You are here").snippet("Hopefully").position(current_location));
+                //_googleMap.addMarker(new MarkerOptions().title("You are here").snippet("Hopefully").position(current_location));
                 addEventMarkers();
             }
         };
@@ -97,17 +98,21 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
-        Log.Info(marker.getId());
-        if (marker.getId().equals("m0")) {
-            changeActivity(marker.getPosition(), EventAddEdit.class);
+        Log.Info("Marker ID Selected: {0}", marker.getId());
+        Event targetedEvent = _lookup.GetVal(marker);
+
+        if(targetedEvent != null){
+            if(targetedEvent.get_owner().get_entityId().equals(UserManager.Instance().GetActiveUser().get_entityId())){
+                Log.Info("Owner is the current user. Switching to add/edit.");
+                changeActivity(targetedEvent, EventAddEdit.class);
+            }
+            else{
+                Log.Info("Owner is not the current user. Switching to details.");
+                changeActivity(targetedEvent, EventDetails.class);
+            }
         }
-        else
-        {
-            // use helper hashmap to return an ID so the event manager can return the event
-            Event targetedEvent = _lookup.GetVal(marker);
-            changeActivity(targetedEvent, EventDetails.class);
-        }
-        return true;
+
+        return targetedEvent == null;
     }
 
     @Override

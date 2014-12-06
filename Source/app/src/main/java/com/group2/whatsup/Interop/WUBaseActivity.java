@@ -13,6 +13,9 @@ import com.group2.whatsup.R;
 
 public class WUBaseActivity extends Activity {
 
+    protected final static String BUNDLE_EVENT_ID_KEY = "event_ID";
+    protected final static String BUNDLE_EVENT_TITLE_KEY = "event_title";
+
     protected void onCreate(Bundle savedInstanceState, int viewId){
         super.onCreate(savedInstanceState);
         Log.Info("onCreate");
@@ -42,8 +45,10 @@ public class WUBaseActivity extends Activity {
     public void changeActivity(Event e, Class<?> cls)
     {
         Intent intent = new Intent(this, cls);
-        intent.putExtra("event_title", e.get_title());
-        intent.putExtra("event_ID", e.get_entityId());
+        if(e != null){
+            intent.putExtra(BUNDLE_EVENT_TITLE_KEY, e.get_title());
+            intent.putExtra(BUNDLE_EVENT_ID_KEY, e.get_entityId());
+        }
         startActivity(intent);
     }
 
