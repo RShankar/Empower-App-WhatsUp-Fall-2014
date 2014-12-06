@@ -63,7 +63,7 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
                 );
                 _googleMap.setMyLocationEnabled(true);
                 _googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current_location, 13));
-                //_googleMap.addMarker(new MarkerOptions().title("You are here").snippet("Hopefully").position(current_location));
+                _googleMap.addMarker(new MarkerOptions().title("Add new event!").snippet("You are here").position(current_location).icon(BitmapDescriptorFactory.fromResource(R.drawable.plus)));
                 addEventMarkers();
             }
         };
@@ -91,13 +91,13 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
             _lookup.Add(m, event);
 
             if (event.get_category() == EventCategory.Fitness)
-                m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.fitness));
+                m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.fitness_coin));
             else if (event.get_category() == EventCategory.Scholastic)
-                m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.schoolastic));
+                m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.schoolastic_coin));
             else if (event.get_category() == EventCategory.Sports)
-                m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.sports));
+                m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.sports_coin));
             else if (event.get_category() == EventCategory.Volunteering)
-                m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.volunteer));
+                m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.volunteer_coin));
         }
     }
 
@@ -116,8 +116,20 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
                 changeActivity(targetedEvent, EventDetails.class);
             }
         }
+        else {
+            // add a new event
+            // user clicked their current location
+            Event new_E = new Event();
+            new_E.set_location(GPSManager.Instance().CurrentLocation());
+            changeActivity(new_E, EventAddEdit.class);
+        }
 
         return targetedEvent == null;
+    }
+
+    @Override
+    public void onMapLongClick(LatLng latLng) {
+        changeActivity(latLng, EventAddEdit.class);
     }
 
     @Override
@@ -148,8 +160,4 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
     }
 
 
-    @Override
-    public void onMapLongClick(LatLng latLng) {
-        changeActivity(EventAddEdit.class);
-    }
 }
