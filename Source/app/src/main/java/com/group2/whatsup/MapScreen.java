@@ -13,6 +13,7 @@ import com.group2.whatsup.Entities.Event;
 import com.group2.whatsup.Entities.EventCategory;
 import com.group2.whatsup.Entities.Location.LatLon;
 import com.group2.whatsup.Helpers.IDHelper;
+import com.group2.whatsup.Helpers.LookupTable;
 import com.group2.whatsup.Interop.WUBaseActivity;
 
 
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener {
     private GoogleMap _googleMap;
     ArrayList<Event> list = new ArrayList<Event>();
-    IDHelper _id_helper = new IDHelper();
+    LookupTable<Marker, Event> _lookup = new LookupTable<Marker, Event>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +82,7 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
                             .position(event.get_location_LatLng())
                             .draggable(false)
             );
-
-            _id_helper.pushPair(m.getId(), event.get_entityId());
+            _lookup.Add(m, event);
 
             if (event.get_category() == EventCategory.Fitness)
                 m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.fitness));
@@ -104,7 +104,8 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
         else
         {
             // use helper hashmap to return an ID so the event manager can return the event
-            changeActivity(EventManager.Instance().GetEvent(_id_helper.getID(marker.getId())), EventDetails.class);
+            Event targetedEvent = _lookup.GetVal(marker);
+            changeActivity(targetedEvent, EventDetails.class);
         }
         return true;
     }

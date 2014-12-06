@@ -48,6 +48,7 @@ public class GPSManager extends BaseManager{
         _updateListener = new LocationListener(){
             @Override
             public void onLocationChanged(Location location) {
+                Log.Info("Updating location with Lat & Lon {0}, {1}", location.getLatitude(), location.getLongitude());
                 LatLon newLoc = new LatLon(location.getLatitude(), location.getLongitude());
                 _currentLocation = newLoc;
                 notifyAwaitingCallbacks();
