@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.group2.whatsup.Debug.FakeStuff;
 import com.group2.whatsup.Debug.Log;
@@ -22,12 +23,14 @@ import com.google.android.gms.maps.model.*;
 import com.group2.whatsup.Managers.Entities.EventManager;
 import com.group2.whatsup.Managers.Entities.UserManager;
 import com.group2.whatsup.Managers.GPSManager;
+import com.group2.whatsup.Managers.SettingsManager;
 import com.group2.whatsup.Managers.ToastManager;
 
 import java.util.ArrayList;
 
 
-public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener {
+public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClickListener, GoogleMap.OnMapLongClickListener {
+    private RelativeLayout _background;
     private GoogleMap _googleMap;
     ArrayList<Event> list = new ArrayList<Event>();
     LookupTable<Marker, Event> _lookup = new LookupTable<Marker, Event>();
@@ -38,12 +41,14 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
     }
 
     protected void initializeViewControls(){
+        _background = (RelativeLayout) findViewById(R.id.map_mapBackground);
         _googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         _googleMap.setOnMarkerClickListener(this);
-        //_googleMap.setOnMapClickListener(this);
+        _googleMap.setOnMapLongClickListener(this);
     }
 
     protected void setViewTheme(){
+        _background.setBackgroundColor(SettingsManager.Instance().SecondaryColor());
         mapInit();
     }
 
@@ -116,11 +121,6 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
     }
 
     @Override
-    public void onMapClick(LatLng latLng) {
-        changeActivity(latLng, EventAddEdit.class);
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.map_screen, menu);
@@ -148,4 +148,8 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
     }
 
 
+    @Override
+    public void onMapLongClick(LatLng latLng) {
+        changeActivity(EventAddEdit.class);
+    }
 }

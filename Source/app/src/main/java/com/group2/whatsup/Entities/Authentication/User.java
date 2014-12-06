@@ -1,6 +1,7 @@
 package com.group2.whatsup.Entities.Authentication;
 
 import com.group2.whatsup.Entities.BaseEntity;
+import com.group2.whatsup.Entities.Location.LatLon;
 import com.group2.whatsup.Security.Encoding;
 
 public class User extends BaseEntity {
@@ -71,6 +72,16 @@ public class User extends BaseEntity {
     }
     public void set_emailAddress(String _emailAddress) {
         this._emailAddress = _emailAddress;
+    }
+    //endregion
+
+    //region Last Known Location
+    private LatLon _lastKnownLocation;
+    public LatLon get_lastKnownLocation(){
+        return _lastKnownLocation;
+    }
+    public void set_lastKnownLocation(LatLon _lastKnownLocation){
+        this._lastKnownLocation = _lastKnownLocation;
     }
     //endregion
 

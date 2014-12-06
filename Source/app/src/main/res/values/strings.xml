@@ -13,6 +13,12 @@
     <string name="placeholder_website">Website</string>
     <string name="placeholder_starttime">Start</string>
     <string name="placeholder_endtime">End</string>
+    <string name="placeholder_eventtitle">Title</string>
+    <string name="placeholder_street1">Street Address</string>
+    <string name="placeholder_street2">Apartment, Suite, etc</string>
+    <string name="placeholder_city">City</string>
+    <string name="placeholder_state">State</string>
+    <string name="placeholder_postalcode">Zip</string>
 
     <!-- Button Labels -->
     <string name="label_log_in">Log In</string>

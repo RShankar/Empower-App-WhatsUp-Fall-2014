@@ -27,6 +27,14 @@ public class ParseToEntityConversion {
         u.set_password(obj.getString("passWord"), false);
         u.set_entityId(obj.getObjectId());
 
+        ParseGeoPoint pgp = obj.getParseGeoPoint("lastKnownLocation");
+        if(pgp != null){
+            u.set_lastKnownLocation(
+                    new LatLon(pgp.getLatitude(), pgp.getLongitude())
+            );
+        }
+
+
         return u;
     }
     public static ArrayList<User> ConvertUsers(List<ParseObject> obj){

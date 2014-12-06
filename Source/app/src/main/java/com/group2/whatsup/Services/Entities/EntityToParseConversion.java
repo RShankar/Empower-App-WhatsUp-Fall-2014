@@ -4,6 +4,7 @@ import com.group2.whatsup.Entities.Authentication.User;
 import com.group2.whatsup.Entities.BaseEntity;
 import com.group2.whatsup.Entities.Event;
 import com.group2.whatsup.Entities.Location.Address;
+import com.group2.whatsup.Entities.Location.LatLon;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 
@@ -26,6 +27,12 @@ public class EntityToParseConversion {
         obj.put("emailAddress", u.get_emailAddress());
         obj.put("firstName", u.get_firstName());
         obj.put("lastName", u.get_lastName());
+
+        LatLon lastKnown = u.get_lastKnownLocation();
+        if(lastKnown != null){
+            ParseGeoPoint pgp = new ParseGeoPoint(lastKnown.get_latitude(), lastKnown.get_longitude());
+            obj.put("lastKnownLocation", pgp);
+        }
 
 
         return obj;

@@ -2,7 +2,9 @@ package com.group2.whatsup.Managers.Entities;
 
 import android.content.Context;
 
+import com.group2.whatsup.Debug.Log;
 import com.group2.whatsup.Entities.Authentication.User;
+import com.group2.whatsup.Managers.GPSManager;
 import com.group2.whatsup.ServiceContracts.Entities.IUserService;
 import com.group2.whatsup.Services.Entities.ParseUserService;
 
@@ -41,11 +43,37 @@ public class UserManager {
         return _userService.Save(u);
     }
 
+    public void SaveInThread(final User u){
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Log.Info("Saving user's updated location in a background thread.");
+                _userService.Save(u);
+            }
+        });
+        t.setName("User Save Background Thread");
+        t.run();
+
+    }
+
     public boolean DeleteUser(User u){
         return _userService.Delete(u);
     }
 
-    public void SetActiveUser(User u){
+    public void SetActiveUser(final User u){
+        if(GPSManager.Instance().HasLocation()){
+            u.set_lastKnownLocation(GPSManager.Instance().CurrentLocation());
+            SaveUser(u);
+        }
+        else{
+            GPSManager.Instance().WhenLocationSet(new Runnable() {
+                @Override
+                public void run() {
+                    u.set_lastKnownLocation(GPSManager.Instance().CurrentLocation());
+                    SaveUser(u);
+                }
+            });
+        }
         _user = u;
     }
 
