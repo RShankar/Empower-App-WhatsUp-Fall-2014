@@ -103,6 +103,24 @@ public class Event extends BaseEntity {
     public ArrayList<User> get_attendees(){ return _attendees; }
     public void set_attendees(ArrayList<User> attendees) { _attendees = attendees; }
     public int get_attendeesCount() { return _attendees.size(); }
+    public boolean add_attendee(User u) {
+        if (userExists(u))
+            return false;
+        else
+            _attendees.add(u);
+        return true;
+    }
+    private boolean userExists(User u)
+    {
+        for (User user: _attendees)
+        {
+            if (user.equals(u))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     //endregion
 
     //Event Category

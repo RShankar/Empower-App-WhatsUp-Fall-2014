@@ -4,13 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.group2.whatsup.Debug.Log;
+import com.group2.whatsup.Entities.Authentication.User;
 import com.group2.whatsup.Entities.Event;
 import com.group2.whatsup.Entities.Location.Address;
 import com.group2.whatsup.Interop.WUBaseActivity;
 import com.group2.whatsup.Managers.Entities.EventManager;
+import com.group2.whatsup.Managers.Entities.UserManager;
+import com.group2.whatsup.Managers.ToastManager;
 
 
 public class EventDetails extends WUBaseActivity {
@@ -29,6 +34,7 @@ public class EventDetails extends WUBaseActivity {
     private TextView _zip;
     private TextView _description;
     private TextView _website;
+    private Button   _addUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +59,7 @@ public class EventDetails extends WUBaseActivity {
         _zip = (TextView) findViewById(R.id.zip);
         _description = (TextView) findViewById(R.id.description);
         _website = (TextView) findViewById(R.id.website);
+        _addUser = (Button) findViewById(R.id.addUser);
     }
 
     private void setViewContent() {
@@ -70,7 +77,32 @@ public class EventDetails extends WUBaseActivity {
         _city.setText(a.City + ",");
         _state.setText(a.State);
         _zip.setText(a.PostalCode);
+
+        //_addUser.setOnClickListener(addUser);
+        _addUser.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (!_context.add_attendee(UserManager.Instance().GetActiveUser()))
+                    ToastManager.Instance().SendMessage("You're already attending", true);
+                else {
+                    // let the user know he's been added and update the amount of attendees
+                    ToastManager.Instance().SendMessage("User added to event", true);
+                    _amountAttendees.setText(Integer.toString(_context.get_attendeesCount()));
+                }
+            }
+        });
     }
+
+    /*
+    private View.OnClickListener addUser = new View.OnClickListener() {
+        @Override
+        public void onClick (View v) {
+            User active_user = new User();
+            active_user = UserManager.Instance().GetActiveUser();
+            if (!_context.add_attendee(active_user));
+                //
+        }
+    };
+    */
 
     // get event ID from the marker that was clicked.
     private void retrieveEvent() {

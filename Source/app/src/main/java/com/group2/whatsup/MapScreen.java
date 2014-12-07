@@ -1,13 +1,10 @@
 package com.group2.whatsup;
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -17,12 +14,10 @@ import com.group2.whatsup.Controls.Accordion.AccordionListItem;
 import com.group2.whatsup.Controls.Accordion.IAccordionGroupView;
 import com.group2.whatsup.Controls.Accordion.IAccordionItemSelected;
 import com.group2.whatsup.Controls.Accordion.IAccordionItemView;
-import com.group2.whatsup.Debug.FakeStuff;
 import com.group2.whatsup.Debug.Log;
 import com.group2.whatsup.Entities.Event;
 import com.group2.whatsup.Entities.EventCategory;
 import com.group2.whatsup.Entities.Location.LatLon;
-import com.group2.whatsup.Helpers.IDHelper;
 import com.group2.whatsup.Helpers.LookupTable;
 import com.group2.whatsup.Interop.WUBaseActivity;
 
@@ -33,7 +28,6 @@ import com.group2.whatsup.Managers.Entities.EventManager;
 import com.group2.whatsup.Managers.Entities.UserManager;
 import com.group2.whatsup.Managers.GPSManager;
 import com.group2.whatsup.Managers.SettingsManager;
-import com.group2.whatsup.Managers.ToastManager;
 
 import java.util.ArrayList;
 

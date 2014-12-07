@@ -196,6 +196,14 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Join event"
+        android:id="@+id/addUser"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Bus Routes"
         android:id="@+id/busRoutes"
         android:layout_alignBottom="@+id/navigate"
