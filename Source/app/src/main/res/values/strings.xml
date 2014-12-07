@@ -22,6 +22,9 @@
     <string name="placeholder_description">A short description of what\'s up</string>
     <string name="placeholder_phone">Phone Number</string>
 
+    <!-- Labels -->
+    <string name="label_starttime">Starts At:</string>
+
     <!-- Button Labels -->
     <string name="label_log_in">Log In</string>
     <string name="title_activity_login_screen">Log In</string>
@@ -33,6 +36,9 @@
     <string name="Event">Event</string>
     <string name="title_activity_signup">Sign Up</string>
     <string name="title_activity_event_add_edit">Event Add/Edit</string>
+    <string name="label_change_date">Change Date</string>
+    <string name="label_change_time">Change Time</string>
+    <string name="label_delete">Delete</string>
 
     <!-- Other Labels -->
     <string name="eventaddedit_checkbox_location_current">Use Current Location</string>

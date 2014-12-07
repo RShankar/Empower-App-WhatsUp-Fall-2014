@@ -92,17 +92,6 @@ public class Event extends BaseEntity {
     }
     //endregion
 
-    //region End Time
-    private Date _endTime;
-    public Date get_endTime() {
-        return _endTime;
-    }
-
-    public void set_endTime(Date _endTime) {
-        this._endTime = _endTime;
-    }
-    //endregion
-
     //region Owner
     private User _owner;
     public User get_owner() { return _owner; }
@@ -132,4 +121,25 @@ public class Event extends BaseEntity {
         this._phone = _phone;
     }
     //endregion
+
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof Event){
+            Event other = (Event) o;
+            if(other.get_entityId() != null){
+                return other.get_entityId().equals(get_entityId());
+            }
+        }
+
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode(){
+        if(get_entityId() != null){
+            return get_entityId().hashCode();
+        }
+
+        return super.hashCode();
+    }
 }

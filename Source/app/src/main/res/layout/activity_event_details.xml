@@ -159,14 +159,6 @@
         android:layout_below="@+id/timeHead"
         android:layout_alignLeft="@+id/timeHead" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="until HHPM"
-        android:id="@+id/timeEnd"
-        android:layout_below="@+id/time"
-        android:layout_alignLeft="@+id/timeHead" />
     <!-- End Time -->
 
     <!-- Description -->
@@ -177,7 +169,7 @@
         android:text="Description"
         android:id="@+id/descriptionHead"
         android:layout_marginTop="10dp"
-        android:layout_below="@+id/timeEnd"
+        android:layout_below="@+id/time"
         android:layout_alignParentStart="true" />
 
     <TextView

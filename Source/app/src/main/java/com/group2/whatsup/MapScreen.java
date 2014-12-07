@@ -30,14 +30,43 @@ import java.util.ArrayList;
 
 
 public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClickListener, GoogleMap.OnMapLongClickListener {
+    private static final int DEFAULT_ZOOM_LEVEL = 15;
     private RelativeLayout _background;
     private GoogleMap _googleMap;
     ArrayList<Event> list = new ArrayList<Event>();
     LookupTable<Marker, Event> _lookup = new LookupTable<Marker, Event>();
 
-    @Override
+    private EventManager.IEventManagerChanged _emUpdates = new EventManager.IEventManagerChanged() {
+        @Override
+        public void added(Event e) {
+            Log.Info("Received Event Add Notification: {0}", e.get_title());
+            addEventMarker(e);
+            zoomToEvent(e);
+        }
+
+        @Override
+        public void removed(Event e) {
+            Log.Info("Received Event Delete Notification: {0}", e.get_title());
+            removeEventMarker(e);
+        }
+
+        @Override
+        public void updated(Event e) {
+            Log.Info("Received Event Update Notification: {0}", e.get_title());
+            removeEventMarker(e);
+            addEventMarker(e);
+            zoomToEvent(e);
+        }
+    };
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.activity_map_screen);
+        EventManager.Instance().ReceiveNotifications(_emUpdates);
+    }
+
+    protected void onStop(){
+        super.onStop();
+        EventManager.Instance().RemoveNotifications(_emUpdates);
     }
 
     protected void initializeViewControls(){
@@ -68,8 +97,7 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
                 );
 
                 _googleMap.setMyLocationEnabled(true);
-                _googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current_location, 13));
-                //_googleMap.addMarker(new MarkerOptions().title("Add new event!").snippet("You are here").position(current_location).icon(BitmapDescriptorFactory.fromResource(R.drawable.plus)));
+                _googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current_location, DEFAULT_ZOOM_LEVEL));
                 addEventMarkers(new LatLon(lat, lon));
             }
         };
@@ -86,22 +114,42 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
 
         for (Event event: _eventsList)
         {
-            Marker m = _googleMap.addMarker(new MarkerOptions()
-                            .title(event.get_title())
-                            .snippet(event.get_description())
-                            .position(event.get_location_LatLng())
-                            .draggable(false)
-            );
-            _lookup.Add(m, event);
+            addEventMarker(event);
+        }
+    }
 
-            if (event.get_category() == EventCategory.Fitness)
-                m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.fitness_coin));
-            else if (event.get_category() == EventCategory.Scholastic)
-                m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.schoolastic_coin));
-            else if (event.get_category() == EventCategory.Sports)
-                m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.sports_coin));
-            else if (event.get_category() == EventCategory.Volunteering)
-                m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.volunteer_coin));
+    private void addEventMarker(Event event){
+        Marker m = _googleMap.addMarker(new MarkerOptions()
+                        .title(event.get_title())
+                        .snippet(event.get_description())
+                        .position(event.get_location_LatLng())
+                        .draggable(false)
+        );
+        _lookup.Add(m, event);
+
+        if (event.get_category() == EventCategory.Fitness)
+            m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.fitness_coin));
+        else if (event.get_category() == EventCategory.Scholastic)
+            m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.schoolastic_coin));
+        else if (event.get_category() == EventCategory.Sports)
+            m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.sports_coin));
+        else if (event.get_category() == EventCategory.Volunteering)
+            m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.volunteer_coin));
+    }
+
+    private void removeEventMarker(Event e){
+        Marker m = _lookup.GetKey(e);
+
+        if(m != null){
+            _lookup.RemoveKey(m);
+            m.remove();
+        }
+    }
+
+    private void zoomToEvent(Event e){
+        Marker m = _lookup.GetKey(e);
+        if(m != null){
+            _googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(m.getPosition(), DEFAULT_ZOOM_LEVEL));
         }
     }
 

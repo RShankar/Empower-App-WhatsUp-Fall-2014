@@ -58,7 +58,6 @@ public class EntityToParseConversion {
         obj.put(ParseMap.Event.Description, e.get_description());
         obj.put(ParseMap.Event.Website, e.get_website());
         obj.put(ParseMap.Event.StartTime, e.get_startTime().getTime());
-        obj.put(ParseMap.Event.EndTime, e.get_endTime().getTime());
         obj.put(ParseMap.Event.Category, e.get_category_name());
         obj.put(ParseMap.Event.Phone, e.get_phone());
 

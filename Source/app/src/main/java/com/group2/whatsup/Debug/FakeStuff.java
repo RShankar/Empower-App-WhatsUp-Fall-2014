@@ -38,7 +38,6 @@ public class FakeStuff {
         Date D = new Date();
         D.setTime(System.currentTimeMillis());
         event1.set_startTime(D);
-        event1.set_endTime(D);
         LatLon LL = new LatLon(gps.CurrentLocation().get_latitude() - 0.005,gps.CurrentLocation().get_longitude() - 0.005);
         event1.set_location(LL);
         event1.set_website("www.awesome.com");

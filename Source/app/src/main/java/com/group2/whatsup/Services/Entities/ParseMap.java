@@ -9,7 +9,7 @@ public class ParseMap {
         Description = "description",
         Website = "website",
         StartTime = "startTime",
-        EndTime = "endTime",
+        //EndTime = "endTime",
         Category = "category",
         Owner = "owner",
         Attendees = "attendees"

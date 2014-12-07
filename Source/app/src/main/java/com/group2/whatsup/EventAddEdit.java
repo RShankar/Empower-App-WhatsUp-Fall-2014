@@ -1,5 +1,7 @@
 package com.group2.whatsup;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -8,7 +10,9 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.group2.whatsup.Debug.Log;
 import com.group2.whatsup.Entities.Event;
 import com.group2.whatsup.Entities.EventCategory;
@@ -16,19 +20,27 @@ import com.group2.whatsup.Entities.Location.Address;
 import com.group2.whatsup.Entities.Location.LatLon;
 import com.group2.whatsup.Helpers.LocationHelper;
 import com.group2.whatsup.Helpers.Validate;
-import com.group2.whatsup.Interop.WUBaseActivity;
+import com.group2.whatsup.Interop.WUBaseFragmentActivity;
 import com.group2.whatsup.Managers.Entities.EventManager;
+import com.group2.whatsup.Managers.Entities.UserManager;
 import com.group2.whatsup.Managers.GPSManager;
 import com.group2.whatsup.Managers.ToastManager;
+import com.sleepbot.datetimepicker.time.RadialPickerLayout;
+import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
-public class EventAddEdit extends WUBaseActivity {
+public class EventAddEdit extends WUBaseFragmentActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private Event _context;
     private boolean _editMode;
+    private Date _startDate;
+    private final Calendar _cal = Calendar.getInstance();
+    private Address _oldAddress;
 
     //region Controls
     private EditText _txtTitle;
@@ -39,12 +51,18 @@ public class EventAddEdit extends WUBaseActivity {
     private EditText _txtAddPostalCode;
     private Button _btnSave;
     private Button _btnCancel;
+    private Button _btnDelete;
     private CheckBox _chkUseCurrentLocation;
     private GridLayout _addressContainer;
     private EditText _txtWebsite;
     private EditText _txtDescription;
     private EditText _txtPhone;
     private Spinner _selEventCategory;
+    private TextView _lblDate;
+    private Button _btnChangeDate;
+    private Button _btnChangeTime;
+    private DatePickerDialog _datePicker;
+    private TimePickerDialog _timePicker;
     //endregion
 
 
@@ -69,13 +87,20 @@ public class EventAddEdit extends WUBaseActivity {
         _txtDescription = (EditText) findViewById(R.id.eventaddedit_description);
         _txtPhone = (EditText) findViewById(R.id.eventaddedit_phonenumber);
         _selEventCategory = (Spinner) findViewById(R.id.eventaddedit_categoryselect);
+        _startDate = _cal.getTime();
+        _datePicker = DatePickerDialog.newInstance(this, _cal.get(Calendar.YEAR), _cal.get(Calendar.MONTH), _cal.get(Calendar.DAY_OF_MONTH));
+        _timePicker = TimePickerDialog.newInstance(this, _cal.get(Calendar.HOUR_OF_DAY), _cal.get(Calendar.MINUTE), false, false);
+        _lblDate = (TextView) findViewById(R.id.eventaddedit_starttime);
+        _btnChangeDate = (Button) findViewById(R.id.eventaddedit_changedate);
+        _btnChangeTime = (Button) findViewById(R.id.eventaddedit_changetime);
+        _btnDelete = (Button) findViewById(R.id.eventaddedit_delete);
     }
 
     @Override
     protected void setViewTheme(){
 
         UIUtils.ThemeTextboxes(_txtTitle, _txtAddStreet1, _txtAddStreet2, _txtAddCity, _txtAddState, _txtAddPostalCode, _txtDescription, _txtWebsite, _txtPhone);
-        UIUtils.ThemeButtons(_btnSave, _btnCancel);
+        UIUtils.ThemeButtons(_btnSave, _btnCancel, _btnChangeDate, _btnChangeTime, _btnDelete);
         _chkUseCurrentLocation.setText(R.string.eventaddedit_checkbox_location_current);
 
         //region Spinner Setup
@@ -99,27 +124,80 @@ public class EventAddEdit extends WUBaseActivity {
             }
         });
 
+        _btnChangeDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                _datePicker.show(getSupportFragmentManager(), Log.TAG);
+            }
+        });
+
+        _btnChangeTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                _timePicker.show(getSupportFragmentManager(), Log.TAG);
+            }
+        });
+
+        _btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogInterface.OnClickListener dLog = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch(which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                EventManager.Instance().Delete(_context);
+                                ToastManager.Instance().SendMessage("Event Deleted!", true);
+                                finish();
+                                break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                break;
+                        }
+                    }
+                };
+                AlertDialog.Builder builder = new AlertDialog.Builder(EventAddEdit.this);
+                builder.setMessage("Are you sure you want to delete this event?");
+                builder.setPositiveButton("Yes", dLog);
+                builder.setNegativeButton("No", dLog);
+                builder.show();
+            }
+        });
+
         _chkUseCurrentLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(_chkUseCurrentLocation.isChecked()){
-                    if(GPSManager.Instance().HasLocation()) _context.set_location(GPSManager.Instance().CurrentLocation());
-                    Address ret = LocationHelper.GetAddressFromLatLon(_context.get_location());
-                    _txtAddStreet1.setText(ret.StreetLine1);
-                    _txtAddStreet2.setText(ret.StreetLine2);
-                    _txtAddCity.setText(ret.City);
-                    _txtAddState.setText(ret.State);
-                    _txtAddPostalCode.setText(ret.PostalCode);
+                    if(_context.get_address() != null) _oldAddress = _context.get_address();
+
+                    if(GPSManager.Instance().HasLocation()){
+                        _context.set_location(GPSManager.Instance().CurrentLocation());
+                        Address ret = LocationHelper.GetAddressFromLatLon(_context.get_location());
+                        setAddressFields(ret);
+                    }
+
                     disable(_txtAddStreet1, _txtAddStreet2, _txtAddCity, _txtAddState, _txtAddPostalCode);
                 }
                 else{
+                    if(_oldAddress != null) setAddressFields(_oldAddress);
+                    _oldAddress = null;
                     enable(_txtAddStreet1, _txtAddStreet2, _txtAddCity, _txtAddState, _txtAddPostalCode);
                 }
             }
         });
         //endregion
 
+        updateTimeText();
+
         setupViewMode();
+    }
+
+    private void setAddressFields(Address add){
+        Log.Debug("Setting address fields to {0}", add);
+        _txtAddStreet1.setText(add.StreetLine1);
+        _txtAddStreet2.setText(add.StreetLine2);
+        _txtAddCity.setText(add.City);
+        _txtAddState.setText(add.State);
+        _txtAddPostalCode.setText(add.PostalCode);
     }
 
     //Sets up the view mode, either add or edit.
@@ -196,12 +274,22 @@ public class EventAddEdit extends WUBaseActivity {
         }
     }
 
+    private void removeDeleteButton(){
+        removeViews(_btnDelete);
+        /*
+        _txtTitle.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+        */
+    }
+
     //Add Mode Logic
     private void setupAddMode(){
         _editMode = false;
+        removeDeleteButton();
         setTitle("Add a new Event");
 
-        LatLon locFromLongClick = getLatLonFromBundle();
+        final LatLon locFromLongClick = getLatLonFromBundle();
 
         //Location from the map long click event.
         if(locFromLongClick != null) {
@@ -210,6 +298,21 @@ public class EventAddEdit extends WUBaseActivity {
             _chkUseCurrentLocation.setEnabled(false);
             removeViews(_addressContainer);
             _context.set_location(locFromLongClick);
+
+            //region Update Address from background.
+            runThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.Info("Finding address in separate thread for {0}", locFromLongClick);
+                    final Address loc = LocationHelper.GetAddressFromLatLon(locFromLongClick);
+                    if(loc != null){
+                        Log.Info("Found address: {0}", loc);
+                        setAddressFields(loc);
+                    }
+                    else Log.Info("No address found!");
+                }
+            });
+            //endregion
         }
     }
 
@@ -245,6 +348,8 @@ public class EventAddEdit extends WUBaseActivity {
         retVal.set_website(UIUtils.getText(_txtWebsite));
         retVal.set_phone(UIUtils.getText(_txtPhone));
         retVal.set_category(EventCategory.fromName(_selEventCategory.getSelectedItem().toString()));
+        retVal.set_startTime(_startDate);
+        retVal.set_owner(UserManager.Instance().GetActiveUser());
 
         return retVal;
     }
@@ -273,5 +378,27 @@ public class EventAddEdit extends WUBaseActivity {
 
     private void valMsg(String message){
         ToastManager.Instance().SendMessage(message, true);
+    }
+
+    private void updateTimeText(){
+        _lblDate.setText(_startDate.toString());
+    }
+
+    @Override
+    public void onDateSet(DatePickerDialog datePickerDialog, int i, int i2, int i3) {
+        Log.Debug("i={0}, i2={1}, i3={2}", i, i2, i3);
+        _cal.setTime(_startDate);
+        _cal.set(i, i2, i3);
+        _startDate = _cal.getTime();
+        updateTimeText();
+    }
+
+    @Override
+    public void onTimeSet(RadialPickerLayout radialPickerLayout, int i, int i2) {
+        Log.Debug("i={0}, i2={1}", i, i2);
+        _cal.setTime(_startDate);
+        _cal.set(_cal.get(Calendar.YEAR), _cal.get(Calendar.MONTH), _cal.get(Calendar.DAY_OF_MONTH), i, i2, 0);
+        _startDate = _cal.getTime();
+        updateTimeText();
     }
 }

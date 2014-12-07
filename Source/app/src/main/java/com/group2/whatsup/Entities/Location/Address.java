@@ -19,4 +19,9 @@ public class Address {
                 /*04*/PostalCode == null ? "" : PostalCode
         );
     }
+
+    @Override
+    public String toString(){
+        return GeoCoderFriendlyName();
+    }
 }

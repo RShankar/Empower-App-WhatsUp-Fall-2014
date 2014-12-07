@@ -24,5 +24,7 @@ public class ParseManager extends BaseManager {
     private ParseManager(Context c){
         super(c);
         Parse.initialize(c, APPLICATION_ID, CLIENT_KEY);
+        //This will require a query every. single. time. Brilliant.
+        //Parse.enableLocalDatastore(c);
     }
 }

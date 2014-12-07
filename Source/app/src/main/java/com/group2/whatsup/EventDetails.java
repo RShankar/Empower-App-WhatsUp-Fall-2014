@@ -22,7 +22,6 @@ public class EventDetails extends WUBaseActivity {
     private TextView _eventTitle;
     private TextView _amountAttendees;
     private TextView _timeStart;
-    private TextView _timeEnd;
     private TextView _stl1;
     private TextView _stl2;
     private TextView _city;
@@ -47,7 +46,6 @@ public class EventDetails extends WUBaseActivity {
         _eventTitle = (TextView) findViewById(R.id.eventTitle);
         _amountAttendees = (TextView) findViewById(R.id.amountAttendees);
         _timeStart = (TextView) findViewById(R.id.time);
-        _timeEnd = (TextView) findViewById(R.id.timeEnd);
         _stl1 = (TextView) findViewById(R.id.stl1);
         _stl2 = (TextView) findViewById(R.id.stl2);
         _city = (TextView) findViewById(R.id.city);
@@ -63,7 +61,6 @@ public class EventDetails extends WUBaseActivity {
         _eventTitle.setText(_context.get_title());
         _amountAttendees.setText(Integer.toString(_context.get_attendeesCount()));
         _timeStart.setText(_context.get_startTime().toString());
-        _timeEnd.setText(_context.get_endTime().toString());
         _description.setText(_context.get_description());
         _website.setText(_context.get_website());
 

@@ -22,15 +22,28 @@
             >
 
 
-
-            <EditText
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/eventaddedit_title"
-                android:hint="@string/placeholder_eventtitle"
-                android:layout_row="0"
-                android:inputType="textCapSentences"
-                android:layout_margin="@dimen/eventaddedit_widget_margin" />
+                android:layout_height="fill_parent"
+                android:layout_row="0">
+
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/eventaddedit_title"
+                    android:hint="@string/placeholder_eventtitle"
+                    android:inputType="textCapSentences"
+                    android:layout_margin="@dimen/eventaddedit_widget_margin"
+                    android:layout_weight="0.7" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_delete"
+                    android:id="@+id/eventaddedit_delete"
+                    android:layout_margin="@dimen/eventaddedit_widget_margin" />
+            </LinearLayout>
 
             <CheckBox
                 android:layout_width="wrap_content"
@@ -178,24 +191,58 @@
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_row="5"
+                    android:layout_row="6"
                     android:layout_column="0"
-                    android:id="@+id/eventaddedit_timefields">
+                    android:id="@+id/eventaddedit_timelabels"
+                    android:layout_margin="@dimen/eventaddedit_widget_margin">
 
-                    <DatePicker
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/datePicker"
-                        android:layout_weight="0.5"
-                        style="@android:style/Widget.Holo.DatePicker"
-                        android:spinnersShown="false"
-                        android:calendarViewShown="true" />
+                        android:text="@string/label_starttime"
+                        android:id="@+id/eventaddedit_starttimelabel"
+                        android:layout_column="0"
+                        android:layout_row="5"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                    <TimePicker
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/timePicker"
-                        android:layout_weight="0.5" />
+                        android:text="New Text"
+                        android:id="@+id/eventaddedit_starttime"
+                        android:layout_column="0"
+                        android:layout_row="5"
+                        android:layout_marginLeft="5dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_row="7"
+                    android:layout_column="0"
+                    android:id="@+id/eventaddedit_timebuttons"
+                    android:layout_margin="@dimen/eventaddedit_widget_margin" >
+
+                    <Button
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_change_date"
+                        android:id="@+id/eventaddedit_changedate"
+                        android:layout_weight="0.33" />
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="0.33"></RelativeLayout>
+
+                    <Button
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_change_time"
+                        android:id="@+id/eventaddedit_changetime"
+                        android:layout_weight="0.33" />
 
                 </LinearLayout>
 

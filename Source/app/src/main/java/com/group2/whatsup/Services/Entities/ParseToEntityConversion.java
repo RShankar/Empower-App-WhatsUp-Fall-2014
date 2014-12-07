@@ -75,11 +75,7 @@ public class ParseToEntityConversion {
         Date startTime = new Date();
         startTime.setTime(obj.getLong(ParseMap.Event.StartTime));
 
-        Date endTime = new Date();
-        endTime.setTime(obj.getLong(ParseMap.Event.EndTime));
-
         e.set_startTime(startTime);
-        e.set_endTime(endTime);
 
         ParseObject ownerObj = (ParseObject) obj.get(ParseMap.Event.Owner);
         e.set_owner(ConvertUser(ownerObj));
