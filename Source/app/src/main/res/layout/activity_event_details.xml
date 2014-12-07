@@ -180,35 +180,40 @@
         android:id="@+id/description"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/descriptionHead"
-        android:layout_alignLeft="@+id/navigate" />
+        android:layout_alignLeft="@+id/eventdetails_navigateto" />
     <!-- End of description -->
 
 
-
-    <Button
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Navigate"
-        android:id="@+id/navigate"
+        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:id="@+id/eventdetails_buttoncontainer">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Join event"
-        android:id="@+id/addUser"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Join event"
+            android:id="@+id/eventdetails_joinevent"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="0.5"
+            android:layout_marginLeft="@dimen/eventdetails_button_margin"
+            android:layout_marginRight="@dimen/eventdetails_button_margin" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Bus Routes"
-        android:id="@+id/busRoutes"
-        android:layout_alignBottom="@+id/navigate"
-        android:layout_alignParentEnd="true" />
-
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Navigate"
+            android:id="@+id/eventdetails_navigateto"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_weight="0.5"
+            android:layout_marginLeft="@dimen/eventdetails_button_margin"
+            android:layout_marginRight="@dimen/eventdetails_button_margin" />
+    </LinearLayout>
 
 
 </RelativeLayout>

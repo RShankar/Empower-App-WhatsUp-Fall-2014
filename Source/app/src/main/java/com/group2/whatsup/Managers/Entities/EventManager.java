@@ -2,6 +2,7 @@ package com.group2.whatsup.Managers.Entities;
 
 import android.content.Context;
 
+import com.group2.whatsup.Debug.Log;
 import com.group2.whatsup.Entities.Event;
 import com.group2.whatsup.Entities.Location.LatLon;
 import com.group2.whatsup.Managers.BaseManager;
@@ -60,6 +61,20 @@ public class EventManager extends BaseManager {
         boolean retVal = _service.Delete(event);
         alertListeners(event, EMNotificationType.Remove);
         return retVal;
+    }
+
+    public void SaveInThread(final Event event){
+        boolean isNew = event.get_entityId() == null;
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Log.Info("Saving event in background thread.");
+                _service.Save(event);
+            }
+        });
+        t.setName("Event Save Background Thread");
+        t.run();
+        alertListeners(event, isNew ? EMNotificationType.Add : EMNotificationType.Modify);
     }
 
     public void Save(Event event){

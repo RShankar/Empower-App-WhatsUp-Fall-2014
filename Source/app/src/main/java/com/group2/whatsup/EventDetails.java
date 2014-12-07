@@ -12,9 +12,11 @@ import com.group2.whatsup.Debug.Log;
 import com.group2.whatsup.Entities.Authentication.User;
 import com.group2.whatsup.Entities.Event;
 import com.group2.whatsup.Entities.Location.Address;
+import com.group2.whatsup.Helpers.LocationHelper;
 import com.group2.whatsup.Interop.WUBaseActivity;
 import com.group2.whatsup.Managers.Entities.EventManager;
 import com.group2.whatsup.Managers.Entities.UserManager;
+import com.group2.whatsup.Managers.GPSManager;
 import com.group2.whatsup.Managers.ToastManager;
 
 
@@ -35,6 +37,7 @@ public class EventDetails extends WUBaseActivity {
     private TextView _description;
     private TextView _website;
     private Button   _addUser;
+    private Button   _btnNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +46,6 @@ public class EventDetails extends WUBaseActivity {
             if(possContext != null) _context = (Event) possContext;
         }
         super.onCreate(savedInstanceState, R.layout.activity_event_details);
-        setViewContent();
     }
 
     @Override
@@ -59,11 +61,19 @@ public class EventDetails extends WUBaseActivity {
         _zip = (TextView) findViewById(R.id.zip);
         _description = (TextView) findViewById(R.id.description);
         _website = (TextView) findViewById(R.id.website);
-        _addUser = (Button) findViewById(R.id.addUser);
+        _addUser = (Button) findViewById(R.id.eventdetails_joinevent);
+        _btnNavigation = (Button) findViewById(R.id.eventdetails_navigateto);
+    }
+
+    @Override
+    protected void setViewTheme(){
+        setViewContent();
     }
 
     private void setViewContent() {
         retrieveEvent();  // get event ID from the map marker clicked
+
+        UIUtils.ThemeButtons(_btnNavigation, _addUser);
 
         _eventTitle.setText(_context.get_title());
         _amountAttendees.setText(Integer.toString(_context.get_attendeesCount()));
@@ -85,24 +95,23 @@ public class EventDetails extends WUBaseActivity {
                     ToastManager.Instance().SendMessage("You're already attending", true);
                 else {
                     // let the user know he's been added and update the amount of attendees
-                    ToastManager.Instance().SendMessage("User added to event", true);
+                    ToastManager.Instance().SendMessage("You're attending!", true);
+                    EventManager.Instance().SaveInThread(_context);
                     _amountAttendees.setText(Integer.toString(_context.get_attendeesCount()));
                 }
             }
         });
-    }
 
-    /*
-    private View.OnClickListener addUser = new View.OnClickListener() {
-        @Override
-        public void onClick (View v) {
-            User active_user = new User();
-            active_user = UserManager.Instance().GetActiveUser();
-            if (!_context.add_attendee(active_user));
-                //
-        }
-    };
-    */
+        _btnNavigation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(GPSManager.Instance().HasLocation()){
+                    Intent target = LocationHelper.GetGoogleMapsIntent(_context.get_location(), GPSManager.Instance().CurrentLocation());
+                    startActivity(target);
+                }
+            }
+        });
+    }
 
     // get event ID from the marker that was clicked.
     private void retrieveEvent() {
