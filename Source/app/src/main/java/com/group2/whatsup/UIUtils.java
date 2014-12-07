@@ -47,9 +47,21 @@ public class UIUtils {
         b.setTextColor(SettingsManager.Instance().SecondaryColor());
     }
 
+    public static void ThemeButtons(Button... btns){
+        for(Button b : btns){
+            ThemeButton(b);
+        }
+    }
+
     public static void ThemeTextbox(EditText txt) {
         ApplyTheme(txt, "#333333", "#FFFFFF", 1);
         txt.setTextColor(Color.BLACK);
+    }
+
+    public static void ThemeTextboxes(EditText... txts){
+        for(EditText txt : txts){
+            ThemeTextbox(txt);
+        }
     }
 
     private static void ApplyTheme(View targetView, String borderColor, String backgroundColor, int width){

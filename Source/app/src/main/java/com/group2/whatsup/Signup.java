@@ -43,7 +43,7 @@ public class Signup extends WUBaseActivity {
         _emailBox.setHint(R.string.placeholder_email_address);
         _passwordBox.setHint(R.string.placeholder_password);
 
-        UIUtils.ThemeButton(_signupButton);
+        UIUtils.ThemeButtons(_signupButton);
 
         final Signup ref = this;
         _signupButton.setOnClickListener(new View.OnClickListener() {

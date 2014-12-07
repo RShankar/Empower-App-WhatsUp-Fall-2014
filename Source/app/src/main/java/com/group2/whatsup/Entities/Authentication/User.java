@@ -83,6 +83,7 @@ public class User extends BaseEntity {
     public void set_lastKnownLocation(LatLon _lastKnownLocation){
         this._lastKnownLocation = _lastKnownLocation;
     }
+    public boolean has_lastKnownLocation(){ return _lastKnownLocation != null; }
     //endregion
 
 }

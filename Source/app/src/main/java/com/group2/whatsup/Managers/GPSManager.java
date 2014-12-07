@@ -30,7 +30,7 @@ public class GPSManager extends BaseManager{
     private Handler _handler;
     private LocationListener _updateListener;
     private ArrayList<Runnable> _waitingCallbacks;
-    private final static int SECONDS_BETWEEN_GPS_POLLS = 10;
+    private final static int SECONDS_BETWEEN_GPS_POLLS = 60;
     private final Runnable _reenableGps = new Runnable(){
         @Override
         public void run() {
@@ -76,9 +76,6 @@ public class GPSManager extends BaseManager{
                     updateLogic.run();
                 }
                 else{
-                    Log.Info("Old Location: {0}", _currentLocation);
-                    Log.Info("New Location: {0}", newLoc);
-                    Log.Info("Comparison result: {0}", _currentLocation.equals(newLoc));
                     if(!newLoc.equals(_currentLocation)){
                         updateLogic.run();
                     }

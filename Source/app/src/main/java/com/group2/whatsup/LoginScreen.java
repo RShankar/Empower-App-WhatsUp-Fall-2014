@@ -53,11 +53,8 @@ public class LoginScreen extends WUBaseActivity {
         super.setViewTheme();
         final LoginScreen ref = this;
 
-        UIUtils.ThemeButton(_signupButton);
-        UIUtils.ThemeButton(_loginButton);
-
-        UIUtils.ThemeTextbox(_emailField);
-        UIUtils.ThemeTextbox(_passwordField);
+        UIUtils.ThemeButtons(_signupButton, _loginButton);
+        UIUtils.ThemeTextboxes(_emailField, _passwordField);
 
         //Temporary debug crap.
         _emailField.setText("test@test.com");

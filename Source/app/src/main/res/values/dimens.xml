@@ -4,4 +4,5 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="login_widget_padding">10dp</dimen>
     <dimen name="login_widget_margin">10dp</dimen>
+    <dimen name="eventaddedit_address_margin">5dp</dimen>
 </resources>

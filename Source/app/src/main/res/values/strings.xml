@@ -32,6 +32,10 @@
     <string name="title_activity_signup">Sign Up</string>
     <string name="title_activity_event_add_edit">Event Add/Edit</string>
 
+    <!-- Other Labels -->
+    <string name="eventaddedit_checkbox_location_current">Use Current Location</string>
+    <string name="eventaddedit_checkbox_location_selected">Use Selected Location</string>
+
     <!-- Menu Stuff -->
     <string name="menu_add_event">+</string>
     <string name="navigate_button">Navigate</string>

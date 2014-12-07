@@ -5,7 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewManager;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.GridLayout;
 
 import com.group2.whatsup.Debug.Log;
 import com.group2.whatsup.Entities.Event;
@@ -27,6 +32,10 @@ public class EventAddEdit extends WUBaseActivity {
     private EditText _txtAddCity;
     private EditText _txtAddState;
     private EditText _txtAddPostalCode;
+    private Button _btnSave;
+    private Button _btnCancel;
+    private CheckBox _chkUseCurrentLocation;
+    private GridLayout _addressContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +50,42 @@ public class EventAddEdit extends WUBaseActivity {
         _txtAddCity = (EditText) findViewById(R.id.eventaddedit_address_city);
         _txtAddState = (EditText) findViewById(R.id.eventaddedit_address_state);
         _txtAddPostalCode = (EditText) findViewById(R.id.eventaddedit_address_postalcode);
+        _btnSave = (Button) findViewById(R.id.eventaddedit_btnSave);
+        _btnCancel = (Button) findViewById(R.id.eventaddedit_btnCancel);
+        _chkUseCurrentLocation = (CheckBox) findViewById(R.id.eventaddedit_usecurrentlocation);
+        _addressContainer = (GridLayout) findViewById(R.id.eventaddedit_addresscontainer);
     }
 
     @Override
     protected void setViewTheme(){
+
+        UIUtils.ThemeTextboxes(_txtTitle, _txtAddStreet1, _txtAddStreet2, _txtAddCity, _txtAddState, _txtAddPostalCode);
+        UIUtils.ThemeButtons(_btnSave, _btnCancel);
+
+
+        //region Click Listeners.
+        _btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                save();
+            }
+        });
+
+        _btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancel();
+            }
+        });
+        //endregion
+
+        setupViewMode();
+
+
+    }
+
+    //Sets up the view mode, either add or edit.
+    private void setupViewMode(){
         Bundle b = getIntent().getExtras();
 
         //Add Mode.
@@ -73,8 +114,22 @@ public class EventAddEdit extends WUBaseActivity {
 
             }
         }
+    }
 
+    private LatLon getLatLonFromBundle(){
+        LatLon retVal = null;
 
+        Bundle b = getIntent().getExtras();
+        if(b != null){
+            double latitude = b.getDouble(BUNDLE_EVENT_LATITUDE_KEY);
+            double longitude = b.getDouble(BUNDLE_EVENT_LONGITUDE_KEY);
+
+            if(latitude != 0 && longitude != 0){
+                retVal = new LatLon(latitude, longitude);
+            }
+        }
+
+        return retVal;
     }
 
     //Edit Mode Logic
@@ -94,8 +149,24 @@ public class EventAddEdit extends WUBaseActivity {
     private void setupAddMode(){
         _editMode = false;
         setTitle("Add a new Event");
+
+        LatLon locFromLongClick = getLatLonFromBundle();
+
+        //In the event this was a direct add, not from a long click on the map.
+        if(locFromLongClick == null){
+            _chkUseCurrentLocation.setText(R.string.eventaddedit_checkbox_location_current);
+        }
+
+        //Location from the map long click event.
+        else{
+            _chkUseCurrentLocation.setText(R.string.eventaddedit_checkbox_location_selected);
+            _chkUseCurrentLocation.setChecked(true);
+            _chkUseCurrentLocation.setEnabled(false);
+            removeViews(_addressContainer);
+        }
     }
 
+    //Save Logic
     private void save(){
         Event targetEvent = eventFromFields();
         if(validate(targetEvent)){
@@ -103,11 +174,14 @@ public class EventAddEdit extends WUBaseActivity {
         }
     }
 
+    //Cancel Logic
+    private void cancel(){
+        finish();
+    }
+
+    //Retrieve an event where necessary.
     private Event eventFromFields(){
-        Event retVal = null;
-        if(_editMode){
-            retVal = _context;
-        }
+        Event retVal = _context;
 
         retVal.set_title(UIUtils.getText(_txtTitle));
         Address newAddress = new Address();
@@ -121,6 +195,7 @@ public class EventAddEdit extends WUBaseActivity {
         return retVal;
     }
 
+    //Validates all fields.
     private boolean validate(Event e){
         return Validate.Event(e);
     }

@@ -57,28 +57,32 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
 
             @Override
             public void run() {
+                boolean gpsLoc = GPSManager.Instance().HasLocation();
+
+                double lat = gpsLoc ? GPSManager.Instance().CurrentLocation().get_latitude() : UserManager.Instance().GetActiveUser().get_lastKnownLocation().get_latitude();
+                double lon = gpsLoc ? GPSManager.Instance().CurrentLocation().get_longitude() : UserManager.Instance().GetActiveUser().get_lastKnownLocation().get_longitude();
+
                 LatLng current_location = new LatLng(
-                        GPSManager.Instance().CurrentLocation().get_latitude(),
-                        GPSManager.Instance().CurrentLocation().get_longitude()
+                        lat,
+                        lon
                 );
+
                 _googleMap.setMyLocationEnabled(true);
                 _googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current_location, 13));
                 _googleMap.addMarker(new MarkerOptions().title("Add new event!").snippet("You are here").position(current_location).icon(BitmapDescriptorFactory.fromResource(R.drawable.plus)));
-                addEventMarkers();
+                addEventMarkers(new LatLon(lat, lon));
             }
         };
-        if(GPSManager.Instance().HasLocation()){
+        if(GPSManager.Instance().HasLocation() || UserManager.Instance().GetActiveUser().has_lastKnownLocation()){
             whenDone.run();
         }
         else{
             GPSManager.Instance().WhenLocationSet(whenDone);
         }
-
-
     }
 
-    private void addEventMarkers() {
-        ArrayList<Event> _eventsList = EventManager.Instance().FindEventsNearLastKnownLocation();
+    private void addEventMarkers(LatLon loc) {
+        ArrayList<Event> _eventsList = EventManager.Instance().FindEventsNear(loc);
 
         for (Event event: _eventsList)
         {
