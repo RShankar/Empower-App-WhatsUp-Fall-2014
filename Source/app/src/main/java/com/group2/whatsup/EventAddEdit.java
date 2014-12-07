@@ -169,10 +169,20 @@ public class EventAddEdit extends WUBaseFragmentActivity implements DatePickerDi
                 if(_chkUseCurrentLocation.isChecked()){
                     if(_context.get_address() != null) _oldAddress = _context.get_address();
 
+                    Runnable whenDone = new Runnable() {
+                        @Override
+                        public void run() {
+                            _context.set_location(GPSManager.Instance().CurrentLocation());
+                            Address ret = LocationHelper.GetAddressFromLatLon(_context.get_location());
+                            setAddressFields(ret);
+                        }
+                    };
+
                     if(GPSManager.Instance().HasLocation()){
-                        _context.set_location(GPSManager.Instance().CurrentLocation());
-                        Address ret = LocationHelper.GetAddressFromLatLon(_context.get_location());
-                        setAddressFields(ret);
+                        whenDone.run();
+                    }
+                    else{
+                        GPSManager.Instance().WhenLocationSet(whenDone);
                     }
 
                     disable(_txtAddStreet1, _txtAddStreet2, _txtAddCity, _txtAddState, _txtAddPostalCode);
@@ -213,7 +223,6 @@ public class EventAddEdit extends WUBaseFragmentActivity implements DatePickerDi
             String eventId = b.getString(BUNDLE_EVENT_ID_KEY);
             //Add Mode
             if(eventId == null){
-                _context = new Event();
                 setupAddMode();
             }
 
@@ -285,6 +294,7 @@ public class EventAddEdit extends WUBaseFragmentActivity implements DatePickerDi
 
     //Add Mode Logic
     private void setupAddMode(){
+        _context = new Event();
         _editMode = false;
         removeDeleteButton();
         setTitle("Add a new Event");

@@ -51,11 +51,6 @@
             android:theme="@android:style/Theme.Dialog" >
         </activity>
         <activity
-            android:name="com.group2.whatsup.EventList"
-            android:label="@string/title_activity_event_list"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
             android:name="com.group2.whatsup.Signup"
             android:label="@string/title_activity_signup"
             android:screenOrientation="portrait" >

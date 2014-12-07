@@ -66,7 +66,7 @@ public class Signup extends WUBaseActivity {
                 ActionResult<User> signupResult = AuthenticationManager.Instance().SignUp(newUser);
 
                 if(signupResult.Success){
-                    Intent i = new Intent(ref, EventList.class);
+                    Intent i = new Intent(ref, MapScreen.class);
                     startActivity(i);
                 }
                 else{

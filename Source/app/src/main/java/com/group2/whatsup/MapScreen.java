@@ -274,9 +274,9 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         switch (item.getItemId()) {
-            case R.id.list:
+            case R.id.menu_add_event:
                 // open activity
-                changeActivity(EventList.class);
+                changeActivity(EventAddEdit.class);
                 return true;
         }
         /* This is the default thing, I'm just going to leave it */
