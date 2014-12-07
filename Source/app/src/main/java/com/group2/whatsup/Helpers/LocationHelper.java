@@ -1,6 +1,8 @@
 package com.group2.whatsup.Helpers;
 
+import android.content.Intent;
 import android.location.Geocoder;
+import android.net.Uri;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.group2.whatsup.Debug.Log;
@@ -8,6 +10,7 @@ import com.group2.whatsup.Entities.Location.Address;
 import com.group2.whatsup.Entities.Location.LatLon;
 import com.group2.whatsup.Managers.SettingsManager;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -67,5 +70,11 @@ public class LocationHelper {
         }
 
         return result;
+    }
+
+    public static Intent GetGoogleMapsIntent(LatLon src, LatLon dest){
+        String uri = MessageFormat.format("http://maps.google.com/maps?saddr={0},{1}&daddr={2},{3}", src.get_latitude(), src.get_longitude(), dest.get_latitude(), dest.get_longitude());
+        Intent navIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        return navIntent;
     }
 }
