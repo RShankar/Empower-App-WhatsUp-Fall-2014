@@ -1,19 +1,17 @@
 package com.group2.whatsup;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridLayout;
+import android.widget.Spinner;
 
 import com.group2.whatsup.Debug.Log;
 import com.group2.whatsup.Entities.Event;
+import com.group2.whatsup.Entities.EventCategory;
 import com.group2.whatsup.Entities.Location.Address;
 import com.group2.whatsup.Entities.Location.LatLon;
 import com.group2.whatsup.Helpers.LocationHelper;
@@ -23,11 +21,16 @@ import com.group2.whatsup.Managers.Entities.EventManager;
 import com.group2.whatsup.Managers.GPSManager;
 import com.group2.whatsup.Managers.ToastManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class EventAddEdit extends WUBaseActivity {
 
     private Event _context;
     private boolean _editMode;
+
+    //region Controls
     private EditText _txtTitle;
     private EditText _txtAddStreet1;
     private EditText _txtAddStreet2;
@@ -41,6 +44,9 @@ public class EventAddEdit extends WUBaseActivity {
     private EditText _txtWebsite;
     private EditText _txtDescription;
     private EditText _txtPhone;
+    private Spinner _selEventCategory;
+    //endregion
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +68,7 @@ public class EventAddEdit extends WUBaseActivity {
         _txtWebsite = (EditText) findViewById(R.id.eventaddedit_website);
         _txtDescription = (EditText) findViewById(R.id.eventaddedit_description);
         _txtPhone = (EditText) findViewById(R.id.eventaddedit_phonenumber);
+        _selEventCategory = (Spinner) findViewById(R.id.eventaddedit_categoryselect);
     }
 
     @Override
@@ -69,7 +76,13 @@ public class EventAddEdit extends WUBaseActivity {
 
         UIUtils.ThemeTextboxes(_txtTitle, _txtAddStreet1, _txtAddStreet2, _txtAddCity, _txtAddState, _txtAddPostalCode, _txtDescription, _txtWebsite, _txtPhone);
         UIUtils.ThemeButtons(_btnSave, _btnCancel);
+        _chkUseCurrentLocation.setText(R.string.eventaddedit_checkbox_location_current);
 
+        //region Spinner Setup
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, EventCategory.getCategoryNames());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        _selEventCategory.setAdapter(adapter);
+        //endregion
 
         //region Click Listeners.
         _btnSave.setOnClickListener(new View.OnClickListener() {
@@ -85,11 +98,28 @@ public class EventAddEdit extends WUBaseActivity {
                 cancel();
             }
         });
+
+        _chkUseCurrentLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(_chkUseCurrentLocation.isChecked()){
+                    if(GPSManager.Instance().HasLocation()) _context.set_location(GPSManager.Instance().CurrentLocation());
+                    Address ret = LocationHelper.GetAddressFromLatLon(_context.get_location());
+                    _txtAddStreet1.setText(ret.StreetLine1);
+                    _txtAddStreet2.setText(ret.StreetLine2);
+                    _txtAddCity.setText(ret.City);
+                    _txtAddState.setText(ret.State);
+                    _txtAddPostalCode.setText(ret.PostalCode);
+                    disable(_txtAddStreet1, _txtAddStreet2, _txtAddCity, _txtAddState, _txtAddPostalCode);
+                }
+                else{
+                    enable(_txtAddStreet1, _txtAddStreet2, _txtAddCity, _txtAddState, _txtAddPostalCode);
+                }
+            }
+        });
         //endregion
 
         setupViewMode();
-
-
     }
 
     //Sets up the view mode, either add or edit.
@@ -155,7 +185,15 @@ public class EventAddEdit extends WUBaseActivity {
         _txtAddPostalCode.setText(existing.PostalCode);
         _txtDescription.setText(_context.get_description());
         _txtWebsite.setText(_context.get_website());
-
+        _txtPhone.setText(_context.get_phone());
+        EventCategory selected = _context.get_category();
+        List<String> allCats = EventCategory.getCategoryNames();
+        for(int i = 0; i < allCats.size(); i++){
+            if(allCats.get(i).equals(selected.getName())){
+                _selEventCategory.setSelection(i);
+                break;
+            }
+        }
     }
 
     //Add Mode Logic
@@ -165,50 +203,8 @@ public class EventAddEdit extends WUBaseActivity {
 
         LatLon locFromLongClick = getLatLonFromBundle();
 
-        //In the event this was a direct add, not from a long click on the map.
-        if(locFromLongClick == null){
-            _chkUseCurrentLocation.setText(R.string.eventaddedit_checkbox_location_current);
-
-            //region Setting up the address stuff.
-            final Runnable whenDone = new Runnable() {
-                @Override
-                public void run() {
-                    _context.set_location(GPSManager.Instance().CurrentLocation());
-                    _chkUseCurrentLocation.setEnabled(true);
-                    _chkUseCurrentLocation.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if(_chkUseCurrentLocation.isChecked()){
-                                Address ret = LocationHelper.GetAddressFromLatLon(_context.get_location());
-                                _txtAddStreet1.setText(ret.StreetLine1);
-                                _txtAddStreet2.setText(ret.StreetLine2);
-                                _txtAddCity.setText(ret.City);
-                                _txtAddState.setText(ret.State);
-                                _txtAddPostalCode.setText(ret.PostalCode);
-
-                                disable(_txtAddStreet1, _txtAddStreet2, _txtAddCity, _txtAddState, _txtAddPostalCode);
-                            }
-                            else{
-                                enable(_txtAddStreet1, _txtAddStreet2, _txtAddCity, _txtAddState, _txtAddPostalCode);
-                            }
-                        }
-                    });
-                }
-            };
-
-            if(GPSManager.Instance().HasLocation()){
-                whenDone.run();
-            }
-            else{
-                _chkUseCurrentLocation.setEnabled(false);
-                GPSManager.Instance().WhenLocationSet(whenDone);
-            }
-            //endregion
-
-        }
-
         //Location from the map long click event.
-        else{
+        if(locFromLongClick != null) {
             _chkUseCurrentLocation.setText(R.string.eventaddedit_checkbox_location_selected);
             _chkUseCurrentLocation.setChecked(true);
             _chkUseCurrentLocation.setEnabled(false);
@@ -222,6 +218,9 @@ public class EventAddEdit extends WUBaseActivity {
         Event targetEvent = eventFromFields();
         if(validate(targetEvent)){
             EventManager.Instance().Save(targetEvent);
+            String retMsg = _editMode ? "Event Updated!" : "Event Saved!";
+            ToastManager.Instance().SendMessage(retMsg, true);
+            finish();
         }
     }
 
@@ -245,12 +244,34 @@ public class EventAddEdit extends WUBaseActivity {
         retVal.set_description(UIUtils.getText(_txtDescription));
         retVal.set_website(UIUtils.getText(_txtWebsite));
         retVal.set_phone(UIUtils.getText(_txtPhone));
+        retVal.set_category(EventCategory.fromName(_selEventCategory.getSelectedItem().toString()));
 
         return retVal;
     }
 
     //Validates all fields.
     private boolean validate(Event e){
-        return Validate.Event(e);
+        boolean retVal = true;
+
+        ArrayList<Validate.Result> res = new ArrayList<Validate.Result>();
+        res.add(Validate.Address(e.get_address()));
+        res.add(Validate.EventTitle(e.get_title()));
+        res.add(Validate.Website(e.get_website()));
+        res.add(Validate.EventDescription(e.get_description()));
+        res.add(Validate.Phone(e.get_phone()));
+
+
+        for(Validate.Result r : res){
+            if(!r.valid){
+                valMsg(r.message);
+                retVal = false;
+            }
+        }
+
+        return retVal;
+    }
+
+    private void valMsg(String message){
+        ToastManager.Instance().SendMessage(message, true);
     }
 }

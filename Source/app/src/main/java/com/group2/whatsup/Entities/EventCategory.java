@@ -1,5 +1,8 @@
 package com.group2.whatsup.Entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public enum EventCategory {
 
     Sports(0, "Sports"),
@@ -21,6 +24,28 @@ public enum EventCategory {
 
     public String getName(){
         return _name;
+    }
+
+    public static List<String> getCategoryNames(){
+        ArrayList<String> retVal = new ArrayList<String>();
+
+        for(EventCategory cat : getCategories()){
+            retVal.add(cat.getName());
+        }
+
+        return retVal;
+    }
+
+    public static EventCategory fromName(String name){
+        EventCategory[] cats = getCategories();
+        for(EventCategory cat : cats){
+            if(cat.getName().equals(name)){
+                return cat;
+            }
+        }
+
+        //This is our default for the time being.
+        return Sports;
     }
 
     public static EventCategory[] getCategories(){

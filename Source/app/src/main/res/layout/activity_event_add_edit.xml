@@ -134,21 +134,19 @@
                     android:layout_row="0"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                <EditText
+                <Spinner
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/eventaddedit_website"
-                    android:layout_row="2"
+                    android:id="@+id/eventaddedit_categoryselect"
+                    android:layout_row="1"
                     android:layout_column="0"
-                    android:hint="@string/placeholder_website"
-                    android:layout_margin="@dimen/eventaddedit_widget_margin"
-                    android:inputType="textUri" />
+                    android:layout_margin="@dimen/eventaddedit_widget_margin" />
 
                 <EditText
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/eventaddedit_description"
-                    android:layout_row="1"
+                    android:layout_row="2"
                     android:layout_column="0"
                     android:hint="@string/placeholder_description"
                     android:layout_margin="@dimen/eventaddedit_widget_margin"
@@ -159,12 +157,47 @@
                 <EditText
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/eventaddedit_phonenumber"
+                    android:id="@+id/eventaddedit_website"
                     android:layout_row="3"
+                    android:layout_column="0"
+                    android:hint="@string/placeholder_website"
+                    android:layout_margin="@dimen/eventaddedit_widget_margin"
+                    android:inputType="textUri" />
+
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/eventaddedit_phonenumber"
+                    android:layout_row="4"
                     android:layout_column="0"
                     android:layout_margin="@dimen/eventaddedit_widget_margin"
                     android:inputType="phone"
                     android:hint="@string/placeholder_phone" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_row="5"
+                    android:layout_column="0"
+                    android:id="@+id/eventaddedit_timefields">
+
+                    <DatePicker
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/datePicker"
+                        android:layout_weight="0.5"
+                        style="@android:style/Widget.Holo.DatePicker"
+                        android:spinnersShown="false"
+                        android:calendarViewShown="true" />
+
+                    <TimePicker
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/timePicker"
+                        android:layout_weight="0.5" />
+
+                </LinearLayout>
 
             </GridLayout>
 

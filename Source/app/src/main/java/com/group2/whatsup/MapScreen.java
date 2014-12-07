@@ -69,7 +69,7 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
 
                 _googleMap.setMyLocationEnabled(true);
                 _googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current_location, 13));
-                _googleMap.addMarker(new MarkerOptions().title("Add new event!").snippet("You are here").position(current_location).icon(BitmapDescriptorFactory.fromResource(R.drawable.plus)));
+                //_googleMap.addMarker(new MarkerOptions().title("Add new event!").snippet("You are here").position(current_location).icon(BitmapDescriptorFactory.fromResource(R.drawable.plus)));
                 addEventMarkers(new LatLon(lat, lon));
             }
         };
@@ -119,13 +119,6 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
                 Log.Info("Owner is not the current user. Switching to details.");
                 changeActivity(targetedEvent, EventDetails.class);
             }
-        }
-        else {
-            // add a new event
-            // user clicked their current location
-            Event new_E = new Event();
-            new_E.set_location(GPSManager.Instance().CurrentLocation());
-            changeActivity(new_E, EventAddEdit.class);
         }
 
         return targetedEvent == null;

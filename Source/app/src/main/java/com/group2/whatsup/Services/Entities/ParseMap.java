@@ -3,8 +3,8 @@ package com.group2.whatsup.Services.Entities;
 public class ParseMap {
 
     public class Event { public static final String
-        Phone = "Phone",
-        Title = "Title",
+        Phone = "phone",
+        Title = "title",
         Location = "location",
         Description = "description",
         Website = "website",
