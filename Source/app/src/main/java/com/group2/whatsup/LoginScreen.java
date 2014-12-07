@@ -65,6 +65,9 @@ public class LoginScreen extends WUBaseActivity {
         _emailField.setHint(R.string.placeholder_email_address);
         _passwordField.setHint(R.string.placeholder_password);
 
+        //Hide the loading bar until it's needed
+        findViewById(R.id.login_loadingPanel).setVisibility(View.INVISIBLE);
+
         _loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,6 +86,9 @@ public class LoginScreen extends WUBaseActivity {
     }
 
     private void attemptLogin(){
+        // bring back loading bar
+        findViewById(R.id.login_loadingPanel).setVisibility(View.VISIBLE);
+        findViewById(R.id.login_loadingPanel).bringToFront();
         String email = UIUtils.getText(_emailField);
         String password = UIUtils.getText(_passwordField);
         ActionResult<User> authResult = AuthenticationManager.Instance().Authenticate(email, password);
@@ -93,6 +99,9 @@ public class LoginScreen extends WUBaseActivity {
         }
         else{
             ToastManager.Instance().SendMessage(authResult.Message, true);
+            // get rid of loading bar if false
+            findViewById(R.id.login_loadingPanel).setVisibility(View.INVISIBLE);
         }
+
     }
 }

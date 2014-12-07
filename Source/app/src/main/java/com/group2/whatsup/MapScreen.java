@@ -114,6 +114,7 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
                 _googleMap.setMyLocationEnabled(true);
                 _googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current_location, DEFAULT_ZOOM_LEVEL));
                 addEventMarkers(new LatLon(lat, lon));
+                findViewById(R.id.map_loadingPanel).setVisibility(View.GONE);
             }
         };
         if(GPSManager.Instance().HasLocation() || UserManager.Instance().GetActiveUser().has_lastKnownLocation()){
