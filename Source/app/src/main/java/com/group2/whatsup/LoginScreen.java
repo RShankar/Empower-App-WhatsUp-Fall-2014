@@ -38,6 +38,14 @@ public class LoginScreen extends WUBaseActivity {
         super.onCreate(savedInstanceState, R.layout.activity_login_screen);
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        findViewById(R.id.login_loadingPanel).setVisibility(View.INVISIBLE);
+    }
+
+
     @Override
     protected void initializeViewControls() {
         super.initializeViewControls();
@@ -65,8 +73,7 @@ public class LoginScreen extends WUBaseActivity {
         _emailField.setHint(R.string.placeholder_email_address);
         _passwordField.setHint(R.string.placeholder_password);
 
-        //Hide the loading bar until it's needed
-        findViewById(R.id.login_loadingPanel).setVisibility(View.INVISIBLE);
+        //findViewById(R.id.login_loadingPanel).setVisibility(View.INVISIBLE);
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
