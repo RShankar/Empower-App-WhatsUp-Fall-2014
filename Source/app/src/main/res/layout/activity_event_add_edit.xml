@@ -1,156 +1,198 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:layout_height="wrap_content" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.group2.whatsup.EventAddEdit"
     android:id="@+id/eventaddedit_background">
 
-    <GridLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+    <ScrollView android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/eventaddedit_maincontainer">
-
-        <EditText
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/eventaddedit_title"
-            android:hint="@string/placeholder_eventtitle"
-            android:layout_row="0"
-            android:inputType="textCapSentences"
-            android:layout_gravity="top" />
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Use Location"
-            android:id="@+id/eventaddedit_usecurrentlocation"
-            android:layout_row="1"
-            android:layout_column="0" />
+        android:layout_alignParentLeft="true">
 
         <GridLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/eventaddedit_addresscontainer"
-            android:layout_row="2"
-            android:layout_rowSpan="1"
-            android:layout_column="0"
-            android:layout_columnSpan="1"
-            android:columnCount="3"
-            android:rowCount="5"
-            android:layout_gravity="top">
+            android:layout_height="fill_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/eventaddedit_maincontainer"
+            >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/placeholder_address"
-                android:id="@+id/eventaddedit_address_headertext"
-                android:layout_row="1"
-                android:layout_column="0"
-                android:layout_columnSpan="2"
-                android:layout_rowSpan="1"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+
 
             <EditText
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/eventaddedit_address_street1"
-                android:hint="@string/placeholder_street1"
+                android:id="@+id/eventaddedit_title"
+                android:hint="@string/placeholder_eventtitle"
+                android:layout_row="0"
+                android:inputType="textCapSentences"
+                android:layout_margin="@dimen/eventaddedit_widget_margin" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Use Location"
+                android:id="@+id/eventaddedit_usecurrentlocation"
+                android:layout_row="1"
+                android:layout_column="0" />
+
+            <GridLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/eventaddedit_addresscontainer"
                 android:layout_row="2"
                 android:layout_rowSpan="1"
                 android:layout_column="0"
-                android:layout_columnSpan="2"
-                android:layout_margin="@dimen/eventaddedit_address_margin" />
+                android:layout_columnSpan="1">
 
-            <EditText
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/eventaddedit_address_street2"
-                android:hint="@string/placeholder_street2"
-                android:layout_row="3"
-                android:layout_rowSpan="1"
-                android:layout_column="0"
-                android:layout_columnSpan="2"
-                android:layout_margin="@dimen/eventaddedit_address_margin" />
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_row="4"
-                android:layout_column="0"
-                android:id="@+id/eventaddedit_address_citystatezipcontainer">
-
-                <EditText
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/eventaddedit_address_state"
-                    android:hint="@string/placeholder_state"
-                    android:layout_column="1"
-                    android:layout_columnSpan="1"
-                    android:layout_row="2"
-                    android:layout_rowSpan="1"
-                    android:layout_weight="0.33"
-                    android:layout_margin="@dimen/eventaddedit_address_margin" />
-
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/eventaddedit_address_city"
-                    android:hint="@string/placeholder_city"
+                    android:text="@string/placeholder_address"
+                    android:id="@+id/eventaddedit_address_headertext"
+                    android:layout_row="1"
                     android:layout_column="0"
-                    android:layout_columnSpan="1"
-                    android:layout_row="2"
+                    android:layout_columnSpan="2"
                     android:layout_rowSpan="1"
-                    android:layout_weight="0.33"
-                    android:layout_margin="@dimen/eventaddedit_address_margin" />
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <EditText
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/eventaddedit_address_postalcode"
-                    android:hint="@string/placeholder_postalcode"
-                    android:layout_row="4"
+                    android:id="@+id/eventaddedit_address_street1"
+                    android:hint="@string/placeholder_street1"
+                    android:layout_row="2"
                     android:layout_rowSpan="1"
                     android:layout_column="0"
                     android:layout_columnSpan="2"
-                    android:layout_weight="0.33"
-                    android:layout_margin="@dimen/eventaddedit_address_margin" />
+                    android:layout_margin="@dimen/eventaddedit_widget_margin" />
 
-            </LinearLayout>
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/eventaddedit_address_street2"
+                    android:hint="@string/placeholder_street2"
+                    android:layout_row="3"
+                    android:layout_rowSpan="1"
+                    android:layout_column="0"
+                    android:layout_columnSpan="2"
+                    android:layout_margin="@dimen/eventaddedit_widget_margin" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_row="4"
+                    android:layout_column="0"
+                    android:id="@+id/eventaddedit_address_citystatezipcontainer">
+
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/eventaddedit_address_state"
+                        android:hint="@string/placeholder_state"
+                        android:layout_weight="0.33"
+                        android:layout_margin="@dimen/eventaddedit_widget_margin" />
+
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/eventaddedit_address_city"
+                        android:hint="@string/placeholder_city"
+                        android:layout_weight="0.33"
+                        android:layout_margin="@dimen/eventaddedit_widget_margin" />
+
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/eventaddedit_address_postalcode"
+                        android:hint="@string/placeholder_postalcode"
+                        android:layout_weight="0.33"
+                        android:layout_margin="@dimen/eventaddedit_widget_margin" />
+
+                </LinearLayout>
+
+            </GridLayout>
+
+            <GridLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_row="3"
+                android:layout_column="0"
+                android:layout_rowSpan="1"
+                android:id="@+id/eventaddedit_detailscontainer">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Details"
+                    android:id="@+id/textView"
+                    android:layout_row="0"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/eventaddedit_website"
+                    android:layout_row="2"
+                    android:layout_column="0"
+                    android:hint="@string/placeholder_website"
+                    android:layout_margin="@dimen/eventaddedit_widget_margin"
+                    android:inputType="textUri" />
+
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/eventaddedit_description"
+                    android:layout_row="1"
+                    android:layout_column="0"
+                    android:hint="@string/placeholder_description"
+                    android:layout_margin="@dimen/eventaddedit_widget_margin"
+                    android:inputType="textMultiLine"
+                    android:lines="4"
+                    android:layout_gravity="top" />
+
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/eventaddedit_phonenumber"
+                    android:layout_row="3"
+                    android:layout_column="0"
+                    android:layout_margin="@dimen/eventaddedit_widget_margin"
+                    android:inputType="phone"
+                    android:hint="@string/placeholder_phone" />
+
+            </GridLayout>
 
         </GridLayout>
-
-    </GridLayout>
+    </ScrollView>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="false"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:id="@+id/linearLayout">
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Save"
             android:id="@+id/eventaddedit_btnSave"
-            android:layout_alignParentEnd="false"
-            android:layout_alignParentStart="false"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"
-            android:layout_weight="0.5" />
+            android:layout_weight="0.5"
+            android:layout_marginRight="@dimen/eventaddedit_button_margin" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cancel"
             android:id="@+id/eventaddedit_btnCancel"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_weight="0.5" />
+            android:layout_weight="0.5"
+            android:layout_marginLeft="@dimen/eventaddedit_button_margin" />
     </LinearLayout>
 </RelativeLayout>

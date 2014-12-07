@@ -21,17 +21,17 @@ public class EntityToParseConversion {
     public static ParseObject UserToParseObject(User u){
         ParseObject obj = BaseEntityToParseObject(u);
 
-        obj.put("userName", u.get_username());
-        obj.put("passWord", u.get_password());
-        obj.put("age", u.get_age());
-        obj.put("emailAddress", u.get_emailAddress());
-        obj.put("firstName", u.get_firstName());
-        obj.put("lastName", u.get_lastName());
+        obj.put(ParseMap.User.Username, u.get_username());
+        obj.put(ParseMap.User.Password, u.get_password());
+        obj.put(ParseMap.User.Age, u.get_age());
+        obj.put(ParseMap.User.Email, u.get_emailAddress());
+        obj.put(ParseMap.User.FirstName, u.get_firstName());
+        obj.put(ParseMap.User.LastName, u.get_lastName());
 
         LatLon lastKnown = u.get_lastKnownLocation();
         if(lastKnown != null){
             ParseGeoPoint pgp = new ParseGeoPoint(lastKnown.get_latitude(), lastKnown.get_longitude());
-            obj.put("lastKnownLocation", pgp);
+            obj.put(ParseMap.User.LastKnownLocation, pgp);
         }
 
 
@@ -41,29 +41,30 @@ public class EntityToParseConversion {
     public static ParseObject EventToParseObject(Event e){
         ParseObject obj = BaseEntityToParseObject(e);
 
-        obj.put("title", e.get_title());
+        obj.put(ParseMap.Event.Title, e.get_title());
 
         ParseGeoPoint pgp = new ParseGeoPoint(e.get_location().get_latitude(), e.get_location().get_longitude());
-        obj.put("location", pgp);
+        obj.put(ParseMap.Event.Location, pgp);
 
         Address tgtAddress = e.get_address();
         if(tgtAddress != null){
-            if(tgtAddress.StreetLine1 != null) obj.put("street1", tgtAddress.StreetLine1);
-            if(tgtAddress.StreetLine2 != null) obj.put("street2", tgtAddress.StreetLine2);
-            if(tgtAddress.City != null) obj.put("city", tgtAddress.City);
-            if(tgtAddress.State != null) obj.put("state", tgtAddress.State);
-            if(tgtAddress.PostalCode != null) obj.put("postalCode", tgtAddress.PostalCode);
+            if(tgtAddress.StreetLine1 != null) obj.put(ParseMap.Address.Line1, tgtAddress.StreetLine1);
+            if(tgtAddress.StreetLine2 != null) obj.put(ParseMap.Address.Line2, tgtAddress.StreetLine2);
+            if(tgtAddress.City != null) obj.put(ParseMap.Address.City, tgtAddress.City);
+            if(tgtAddress.State != null) obj.put(ParseMap.Address.State, tgtAddress.State);
+            if(tgtAddress.PostalCode != null) obj.put(ParseMap.Address.PostalCode, tgtAddress.PostalCode);
         }
 
-        obj.put("description", e.get_description());
-        obj.put("website", e.get_website());
-        obj.put("startTime", e.get_startTime().getTime());
-        obj.put("endTime", e.get_endTime().getTime());
-        obj.put("category", e.get_category_name());
+        obj.put(ParseMap.Event.Description, e.get_description());
+        obj.put(ParseMap.Event.Website, e.get_website());
+        obj.put(ParseMap.Event.StartTime, e.get_startTime().getTime());
+        obj.put(ParseMap.Event.EndTime, e.get_endTime().getTime());
+        obj.put(ParseMap.Event.Category, e.get_category_name());
+        obj.put(ParseMap.Event.Phone, e.get_phone());
 
         ParseObject userObj = new ParseObject(User.ENTITY_NAME);
         userObj.setObjectId(e.get_owner().get_entityId());
-        obj.put("owner", userObj);
+        obj.put(ParseMap.Event.Owner, userObj);
 
         ArrayList<ParseObject> attendeesObj = new ArrayList<ParseObject>();
         ArrayList<User> attendees = e.get_attendees();
@@ -74,7 +75,7 @@ public class EntityToParseConversion {
                 attendeesObj.add(temp);
             }
         }
-        obj.put("attendees", attendeesObj);
+        obj.put(ParseMap.Event.Attendees, attendeesObj);
 
 
         return obj;

@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewManager;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.group2.whatsup.Debug.Log;
@@ -85,6 +87,18 @@ public class WUBaseActivity extends Activity {
     protected void removeViews(View... vs){
         for(View v : vs){
             removeView(v);
+        }
+    }
+
+    protected void enable(TextView... tvs){
+        for(TextView tv : tvs){
+            tv.setEnabled(true);
+        }
+    }
+
+    protected void disable(TextView... tvs){
+        for(TextView tv : tvs){
+            tv.setEnabled(false);
         }
     }
 }

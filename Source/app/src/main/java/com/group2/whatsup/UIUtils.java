@@ -3,11 +3,14 @@ package com.group2.whatsup;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
 import android.graphics.drawable.shapes.Shape;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,6 +48,9 @@ public class UIUtils {
     public static void ThemeButton(Button b){
         b.setBackgroundColor(SettingsManager.Instance().PrimaryColor());
         b.setTextColor(SettingsManager.Instance().SecondaryColor());
+        SpannableString spanString = new SpannableString(b.getText());
+        spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
+        b.setText(spanString);
     }
 
     public static void ThemeButtons(Button... btns){
@@ -54,8 +60,10 @@ public class UIUtils {
     }
 
     public static void ThemeTextbox(EditText txt) {
+        /*
         ApplyTheme(txt, "#333333", "#FFFFFF", 1);
         txt.setTextColor(Color.BLACK);
+        */
     }
 
     public static void ThemeTextboxes(EditText... txts){

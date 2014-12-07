@@ -19,6 +19,8 @@
     <string name="placeholder_city">City</string>
     <string name="placeholder_state">State</string>
     <string name="placeholder_postalcode">Zip</string>
+    <string name="placeholder_description">A short description of what\'s up</string>
+    <string name="placeholder_phone">Phone Number</string>
 
     <!-- Button Labels -->
     <string name="label_log_in">Log In</string>

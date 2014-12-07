@@ -122,4 +122,14 @@ public class Event extends BaseEntity {
     public void set_category(EventCategory category) { _category = category; }
     public String get_category_name(){ return _category.getName(); }
     //endregion
+
+    //region Phone Number
+    private String _phone;
+    public String get_phone(){
+        return _phone;
+    }
+    public void set_phone(String _phone){
+        this._phone = _phone;
+    }
+    //endregion
 }
