@@ -110,8 +110,7 @@ public class Event extends BaseEntity {
             _attendees.add(u);
         return true;
     }
-    private boolean userExists(User u)
-    {
+    private boolean userExists(User u){
         for (User user: _attendees)
         {
             if (user.equals(u))
@@ -139,18 +138,6 @@ public class Event extends BaseEntity {
         this._phone = _phone;
     }
     //endregion
-
-    @Override
-    public boolean equals(Object o){
-        if(o instanceof Event){
-            Event other = (Event) o;
-            if(other.get_entityId() != null){
-                return other.get_entityId().equals(get_entityId());
-            }
-        }
-
-        return super.equals(o);
-    }
 
     @Override
     public int hashCode(){

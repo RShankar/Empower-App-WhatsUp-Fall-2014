@@ -18,4 +18,14 @@ public abstract class BaseEntity {
     public String get_entityId() { return _entityId; }
     public void set_entityId(String entityId) { _entityId = entityId; }
     //endregion
+
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof BaseEntity){
+            BaseEntity other = (BaseEntity) o;
+            return other.get_entityId().equals(get_entityId());
+        }
+
+        return super.equals(o);
+    }
 }
