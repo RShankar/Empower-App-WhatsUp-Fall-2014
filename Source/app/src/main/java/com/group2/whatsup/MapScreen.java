@@ -2,12 +2,21 @@ package com.group2.whatsup;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.group2.whatsup.Controls.Accordion.AccordionList;
+import com.group2.whatsup.Controls.Accordion.AccordionListItem;
+import com.group2.whatsup.Controls.Accordion.IAccordionGroupView;
+import com.group2.whatsup.Controls.Accordion.IAccordionItemSelected;
+import com.group2.whatsup.Controls.Accordion.IAccordionItemView;
 import com.group2.whatsup.Debug.FakeStuff;
 import com.group2.whatsup.Debug.Log;
 import com.group2.whatsup.Entities.Event;
@@ -33,21 +42,22 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
     private static final int DEFAULT_ZOOM_LEVEL = 15;
     private RelativeLayout _background;
     private GoogleMap _googleMap;
-    ArrayList<Event> list = new ArrayList<Event>();
-    LookupTable<Marker, Event> _lookup = new LookupTable<Marker, Event>();
-
+    private ExpandableListView _listView;
+    private AccordionList<Event> _eventList;
     private EventManager.IEventManagerChanged _emUpdates = new EventManager.IEventManagerChanged() {
         @Override
         public void added(Event e) {
             Log.Info("Received Event Add Notification: {0}", e.get_title());
             addEventMarker(e);
             zoomToEvent(e);
+            initAccordion();
         }
 
         @Override
         public void removed(Event e) {
             Log.Info("Received Event Delete Notification: {0}", e.get_title());
             removeEventMarker(e);
+            initAccordion();
         }
 
         @Override
@@ -56,8 +66,11 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
             removeEventMarker(e);
             addEventMarker(e);
             zoomToEvent(e);
+            initAccordion();
         }
     };
+    LookupTable<Marker, Event> _lookup = new LookupTable<Marker, Event>();
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.activity_map_screen);
@@ -72,6 +85,7 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
     protected void initializeViewControls(){
         _background = (RelativeLayout) findViewById(R.id.map_mapBackground);
         _googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+        _listView = (ExpandableListView) findViewById(R.id.map_listView);
         _googleMap.setOnMarkerClickListener(this);
         _googleMap.setOnMapLongClickListener(this);
     }
@@ -79,6 +93,7 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
     protected void setViewTheme(){
         _background.setBackgroundColor(SettingsManager.Instance().SecondaryColor());
         mapInit();
+        initAccordion();
     }
 
     private void mapInit() {
@@ -125,6 +140,25 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
                         .position(event.get_location_LatLng())
                         .draggable(false)
         );
+
+        _googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Event targetedEvent = _lookup.GetVal(marker);
+
+                if(targetedEvent != null){
+                    if(targetedEvent.get_owner().get_entityId().equals(UserManager.Instance().GetActiveUser().get_entityId())){
+                        Log.Info("Owner is the current user. Switching to add/edit.");
+                        changeActivity(targetedEvent, EventAddEdit.class);
+                    }
+                    else{
+                        Log.Info("Owner is not the current user. Switching to details.");
+                        changeActivity(targetedEvent, EventDetails.class);
+                    }
+                }
+            }
+        });
+
         _lookup.Add(m, event);
 
         if (event.get_category() == EventCategory.Fitness)
@@ -149,12 +183,58 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
     private void zoomToEvent(Event e){
         Marker m = _lookup.GetKey(e);
         if(m != null){
-            _googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(m.getPosition(), DEFAULT_ZOOM_LEVEL));
+            //_googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(m.getPosition(), DEFAULT_ZOOM_LEVEL));
+            _googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(m.getPosition(), DEFAULT_ZOOM_LEVEL));
+            m.showInfoWindow();
         }
     }
 
+    private void initAccordion(){
+        ArrayList<Event> events = _lookup.Values();
+        _eventList = new AccordionList<Event>();
+        _eventList.CreateFromListAndSectionSpecification(events, "get_category_name");
+        _eventList.SetActionOnClick(new IAccordionItemSelected<Event>() {
+            @Override
+            public void ItemSelected(Event selectedItem, Event id) {
+                zoomToEvent(selectedItem);
+            }
+        });
+
+        _eventList.SetViewToAppear(new IAccordionItemView<Event>() {
+            @Override
+            public View viewToDisplay(Event item, View convertView) {
+                if (convertView == null) {
+                    convertView = getLayoutInflater().inflate(R.layout.event_child, null);
+                }
+
+                TextView txt = (TextView) convertView.findViewById(R.id.child);
+                txt.setText(item.get_title());
+                return convertView;
+            }
+        });
+
+        _eventList.SetGroupViewToAppear(new IAccordionGroupView<Event>() {
+            @Override
+            public View viewToAppear(AccordionListItem<Event> item, View convertView) {
+                if (convertView == null) {
+                    convertView = getLayoutInflater().inflate(R.layout.event_group, null);
+                }
+                TextView txt = (TextView) convertView.findViewById(R.id.group);
+                txt.setTypeface(null, Typeface.BOLD);
+                txt.setText(item.GetLabel());
+
+                return convertView;
+            }
+        });
+
+        _eventList.InitializeExpandableListView(_listView);
+    }
+
+
+
     @Override
     public boolean onMarkerClick(final Marker marker) {
+        /*
         Log.Info("Marker ID Selected: {0}", marker.getId());
         Event targetedEvent = _lookup.GetVal(marker);
 
@@ -170,6 +250,9 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
         }
 
         return targetedEvent == null;
+        */
+        marker.showInfoWindow();
+        return true;
     }
 
     @Override

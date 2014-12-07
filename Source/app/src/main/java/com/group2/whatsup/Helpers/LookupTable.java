@@ -1,5 +1,6 @@
 package com.group2.whatsup.Helpers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class LookupTable<A,B> {
@@ -46,6 +47,14 @@ public class LookupTable<A,B> {
             _bToALookup.remove(val);
         }
 
+    }
+
+    public ArrayList<A> Keys(){
+        return new ArrayList<A>(_bToALookup.values());
+    }
+
+    public ArrayList<B> Values(){
+        return new ArrayList<B>(_aToBLookup.values());
     }
 
 }
