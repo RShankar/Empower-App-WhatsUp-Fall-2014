@@ -28,6 +28,10 @@ import com.group2.whatsup.Managers.ToastManager;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -262,6 +266,7 @@ public class EventAddEdit extends WUBaseFragmentActivity implements DatePickerDi
     //Edit Mode Logic
     private void setupEditMode(){
         _editMode = true;
+        _startDate = _context.get_startTime();
         setTitle("Edit Your Event");
         _txtTitle.setText(_context.get_title());
         Address existing = _context.get_address();
@@ -281,8 +286,11 @@ public class EventAddEdit extends WUBaseFragmentActivity implements DatePickerDi
                 break;
             }
         }
+
+        updateTimeText();
     }
 
+    //Removes the delete button when adding.
     private void removeDeleteButton(){
         removeViews(_btnDelete);
         /*
@@ -403,7 +411,9 @@ public class EventAddEdit extends WUBaseFragmentActivity implements DatePickerDi
     }
 
     private void updateTimeText(){
-        _lblDate.setText(_startDate.toString());
+        SimpleDateFormat fmt = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+        String date = fmt.format(_startDate);
+        _lblDate.setText(date);
     }
 
     @Override

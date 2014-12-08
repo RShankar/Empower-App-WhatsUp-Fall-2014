@@ -9,6 +9,9 @@ import com.group2.whatsup.Debug.Log;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -98,8 +101,20 @@ public class AccordionList<T> extends BaseControl {
 
 
             }
+
+            sortSections(true);
             //endregion
         }
+    }
+
+    private void sortSections(boolean ascending){
+        Collections.sort(_itemsList, new Comparator<AccordionListItem<T>>() {
+            @Override
+            public int compare(AccordionListItem<T> s1, AccordionListItem<T> s2) {
+                return s1.GetLabel().compareToIgnoreCase(s2.GetLabel());
+            }
+        });
+
     }
 
     public void SetActionOnClick(IAccordionItemSelected<T> clickAction){

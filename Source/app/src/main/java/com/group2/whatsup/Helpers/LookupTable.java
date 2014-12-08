@@ -19,9 +19,25 @@ public class LookupTable<A,B> {
         return null;
     }
 
+    public A GetKeyObj(A key){
+        if(_aToBLookup.containsKey(key)){
+            return _bToALookup.get(_aToBLookup.get(key));
+        }
+
+        return null;
+    }
+
     public B GetVal(A key){
         if(_aToBLookup.containsKey(key)){
             return _aToBLookup.get(key);
+        }
+
+        return null;
+    }
+
+    public B GetValObj(B val){
+        if(_bToALookup.containsKey(val)){
+            return _aToBLookup.get(_bToALookup.get(val));
         }
 
         return null;

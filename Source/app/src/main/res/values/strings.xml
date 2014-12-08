@@ -47,7 +47,8 @@
     <string name="eventaddedit_checkbox_location_selected">Use Selected Location</string>
 
     <!-- Menu Stuff -->
-    <string name="menu_add_event">+</string>
+    <string name="menu_add_event">ADD EVENT</string>
+    <string name="menu_refresh_list">REFRESH</string>
     <string name="navigate_button">Navigate</string>
 
 </resources>

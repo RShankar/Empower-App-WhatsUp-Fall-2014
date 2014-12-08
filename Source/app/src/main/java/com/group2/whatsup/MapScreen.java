@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -32,6 +33,7 @@ import com.group2.whatsup.Managers.Entities.UserManager;
 import com.group2.whatsup.Managers.GPSManager;
 import com.group2.whatsup.Managers.SettingsManager;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 
 
@@ -213,6 +215,9 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
                 txt.setText(item.get_title());
                 txt.setTextColor(SettingsManager.Instance().SecondaryColor());
 
+                final TextView attTxt = (TextView) convertView.findViewById(R.id.mapgroupitem_attendeecount);
+                setAttendeeText(attTxt, item);
+
 
                 //region Attend Button
                 final ImageButton btn = (ImageButton) convertView.findViewById(R.id.mapgroupitem_attendbutton);
@@ -232,11 +237,13 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
                                 item.add_attendee(target);
                                 EventManager.Instance().SaveInThread(item, false);
                                 btn.setBackground(getResources().getDrawable(R.drawable.icon_minus));
+                                setAttendeeText(attTxt, item);
                             }
                             else{
                                 item.get_attendees().remove(target);
                                 EventManager.Instance().SaveInThread(item, false);
                                 btn.setBackground(getResources().getDrawable(R.drawable.icon_plus));
+                                setAttendeeText(attTxt, item);
                             }
                         }
                     });
@@ -279,6 +286,13 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
         _eventList.InitializeExpandableListView(_listView);
     }
 
+    private void setAttendeeText(TextView item, Event e){
+        int newAttAmt = e.get_attendeesCount();
+        String msg = MessageFormat.format("{0} {1} attending", newAttAmt, newAttAmt == 1 ? "person" : "people");
+        item.setText(msg);
+        item.setTextColor(SettingsManager.Instance().SecondaryColor());
+    }
+
 
 
     @Override
@@ -316,6 +330,12 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
         return true;
     }
 
+    private void clearMarkers(){
+        for(Marker m : _lookup.Keys()){
+            m.remove();
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -326,6 +346,14 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
             case R.id.menu_add_event:
                 // open activity
                 changeActivity(EventAddEdit.class);
+                return true;
+            case R.id.menu_refresh_list:
+                clearMarkers();
+                _lookup = new LookupTable<Marker, Event>();
+                _eventList = new AccordionList<Event>();
+                mapInit();
+                initAccordion();
+
                 return true;
         }
         /* This is the default thing, I'm just going to leave it */

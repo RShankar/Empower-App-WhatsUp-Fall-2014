@@ -35,4 +35,15 @@
         android:background="#00ffffff"
         android:layout_toStartOf="@+id/mapgroupitem_attendbutton" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/mapgroupitem_attendeecount"
+        android:layout_below="@+id/mapgroupitem_title"
+        android:layout_alignStart="@+id/mapgroupitem_title"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp" />
+
 </RelativeLayout>
