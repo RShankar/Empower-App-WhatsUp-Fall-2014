@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 public class Validate {
 
+
+
     //region Address Validation
     public static Result Address(Address a){
         ArrayList<Result> results = new ArrayList<Result>();
@@ -27,40 +29,61 @@ public class Validate {
 
     public static Result StreetLine1(String val){
         Result retVal = new Result();
-
         retVal.valid = true;
+
+        if (val.equals("")) {
+            retVal.valid = false;
+            retVal.message = "No address entered";
+        }
 
         return retVal;
     }
 
     public static Result StreetLine2(String val){
         Result retVal = new Result();
-
         retVal.valid = true;
+
+        // can be blank
 
         return retVal;
     }
 
     public static Result City(String val){
         Result retVal = new Result();
-
         retVal.valid = true;
+
+        if (val.equals("")) {
+            retVal.valid = false;
+            retVal.message = "No city entered";
+        }
 
         return retVal;
     }
 
     public static Result State(String val){
         Result retVal = new Result();
-
         retVal.valid = true;
+
+        if (val.equals("")) {
+            retVal.valid = false;
+            retVal.message = "No state entered";
+        }
 
         return retVal;
     }
 
     public static Result PostalCode(String val){
         Result retVal = new Result();
-
         retVal.valid = true;
+
+        if (val.equals("")) {
+            retVal.valid = false;
+            retVal.message = "No postal code entered";
+        }
+        if (!val.matches("\\d{5}")) {
+            retVal.valid = false;
+            retVal.message = "Invalid postal code";
+        }
 
         return retVal;
     }
@@ -69,16 +92,24 @@ public class Validate {
     //region Event Specific Validation
     public static Result EventTitle(String val){
         Result retVal = new Result();
-
         retVal.valid = true;
+
+        if (val.equals("")) {
+            retVal.valid = false;
+            retVal.message = "No event title entered";
+        }
 
         return retVal;
     }
 
     public static Result EventDescription(String val){
         Result retVal = new Result();
-
         retVal.valid = true;
+
+        if (val.equals("")) {
+            retVal.valid = false;
+            retVal.message = "No description entered";
+        }
 
         return retVal;
     }
@@ -86,8 +117,9 @@ public class Validate {
 
     public static Result Website(String val){
         Result retVal = new Result();
-
         retVal.valid = true;
+
+        // I guess this can be blank
 
         return retVal;
     }
