@@ -112,4 +112,8 @@ public class EventManager extends BaseManager {
         _notifications.remove(chg);
     }
 
+    public void DeleteAll(){
+        _service.DeleteAll();
+    }
+
 }

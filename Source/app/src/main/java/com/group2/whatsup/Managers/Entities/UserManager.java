@@ -81,5 +81,7 @@ public class UserManager {
         return _user;
     }
 
-
+    public void DeleteAll(){
+        _userService.DeleteAll();
+    }
 }

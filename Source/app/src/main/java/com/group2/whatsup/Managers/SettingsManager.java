@@ -1,19 +1,52 @@
 package com.group2.whatsup.Managers;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
+import com.group2.whatsup.Debug.Log;
+import com.group2.whatsup.EventAddEdit;
 import com.group2.whatsup.Graphics.ColorHelpers;
+import com.group2.whatsup.LoginScreen;
+import com.group2.whatsup.Managers.Entities.EventManager;
 
 import java.util.HashMap;
 
 public class SettingsManager extends BaseManager {
 
+    //region VarDecs avail from other applications
     static final String PRIMARY_COLOR_KEY = "PRIMARY_COLOR";
-    static final String PRIMARY_COLOR_DEFAULT_VALUE = "#d23660";
+    //Original value: #d23660
+    static final String PRIMARY_COLOR_DEFAULT_VALUE = "#efefef";
 
     static final String DISTANCE_PREF_KEY = "DISTANCE_PREF";
     static final int DISTANCE_PREF_DEFAULT_VALUE = 30;
+
+    static final String START_USERNAME_KEY = "USER_NAME";
+    static final String START_USERNAME_DEFAULT_VALUE = "";
+
+    static final String START_PASSWORD_KEY = "PASS_WORD";
+    static final String START_PASSWORD_DEFAULT_VALUE = "";
+
+    static final String ALLOW_USER_TO_CREATE_KEY = "ALLOW_CREATE";
+    static final Boolean ALLOW_USER_TO_CREATE_DEFAULT_VALUE = true;
+
+    static final String DISALLOW_CREATION_MESSAGE_KEY = "DISALLOW_CREATE_MESSAGE";
+    static final String DISALLOW_CREATION_MESSAGE_DEFAULT_VALUE = "Sorry, you are not permitted to create new events.";
+
+    static final String ALLOW_USER_TO_SIGN_UP_KEY = "ALLOW_SIGNUP";
+    static final Boolean ALLOW_USER_TO_SIGN_UP_DEFAULT_VALUE = true;
+
+    static final String DISALLOW_SIGNUP_MESSAGE_KEY = "DISALLOW_SIGNUP_MESSAGE";
+    static final String DISALLOW_SIGNUP_MESSAGE_DEFAULT_VALUE = "Sorry, signups are disabled for the moment.";
+
+    static final String SHOULD_CLEAR_EVENTS_KEY = "CLEAR_ALL_EVENTS";
+    static final Boolean SHOULD_CLEAR_EVENTS_DEFAULT_VALUE = false;
+
+    static final String SHOULD_CLEAR_USERS_KEY = "CLEAR_ALL_USERS";
+    static final Boolean SHOULD_CLEAR_USERS_DEFAULT_VALUE = false;
+    //endregion
 
     //region Singleton Stuff
     private static SettingsManager _instance;
@@ -25,6 +58,10 @@ public class SettingsManager extends BaseManager {
             _instance = new SettingsManager(state, c);
         }
     }
+
+    public static void Reinitialize(Bundle state, Context c){
+        _instance = new SettingsManager(state, c);
+    }
     //endregion
 
     private SettingsManager(Bundle state, Context c){
@@ -33,25 +70,45 @@ public class SettingsManager extends BaseManager {
         populateInitialSettings(state);
     }
 
-
     private HashMap<String, Object> _settings;
-    private String _defaultPrimaryColor;
-
-
 
     private void populateInitialSettings(Bundle state) {
-        doPut(PRIMARY_COLOR_KEY, state, PRIMARY_COLOR_DEFAULT_VALUE);
-        doPut(DISTANCE_PREF_KEY, state, DISTANCE_PREF_DEFAULT_VALUE);
+        boolean retVal = true;
+
+        retVal &= doPut(PRIMARY_COLOR_KEY, state, PRIMARY_COLOR_DEFAULT_VALUE);
+        retVal &= doPut(DISTANCE_PREF_KEY, state, DISTANCE_PREF_DEFAULT_VALUE);
+        retVal &= doPut(START_USERNAME_KEY, state, START_USERNAME_DEFAULT_VALUE);
+        retVal &= doPut(START_PASSWORD_KEY, state, START_PASSWORD_DEFAULT_VALUE);
+        retVal &= doPut(ALLOW_USER_TO_CREATE_KEY, state, ALLOW_USER_TO_CREATE_DEFAULT_VALUE);
+        retVal &= doPut(DISALLOW_CREATION_MESSAGE_KEY, state, DISALLOW_CREATION_MESSAGE_DEFAULT_VALUE);
+        retVal &= doPut(ALLOW_USER_TO_SIGN_UP_KEY, state, ALLOW_USER_TO_SIGN_UP_DEFAULT_VALUE);
+        retVal &= doPut(DISALLOW_SIGNUP_MESSAGE_KEY, state, DISALLOW_SIGNUP_MESSAGE_DEFAULT_VALUE);
+        retVal &= doPut(SHOULD_CLEAR_EVENTS_KEY, state, SHOULD_CLEAR_EVENTS_DEFAULT_VALUE);
+        retVal &= doPut(SHOULD_CLEAR_USERS_KEY, state, SHOULD_CLEAR_USERS_DEFAULT_VALUE);
+
+        if(!retVal){
+            Log.Info("Failed to load some settings");
+        }
     }
 
-    private void doPut(String key, Bundle state, Object defVal){
+    private boolean doPut(String key, Bundle state, Object defVal){
         if(state != null){
-            Object resultantVal = state.get(key);
-            _settings.put(key, resultantVal == null ? defVal : resultantVal);
+            try{
+                Object resultantVal = state.get(key);
+                _settings.put(key, resultantVal == null ? defVal : resultantVal);
+                Log.Info("Loaded val {0} in for key: {1}, received {2}", _settings.get(key), key, resultantVal);
+                return true;
+            }
+            catch(Exception ex){
+                _settings.put(key, defVal);
+                ToastManager.Instance().SendMessage("Failed to load value for " + key + ", please check your values!", true);
+            }
         }
         else{
             _settings.put(key, defVal);
         }
+
+        return false;
     }
 
 
@@ -83,6 +140,42 @@ public class SettingsManager extends BaseManager {
     }
     //endregion
 
+    //region Default Username
+    public String DefaultUsername(){
+        return _settings.get(START_USERNAME_KEY).toString();
+    }
+    //endregion
+
+    //region Default Password
+    public String DefaultPassword(){
+        return _settings.get(START_PASSWORD_KEY).toString();
+    }
+    //endregion
+
+    //region User Permissions
+    public Boolean UserCanCreate(){
+        return (Boolean)_settings.get(ALLOW_USER_TO_CREATE_KEY);
+    }
+    public Boolean UserCanSignUp(){
+        return (Boolean)_settings.get(ALLOW_USER_TO_SIGN_UP_KEY);
+    }
+    public void SendCannotCreateMessage(){
+        ToastManager.Instance().SendMessage(_settings.get(DISALLOW_CREATION_MESSAGE_KEY).toString(), true);
+    }
+    public void SendCannotSignupMessage(){
+        ToastManager.Instance().SendMessage(_settings.get(DISALLOW_SIGNUP_MESSAGE_KEY).toString(), true);
+    }
+    //endregion
+
+    //region Clearing Stuff
+    public Boolean ShouldClearEvents(){
+        return ShouldClearUsers() || (Boolean)_settings.get(SHOULD_CLEAR_EVENTS_KEY);
+    }
+
+    public Boolean ShouldClearUsers(){
+        return (Boolean)_settings.get(SHOULD_CLEAR_USERS_KEY);
+    }
+    //endregion
 
 
 }

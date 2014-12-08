@@ -2,6 +2,7 @@ package com.group2.whatsup.Services.Entities;
 
 import com.group2.whatsup.Debug.Log;
 import com.group2.whatsup.Entities.Authentication.User;
+import com.group2.whatsup.Managers.ToastManager;
 import com.group2.whatsup.ServiceContracts.Entities.IUserService;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -60,5 +61,20 @@ public class ParseUserService extends BaseParseService implements IUserService {
     @Override
     public boolean Delete(User arg) {
         return false;
+    }
+
+    @Override
+    public void DeleteAll(){
+        ParseQuery<ParseObject> query = queryFor(User.ENTITY_NAME);
+
+        try{
+            List<ParseObject> objs = query.find();
+            ParseObject.deleteAll(objs);
+        }
+        catch(Exception ex){
+            ToastManager.Instance().SendMessage("Failed to delete all users from parse!", true);
+        }
+
+
     }
 }

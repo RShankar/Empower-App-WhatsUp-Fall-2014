@@ -4,6 +4,7 @@ import com.group2.whatsup.Debug.Log;
 import com.group2.whatsup.Entities.Event;
 import com.group2.whatsup.Entities.Location.LatLon;
 import com.group2.whatsup.Managers.SettingsManager;
+import com.group2.whatsup.Managers.ToastManager;
 import com.group2.whatsup.ServiceContracts.Entities.IEventService;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -27,7 +28,6 @@ public class ParseEventService extends BaseParseService implements IEventService
     public ArrayList<Event> RetrieveEventsNear(LatLon loc) {
         ParseQuery<ParseObject> query = queryFor(Event.ENTITY_NAME);
         ParseGeoPoint targetPoint = new ParseGeoPoint(loc.get_latitude(), loc.get_longitude());
-        //query.whereWithinMiles("location", targetPoint, 500);
         query.whereWithinMiles("location", targetPoint, SettingsManager.Instance().DistancePreference());
         includeOwnerAndAttendees(query);
 
@@ -83,5 +83,18 @@ public class ParseEventService extends BaseParseService implements IEventService
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void DeleteAll(){
+        ParseQuery<ParseObject> query = queryFor(Event.ENTITY_NAME);
+
+        try{
+            List<ParseObject> result = query.find();
+            ParseObject.deleteAll(result);
+        }
+        catch(Exception ex){
+            ToastManager.Instance().SendMessage("Failed to delete all events from Parse!", true);
+        }
     }
 }

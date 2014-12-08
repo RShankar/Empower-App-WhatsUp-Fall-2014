@@ -1,6 +1,8 @@
 package com.group2.whatsup;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import com.group2.whatsup.Debug.Log;
 import com.group2.whatsup.Entities.Authentication.User;
 import com.group2.whatsup.Helpers.ActionResult;
 import com.group2.whatsup.Interop.WUBaseActivity;
@@ -32,6 +35,17 @@ public class LoginScreen extends WUBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Bundle test = getIntent().getExtras();
+        if(test != null){
+            Log.Info("Reinitializing SettingsManager");
+            SettingsManager.Reinitialize(test, getApplicationContext());
+        }
+        else{
+            Log.Info("Bundle null. Keeping default values.");
+        }
+
+        clearWorkflow();
+
         if(UserManager.Instance().GetActiveUser() != null){
             changeActivity(MapScreen.class);
         }
@@ -56,6 +70,7 @@ public class LoginScreen extends WUBaseActivity {
         _background = (RelativeLayout)findViewById(R.id.login_loginBackground);
     }
 
+
     @Override
     protected void setViewTheme() {
         super.setViewTheme();
@@ -65,8 +80,8 @@ public class LoginScreen extends WUBaseActivity {
         UIUtils.ThemeTextboxes(_emailField, _passwordField);
 
         //Temporary debug crap.
-        //_emailField.setText("test@test.com");
-        //_passwordField.setText("test");
+        _emailField.setText(SettingsManager.Instance().DefaultUsername());
+        _passwordField.setText(SettingsManager.Instance().DefaultPassword());
 
 
         //Add placeholders.
@@ -84,13 +99,20 @@ public class LoginScreen extends WUBaseActivity {
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(ref, Signup.class);
-                startActivity(i);
+                if(SettingsManager.Instance().UserCanSignUp()){
+                    Intent i = new Intent(ref, Signup.class);
+                    startActivity(i);
+                }
+                else{
+                    SettingsManager.Instance().SendCannotSignupMessage();
+                }
+
             }
         });
 
         _background.setBackgroundColor(SettingsManager.Instance().SecondaryColor());
     }
+
 
     private void attemptLogin(){
         // bring back loading bar
@@ -110,5 +132,58 @@ public class LoginScreen extends WUBaseActivity {
             findViewById(R.id.login_loadingPanel).setVisibility(View.INVISIBLE);
         }
 
+    }
+
+    private void clearWorkflow(){
+        clearEventsWorkflow();
+    }
+
+    private void clearEventsWorkflow(){
+        if(SettingsManager.Instance().ShouldClearEvents()){
+            DialogInterface.OnClickListener dLog = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch(which){
+                        case DialogInterface.BUTTON_POSITIVE:
+                            EventManager.Instance().DeleteAll();
+                            Log.Info("GO GO GO GO GO CLEAR IT GO GO GO GO GO GO");
+                            clearUsersWorkflow();
+                            break;
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            ToastManager.Instance().SendMessage("Did not clear any events", true);
+                            break;
+                    }
+                }
+            };
+            AlertDialog.Builder builder = new AlertDialog.Builder(LoginScreen.this);
+            builder.setMessage("Are you sure you want to delete ALL events?");
+            builder.setPositiveButton("Yes", dLog);
+            builder.setNegativeButton("No", dLog);
+            builder.show();
+        }
+    }
+
+    private void clearUsersWorkflow(){
+        if(SettingsManager.Instance().ShouldClearUsers()){
+            DialogInterface.OnClickListener dLog = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch(which){
+                        case DialogInterface.BUTTON_POSITIVE:
+                            //UserManager.Instance().DeleteAll();
+                            Log.Info("GO GO GO GO GO CLEAR IT GO GO GO GO GO GO");
+                            break;
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            ToastManager.Instance().SendMessage("Did not clear any users", true);
+                            break;
+                    }
+                }
+            };
+            AlertDialog.Builder builder = new AlertDialog.Builder(LoginScreen.this);
+            builder.setMessage("Are you sure you want to delete ALL users?");
+            builder.setPositiveButton("Yes", dLog);
+            builder.setNegativeButton("No", dLog);
+            builder.show();
+        }
     }
 }

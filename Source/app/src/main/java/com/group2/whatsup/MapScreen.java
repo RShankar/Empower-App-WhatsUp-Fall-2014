@@ -297,30 +297,20 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
-        /*
-        Log.Info("Marker ID Selected: {0}", marker.getId());
-        Event targetedEvent = _lookup.GetVal(marker);
-
-        if(targetedEvent != null){
-            if(targetedEvent.get_owner().get_entityId().equals(UserManager.Instance().GetActiveUser().get_entityId())){
-                Log.Info("Owner is the current user. Switching to add/edit.");
-                changeActivity(targetedEvent, EventAddEdit.class);
-            }
-            else{
-                Log.Info("Owner is not the current user. Switching to details.");
-                changeActivity(targetedEvent, EventDetails.class);
-            }
-        }
-
-        return targetedEvent == null;
-        */
         marker.showInfoWindow();
         return true;
     }
 
     @Override
     public void onMapLongClick(LatLng latLng) {
-        changeActivity(latLng, EventAddEdit.class);
+        if(SettingsManager.Instance().UserCanCreate()){
+            // open activity
+            changeActivity(latLng, EventAddEdit.class);
+        }
+        else{
+            SettingsManager.Instance().SendCannotCreateMessage();
+        }
+
     }
 
     @Override
@@ -344,8 +334,15 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
         int id = item.getItemId();
         switch (item.getItemId()) {
             case R.id.menu_add_event:
-                // open activity
-                changeActivity(EventAddEdit.class);
+                if(SettingsManager.Instance().UserCanCreate()){
+                    // open activity
+                    changeActivity(EventAddEdit.class);
+                }
+                else{
+                    SettingsManager.Instance().SendCannotCreateMessage();
+                }
+
+
                 return true;
             case R.id.menu_refresh_list:
                 clearMarkers();

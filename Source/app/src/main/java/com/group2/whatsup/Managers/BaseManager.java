@@ -17,8 +17,8 @@ public abstract class BaseManager {
 
     public static void InitializeAll(Context appContext, Bundle state){
         ParseManager.Initialize(appContext);
-        SettingsManager.Initialize(state, appContext);
         ToastManager.Initialize(appContext);
+        SettingsManager.Initialize(state, appContext);
         AuthenticationManager.Initialize(appContext);
         UserManager.Initialize(appContext);
         EventManager.Initialize(appContext);
