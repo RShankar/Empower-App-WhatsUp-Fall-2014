@@ -106,16 +106,16 @@
                     <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/eventaddedit_address_state"
-                        android:hint="@string/placeholder_state"
+                        android:id="@+id/eventaddedit_address_city"
+                        android:hint="@string/placeholder_city"
                         android:layout_weight="0.33"
                         android:layout_margin="@dimen/eventaddedit_widget_margin" />
 
                     <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/eventaddedit_address_city"
-                        android:hint="@string/placeholder_city"
+                        android:id="@+id/eventaddedit_address_state"
+                        android:hint="@string/placeholder_state"
                         android:layout_weight="0.33"
                         android:layout_margin="@dimen/eventaddedit_widget_margin" />
 

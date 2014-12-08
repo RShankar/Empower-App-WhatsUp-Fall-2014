@@ -330,6 +330,10 @@ public class EventAddEdit extends WUBaseFragmentActivity implements DatePickerDi
     private void save(){
         Event targetEvent = eventFromFields();
         if(validate(targetEvent)){
+            if(_context.get_location() == null && _context.get_address() != null){
+                _context.set_location(LocationHelper.GetLatLonFromAddress(_context.get_address()));
+            }
+
             EventManager.Instance().Save(targetEvent);
             String retMsg = _editMode ? "Event Updated!" : "Event Saved!";
             ToastManager.Instance().SendMessage(retMsg, true);
@@ -369,18 +373,26 @@ public class EventAddEdit extends WUBaseFragmentActivity implements DatePickerDi
         boolean retVal = true;
 
         ArrayList<Validate.Result> res = new ArrayList<Validate.Result>();
-        res.add(Validate.Address(e.get_address()));
+        if(!_chkUseCurrentLocation.isChecked()){
+            res.add(Validate.Address(e.get_address()));
+        }
+
         res.add(Validate.EventTitle(e.get_title()));
         res.add(Validate.Website(e.get_website()));
         res.add(Validate.EventDescription(e.get_description()));
         res.add(Validate.Phone(e.get_phone()));
 
 
+        StringBuilder sb = new StringBuilder();
         for(Validate.Result r : res){
             if(!r.valid){
-                valMsg(r.message);
+                sb.append(r.message + "\n");
                 retVal = false;
             }
+        }
+
+        if(!retVal){
+            valMsg(sb.toString().substring(0, sb.toString().length() - 1));
         }
 
         return retVal;
