@@ -7,4 +7,7 @@
     <dimen name="eventaddedit_widget_margin">5dp</dimen>
     <dimen name="eventaddedit_button_margin">10dp</dimen>
     <dimen name="eventdetails_button_margin">10dp</dimen>
+    <dimen name="map_group_container_margin">10dp</dimen>
+    <dimen name="map_group_heading_margin">30dp</dimen>
+    <dimen name="map_group_item_margin">40dp</dimen>
 </resources>

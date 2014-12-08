@@ -63,7 +63,7 @@ public class EventManager extends BaseManager {
         return retVal;
     }
 
-    public void SaveInThread(final Event event){
+    public void SaveInThread(final Event event, boolean notify){
         boolean isNew = event.get_entityId() == null;
         Thread t = new Thread(new Runnable() {
             @Override
@@ -74,7 +74,10 @@ public class EventManager extends BaseManager {
         });
         t.setName("Event Save Background Thread");
         t.run();
-        alertListeners(event, isNew ? EMNotificationType.Add : EMNotificationType.Modify);
+
+        if(notify){
+            alertListeners(event, isNew ? EMNotificationType.Add : EMNotificationType.Modify);
+        }
     }
 
     public void Save(Event event){

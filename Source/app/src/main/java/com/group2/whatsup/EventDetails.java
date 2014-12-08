@@ -96,7 +96,7 @@ public class EventDetails extends WUBaseActivity {
                 else {
                     // let the user know he's been added and update the amount of attendees
                     ToastManager.Instance().SendMessage("You're attending!", true);
-                    EventManager.Instance().SaveInThread(_context);
+                    EventManager.Instance().SaveInThread(_context, false);
                     _amountAttendees.setText(Integer.toString(_context.get_attendeesCount()));
                 }
             }

@@ -36,7 +36,8 @@
         android:id="@+id/map_contentArea"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_alignTop="@id/dummyView">
+        android:layout_alignTop="@id/dummyView"
+        android:background="@android:color/white">
 
         <ExpandableListView
             android:layout_width="wrap_content"

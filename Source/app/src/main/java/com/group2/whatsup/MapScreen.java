@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -15,6 +17,7 @@ import com.group2.whatsup.Controls.Accordion.IAccordionGroupView;
 import com.group2.whatsup.Controls.Accordion.IAccordionItemSelected;
 import com.group2.whatsup.Controls.Accordion.IAccordionItemView;
 import com.group2.whatsup.Debug.Log;
+import com.group2.whatsup.Entities.Authentication.User;
 import com.group2.whatsup.Entities.Event;
 import com.group2.whatsup.Entities.EventCategory;
 import com.group2.whatsup.Entities.Location.LatLon;
@@ -37,7 +40,9 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
     private RelativeLayout _background;
     private GoogleMap _googleMap;
     private ExpandableListView _listView;
+
     private AccordionList<Event> _eventList;
+
     private EventManager.IEventManagerChanged _emUpdates = new EventManager.IEventManagerChanged() {
         @Override
         public void added(Event e) {
@@ -195,32 +200,81 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
             }
         });
 
+        //region List Item
         _eventList.SetViewToAppear(new IAccordionItemView<Event>() {
             @Override
-            public View viewToDisplay(Event item, View convertView) {
-                if (convertView == null) {
-                    convertView = getLayoutInflater().inflate(R.layout.event_child, null);
+            public View viewToDisplay(final Event item, View convertView) {
+
+                if(convertView == null){
+                    convertView = getLayoutInflater().inflate(R.layout.map_group_item, null);
                 }
 
-                TextView txt = (TextView) convertView.findViewById(R.id.child);
+                TextView txt = (TextView) convertView.findViewById(R.id.mapgroupitem_title);
                 txt.setText(item.get_title());
-                return convertView;
-            }
-        });
+                txt.setTextColor(SettingsManager.Instance().SecondaryColor());
 
+
+                //region Attend Button
+                final ImageButton btn = (ImageButton) convertView.findViewById(R.id.mapgroupitem_attendbutton);
+
+                if(item.has_attendee(UserManager.Instance().GetActiveUser())){
+                    btn.setBackground(getResources().getDrawable(R.drawable.icon_minus));
+                }
+                else{
+                    btn.setBackground(getResources().getDrawable(R.drawable.icon_plus));
+                }
+
+                btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                            User target = UserManager.Instance().GetActiveUser();
+                            if(!item.has_attendee(target)){
+                                item.add_attendee(target);
+                                EventManager.Instance().SaveInThread(item, false);
+                                btn.setBackground(getResources().getDrawable(R.drawable.icon_minus));
+                            }
+                            else{
+                                item.get_attendees().remove(target);
+                                EventManager.Instance().SaveInThread(item, false);
+                                btn.setBackground(getResources().getDrawable(R.drawable.icon_plus));
+                            }
+                        }
+                    });
+                    //endregion
+
+                    //region Workaround for android's failures.
+                    final Button androidSucks = (Button) convertView.findViewById(R.id.mapgroupitem_androidsucks);
+                    androidSucks.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            zoomToEvent(item);
+                        }
+                    });
+                    //endregion
+
+
+                    return convertView;
+                };
+        });
+        //endregion
+
+        //region Group View
         _eventList.SetGroupViewToAppear(new IAccordionGroupView<Event>() {
             @Override
             public View viewToAppear(AccordionListItem<Event> item, View convertView) {
                 if (convertView == null) {
-                    convertView = getLayoutInflater().inflate(R.layout.event_group, null);
+                    convertView = getLayoutInflater().inflate(R.layout.map_group_head, null);
                 }
-                TextView txt = (TextView) convertView.findViewById(R.id.group);
+
+                TextView txt = (TextView) convertView.findViewById(R.id.mapgrouphead_category);
                 txt.setTypeface(null, Typeface.BOLD);
                 txt.setText(item.GetLabel());
+                txt.setTextColor(SettingsManager.Instance().PrimaryColor());
 
                 return convertView;
             }
         });
+        //endregion
 
         _eventList.InitializeExpandableListView(_listView);
     }

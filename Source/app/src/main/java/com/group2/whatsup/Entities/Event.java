@@ -110,11 +110,16 @@ public class Event extends BaseEntity {
             _attendees.add(u);
         return true;
     }
+    public boolean has_attendee(User u){
+        if(_attendees != null){
+            return userExists(u);
+        }
+
+        return false;
+    }
     private boolean userExists(User u){
-        for (User user: _attendees)
-        {
-            if (user.equals(u))
-            {
+        for (User user: _attendees){
+            if (user.equals(u)){
                 return true;
             }
         }
