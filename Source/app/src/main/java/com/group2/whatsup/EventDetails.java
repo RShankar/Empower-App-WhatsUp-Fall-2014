@@ -106,7 +106,7 @@ public class EventDetails extends WUBaseActivity {
             @Override
             public void onClick(View v) {
                 if(GPSManager.Instance().HasLocation()){
-                    Intent target = LocationHelper.GetGoogleMapsIntent(_context.get_location(), GPSManager.Instance().CurrentLocation());
+                    Intent target = LocationHelper.GetGoogleMapsIntent(GPSManager.Instance().CurrentLocation(), _context.get_location());
                     startActivity(target);
                 }
             }
