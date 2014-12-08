@@ -265,7 +265,7 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
                 if (convertView == null) {
                     convertView = getLayoutInflater().inflate(R.layout.map_group_head, null);
                 }
-
+                convertView.setBackgroundColor(SettingsManager.Instance().SecondaryColor());
                 TextView txt = (TextView) convertView.findViewById(R.id.mapgrouphead_category);
                 txt.setTypeface(null, Typeface.BOLD);
                 txt.setText(item.GetLabel());
@@ -329,11 +329,11 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
                 return true;
         }
         /* This is the default thing, I'm just going to leave it */
-        if (id == R.id.action_settings) {
-            return true;
+        if (id != R.id.action_settings) {
+            return super.onOptionsItemSelected(item);
         }
+        return true;
 
-        return super.onOptionsItemSelected(item);
     }
 
 

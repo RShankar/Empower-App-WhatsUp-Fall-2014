@@ -65,8 +65,8 @@ public class LoginScreen extends WUBaseActivity {
         UIUtils.ThemeTextboxes(_emailField, _passwordField);
 
         //Temporary debug crap.
-        _emailField.setText("test@test.com");
-        _passwordField.setText("test");
+        //_emailField.setText("test@test.com");
+        //_passwordField.setText("test");
 
 
         //Add placeholders.
