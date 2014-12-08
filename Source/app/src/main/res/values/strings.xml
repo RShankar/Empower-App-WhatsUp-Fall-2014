@@ -25,12 +25,14 @@
     <!-- Labels -->
     <string name="label_starttime">Starts At:</string>
 
-    <!-- Button Labels -->
-    <string name="label_log_in">Log In</string>
-    <string name="title_activity_login_screen">Log In</string>
+    <!-- Activity Titles -->
+    <string name="title_activity_login_screen">What\'s Up</string>
     <string name="title_activity_map_screen">Map</string>
     <string name="title_activity_event_details">Details</string>
     <string name="title_activity_event_list">All Events</string>
+
+    <!-- Button Labels -->
+    <string name="label_log_in">Log In</string>
     <string name="List">List</string>
     <string name="Map">Map</string>
     <string name="Event">Event</string>
