@@ -15,6 +15,7 @@ import edu.fau.whatsup.Helpers.Validate;
 import edu.fau.whatsup.Interop.WUBaseActivity;
 import edu.fau.whatsup.Managers.AuthenticationManager;
 import edu.fau.whatsup.Managers.Entities.UserManager;
+import edu.fau.whatsup.Managers.FlurryManager;
 import edu.fau.whatsup.Managers.GPSManager;
 import edu.fau.whatsup.Managers.SettingsManager;
 import edu.fau.whatsup.Managers.ToastManager;
@@ -98,6 +99,8 @@ public class Signup extends WUBaseActivity {
 
             if(signupResult.Success){
                 UserManager.Instance().SetActiveUser(signupResult.Result);
+                FlurryManager.Instance().UpdateAge();
+                FlurryManager.Instance().ReportEvent(FlurryManager.Event.SignedUp);
                 Intent i = new Intent(Signup.this, MapScreen.class);
                 startActivity(i);
             }

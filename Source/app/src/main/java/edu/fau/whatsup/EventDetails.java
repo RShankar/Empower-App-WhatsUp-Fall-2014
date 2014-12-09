@@ -18,6 +18,7 @@ import edu.fau.whatsup.Helpers.URIHelper;
 import edu.fau.whatsup.Interop.WUBaseActivity;
 import edu.fau.whatsup.Managers.Entities.EventManager;
 import edu.fau.whatsup.Managers.Entities.UserManager;
+import edu.fau.whatsup.Managers.FlurryManager;
 import edu.fau.whatsup.Managers.GPSManager;
 
 import java.text.MessageFormat;
@@ -127,11 +128,13 @@ public class EventDetails extends WUBaseActivity {
             public void onClick(View v) {
                 if(_context.has_attendee(UserManager.Instance().GetActiveUser())){
                     _context.get_attendees().remove(UserManager.Instance().GetActiveUser());
+                    FlurryManager.Instance().ReportEvent(FlurryManager.Event.RemovedEvent);
                     EventManager.Instance().SaveInThread(_context, true);
                     _btnAttend.setBackground(getResources().getDrawable(R.drawable.icon_plus));
                 }
                 else{
                     _context.get_attendees().add(UserManager.Instance().GetActiveUser());
+                    FlurryManager.Instance().ReportEvent(FlurryManager.Event.AttendedEvent);
                     EventManager.Instance().SaveInThread(_context, true);
                     _btnAttend.setBackground(getResources().getDrawable(R.drawable.icon_minus));
                 }

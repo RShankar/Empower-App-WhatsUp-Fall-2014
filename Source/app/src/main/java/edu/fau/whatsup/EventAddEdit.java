@@ -23,6 +23,7 @@ import edu.fau.whatsup.Helpers.Validate;
 import edu.fau.whatsup.Interop.WUBaseActivity;
 import edu.fau.whatsup.Managers.Entities.EventManager;
 import edu.fau.whatsup.Managers.Entities.UserManager;
+import edu.fau.whatsup.Managers.FlurryManager;
 import edu.fau.whatsup.Managers.GPSManager;
 import edu.fau.whatsup.Managers.ToastManager;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
@@ -149,6 +150,7 @@ public class EventAddEdit extends WUBaseActivity implements DatePickerDialog.OnD
                             case DialogInterface.BUTTON_POSITIVE:
                                 EventManager.Instance().Delete(_context);
                                 ToastManager.Instance().SendMessage("Event Deleted!", true);
+                                FlurryManager.Instance().ReportEvent(FlurryManager.Event.DeletedEvent);
                                 finish();
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
@@ -342,6 +344,7 @@ public class EventAddEdit extends WUBaseActivity implements DatePickerDialog.OnD
             EventManager.Instance().Save(targetEvent);
             String retMsg = _editMode ? "Event Updated!" : "Event Saved!";
             ToastManager.Instance().SendMessage(retMsg, true);
+            FlurryManager.Instance().ReportEvent(_editMode ? FlurryManager.Event.EditedEvent : FlurryManager.Event.AddedEvent);
             finish();
         }
     }

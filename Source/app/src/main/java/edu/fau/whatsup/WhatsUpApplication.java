@@ -4,17 +4,23 @@ import android.app.Application;
 import android.os.Bundle;
 
 import edu.fau.whatsup.Managers.BaseManager;
+import edu.fau.whatsup.Managers.FlurryManager;
 
 public class WhatsUpApplication extends Application {
+
+    private static final String FLURRY_APP_EVENT = "Ran Application";
 
     @Override
     public void onCreate() {
         super.onCreate();
         BaseManager.InitializeAll(getApplicationContext(), new Bundle());
+        FlurryManager.Instance().StartCustomEvent(FLURRY_APP_EVENT);
     }
 
     @Override
     public void onTerminate() {
+        FlurryManager.Instance().EndCustomEvent(FLURRY_APP_EVENT);
+        FlurryManager.Instance().Destroy();
         super.onTerminate();
     }
 

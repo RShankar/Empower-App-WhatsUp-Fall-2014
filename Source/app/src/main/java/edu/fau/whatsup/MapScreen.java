@@ -29,6 +29,7 @@ import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 import edu.fau.whatsup.Managers.Entities.EventManager;
 import edu.fau.whatsup.Managers.Entities.UserManager;
+import edu.fau.whatsup.Managers.FlurryManager;
 import edu.fau.whatsup.Managers.GPSManager;
 import edu.fau.whatsup.Managers.SettingsManager;
 
@@ -75,6 +76,7 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.activity_map_screen);
         EventManager.Instance().ReceiveNotifications(_emUpdates);
+        FlurryManager.Instance().UpdateAge();
     }
 
     protected void onStop(){
@@ -235,12 +237,14 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
                             User target = UserManager.Instance().GetActiveUser();
                             if(!item.has_attendee(target)){
                                 item.add_attendee(target);
+                                FlurryManager.Instance().ReportEvent(FlurryManager.Event.AttendedEvent);
                                 EventManager.Instance().SaveInThread(item, false);
                                 btn.setBackground(getResources().getDrawable(R.drawable.icon_minus));
                                 setAttendeeText(attTxt, item);
                             }
                             else{
                                 item.get_attendees().remove(target);
+                                FlurryManager.Instance().ReportEvent(FlurryManager.Event.RemovedEvent);
                                 EventManager.Instance().SaveInThread(item, false);
                                 btn.setBackground(getResources().getDrawable(R.drawable.icon_plus));
                                 setAttendeeText(attTxt, item);
