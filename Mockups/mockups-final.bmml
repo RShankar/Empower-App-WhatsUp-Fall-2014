@@ -1,0 +1,172 @@
+<mockup version="1.0" skin="sketch" fontFace="Balsamiq Sans" measuredW="1797" measuredH="1776" mockupW="1797" mockupH="1756">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::Image" x="60" y="20" w="364" h="538" measuredW="800" measuredH="1182" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <src>./assets/1-login-screen-only.png</src>
+      </controlProperties>
+    </control>
+    <control controlID="1" controlTypeID="com.balsamiq.mockups::Image" x="805" y="28" w="364" h="538" measuredW="800" measuredH="1182" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <src>./assets/2-signup-screen-only.png</src>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="2" controlTypeID="com.balsamiq.mockups::Image" x="411" y="619" w="364" h="538" measuredW="800" measuredH="1182" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <src>./assets/3-map-screen-only.png</src>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::Image" x="1433" y="1136" w="364" h="538" measuredW="800" measuredH="1182" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <src>./assets/4-details-screen-only.png</src>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::Image" x="873" y="1136" w="364" h="538" measuredW="800" measuredH="1182" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <src>./assets/5-eventaddedit-screen-only.png</src>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::Arrow" x="373" y="328" w="417" h="10" measuredW="150" measuredH="100" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>User%20Clicks%20Sign%20Up</text>
+      </controlProperties>
+    </control>
+    <control controlID="6" controlTypeID="com.balsamiq.mockups::Arrow" x="274" y="291" w="165" h="319" measuredW="150" measuredH="100" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Login%20Valid</text>
+      </controlProperties>
+    </control>
+    <control controlID="7" controlTypeID="com.balsamiq.mockups::Arrow" x="642" y="338" w="202" h="276" measuredW="150" measuredH="100" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <direction>bottom</direction>
+        <text>Information%20Valid</text>
+      </controlProperties>
+    </control>
+    <control controlID="9" controlTypeID="com.balsamiq.mockups::RoundButton" x="1043" y="834" w="224" h="61" measuredW="32" measuredH="32" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Is%20Current%20User%20Owner%3F</text>
+      </controlProperties>
+    </control>
+    <control controlID="10" controlTypeID="com.balsamiq.mockups::Arrow" x="627" y="721" w="416" h="122" measuredW="150" measuredH="100" zOrder="9" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>User%20Taps%20InfoWindow</text>
+      </controlProperties>
+    </control>
+    <control controlID="11" controlTypeID="com.balsamiq.mockups::Arrow" x="955" y="876" w="75" h="247" measuredW="150" measuredH="100" zOrder="10" locked="false" isInGroup="-1">
+      <controlProperties>
+        <direction>bottom</direction>
+        <text>Yes</text>
+      </controlProperties>
+    </control>
+    <control controlID="12" controlTypeID="com.balsamiq.mockups::Arrow" x="1275" y="876" w="158" h="254" measuredW="150" measuredH="100" zOrder="11" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>No</text>
+      </controlProperties>
+    </control>
+    <control controlID="13" controlTypeID="com.balsamiq.mockups::CallOut" x="95" y="78" w="-1" h="-1" measuredW="38" measuredH="40" zOrder="12" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>1</text>
+      </controlProperties>
+    </control>
+    <control controlID="14" controlTypeID="com.balsamiq.mockups::CallOut" x="822" y="80" w="-1" h="-1" measuredW="36" measuredH="37" zOrder="13" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>2</text>
+      </controlProperties>
+    </control>
+    <control controlID="15" controlTypeID="com.balsamiq.mockups::StickyNote" x="86" y="371" w="133" h="86" measuredW="109" measuredH="123" zOrder="14" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>10</size>
+        <text>The%20user%20can%20log%20in%20using%20their%20email%20address%20%26%20password%20registered</text>
+      </controlProperties>
+    </control>
+    <control controlID="16" controlTypeID="com.balsamiq.mockups::StickyNote" x="917" y="391" w="140" h="119" measuredW="109" measuredH="123" zOrder="15" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>10</size>
+        <text>If%20the%20user%20does%20not%20have%20an%20account%2C%20they%20can%20register%20quickly%20with%20their%20email%2C%20a%20password%2C%20first%20name%2C%20last%20name%2C%20and%20their%20age.</text>
+      </controlProperties>
+    </control>
+    <control controlID="20" controlTypeID="com.balsamiq.mockups::StickyNote" x="689" y="1089" w="109" h="161" measuredW="109" measuredH="123" zOrder="16" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>10</size>
+        <text>The%20user%20can%20choose%20to%20attend%20an%20event%20by%20clicking%20the%20plus%20icon.%20If%20they%27re%20already%20attending%2C%20they%20can%20choose%20to%20leave%20the%20event%20by%20clicking%20the%20minus%20icon.</text>
+      </controlProperties>
+    </control>
+    <control controlID="21" controlTypeID="com.balsamiq.mockups::StickyNote" x="559" y="938" w="109" h="151" measuredW="109" measuredH="123" zOrder="17" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>10</size>
+        <text>A%20user%20can%20tap%20on%20an%20entry%20in%20this%20list%20to%20zoom%20to%20that%20location.%20The%20map%20will%20zoom%20there%20and%20open%20an%20infowindow%20on%20the%20marker%20for%20that%20particular%20event.</text>
+      </controlProperties>
+    </control>
+    <control controlID="22" controlTypeID="com.balsamiq.mockups::StickyNote" x="1427" y="1653" w="109" h="123" measuredW="109" measuredH="123" zOrder="18" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>10</size>
+        <text>The%20user%20will%20be%20able%20to%20open%20google%20maps%20to%20navigate%20to%20this%20location%20in%20Google%20Maps.</text>
+      </controlProperties>
+    </control>
+    <control controlID="23" controlTypeID="com.balsamiq.mockups::StickyNote" x="1110" y="1386" w="157" h="123" measuredW="109" measuredH="123" zOrder="19" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>10</size>
+        <text>The%20user%20can%20fill%20in%20the%20information%20for%20the%20event%20here.%20If%20editing%20an%20event%2C%20these%20fields%20will%20be%20prepopulated%20with%20the%20values%20they%20entered%20before</text>
+      </controlProperties>
+    </control>
+    <control controlID="24" controlTypeID="com.balsamiq.mockups::StickyNote" x="1551" y="1653" w="109" h="123" measuredW="109" measuredH="123" zOrder="20" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>10</size>
+        <text>The%20user%20will%20be%20able%20to%20open%20their%20browser%20if%20a%20website%20is%20defined%20for%20the%20event</text>
+      </controlProperties>
+    </control>
+    <control controlID="25" controlTypeID="com.balsamiq.mockups::StickyNote" x="1688" y="1653" w="109" h="123" measuredW="109" measuredH="123" zOrder="21" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>10</size>
+        <text>The%20user%20should%20also%20be%20able%20to%20attend%20this%20event%20by%20a%20button%20in%20the%20top%20right</text>
+      </controlProperties>
+    </control>
+    <control controlID="26" controlTypeID="com.balsamiq.mockups::StickyNote" x="1134" y="1182" w="109" h="123" measuredW="109" measuredH="123" zOrder="22" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>10</size>
+        <text>If%20editing%2C%20there%20will%20be%20a%20delete%20button%20available%20to%20delete%20this%20event%20for%20other%20users.</text>
+      </controlProperties>
+    </control>
+    <control controlID="27" controlTypeID="com.balsamiq.mockups::CallOut" x="420" y="656" w="-1" h="-1" measuredW="34" measuredH="39" zOrder="23" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>3</text>
+      </controlProperties>
+    </control>
+    <control controlID="28" controlTypeID="com.balsamiq.mockups::CallOut" x="734" y="902" w="-1" h="-1" measuredW="36" measuredH="39" zOrder="24" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>4</text>
+      </controlProperties>
+    </control>
+    <control controlID="29" controlTypeID="com.balsamiq.mockups::CallOut" x="734" y="965" w="-1" h="-1" measuredW="41" measuredH="39" zOrder="25" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>5</text>
+      </controlProperties>
+    </control>
+    <control controlID="30" controlTypeID="com.balsamiq.mockups::CallOut" x="837" y="1136" w="-1" h="-1" measuredW="36" measuredH="43" zOrder="26" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>6</text>
+      </controlProperties>
+    </control>
+    <control controlID="31" controlTypeID="com.balsamiq.mockups::CallOut" x="1395" y="1137" w="-1" h="-1" measuredW="38" measuredH="40" zOrder="27" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>7</text>
+      </controlProperties>
+    </control>
+    <control controlID="33" controlTypeID="com.balsamiq.mockups::Paragraph" x="0" y="1157" w="592" h="535" measuredW="275" measuredH="80" zOrder="28" locked="false" isInGroup="-1">
+      <controlProperties>
+        <bold>false</bold>
+        <text>*1%20-%20Login%20Screen*%0A%7Bcolor%3Ared%7DLayout%7Bcolor%7D%3A%20activity_login_screen.xml%0A%7Bcolor%3Ared%7DClass%7Bcolor%7D%3A%20LoginScreen%2C%20inheriting%20from%20WUBaseActivity%0A%20%0A%20%0A*2%20-%20Signup%20Screen*%0A%7Bcolor%3Ared%7DLayout%7Bcolor%7D%3A%20activity_signup.xml%0A%7Bcolor%3Ared%7DClass%7Bcolor%7D%3A%20Signup%2C%20inheriting%20from%20WUBaseActivity%0A%20%0A%20%0A*3%20-%20Map%20Screen*%0A%7Bcolor%3Ared%7DLayout%7Bcolor%7D%3A%20activity_map_screen.xml%0A%7Bcolor%3Ared%7DClass%7Bcolor%7D%3A%20MapScreen%2C%20inheriting%20from%20WUBaseActivity%0A%20%0A%20%0A*4%20-%20Event%20Group%20Header*%0A%7Bcolor%3Ared%7DLayout%7Bcolor%7D%3A%20map_group_head.xml%0A%7Bcolor%3Ared%7DUsed%20In%7Bcolor%7D%3A%20MapScreen%2C%20dynamically%20generated%20from%20the%20AccordionList%3CT%3E%20wrapper%20class%0A%20%0A%20%0A*5%20-%20Event%20Group%20Item*%0A%7Bcolor%3Ared%7DLayout%7Bcolor%7D%3A%20map_group_item.xml%0A%7Bcolor%3Ared%7DUsed%20In%7Bcolor%7D%3A%20MapScreen%2C%20dynamically%20generated%20from%20the%20AccordionListItem%3CT%3E%20wrapper%20class%0A%20%0A%20%0A*6%20-%20Event%20Add/Edit*%0A%7Bcolor%3Ared%7DLayout%7Bcolor%7D%3A%20activity_event_add_edit.xml%20%28Dialog%29%0A%7Bcolor%3Ared%7DClass%7Bcolor%7D%3A%20EventAddEdit%2C%20inheriting%20from%20WUBaseActivity.%20Hides%20title%20bar%20via%20overloaded%20onCreate%28%29%0A%20%0A%20%0A*7%20-%20Event%20Details*%0A%7Bcolor%3Ared%7DLayout%7Bcolor%7D%3A%20activity_event_details.xml%20%28Dialog%29%0A%7Bcolor%3Ared%7DClass%7Bcolor%7D%3A%20EventDetails%2C%20inheriting%20from%20WUBaseActivity.%20Hides%20title%20bar%20via%20overloaded%20onCreate%28%29</text>
+      </controlProperties>
+    </control>
+    <control controlID="34" controlTypeID="com.balsamiq.mockups::Label" x="0" y="1130" w="-1" h="-1" measuredW="146" measuredH="26" zOrder="29" locked="false" isInGroup="-1">
+      <controlProperties>
+        <bold>true</bold>
+        <size>18</size>
+        <text>Technical%20Details</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>
