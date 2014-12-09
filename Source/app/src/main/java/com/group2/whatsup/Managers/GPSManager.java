@@ -31,6 +31,7 @@ public class GPSManager extends BaseManager{
     private LocationListener _updateListener;
     private ArrayList<Runnable> _waitingCallbacks;
     private final static int SECONDS_BETWEEN_GPS_POLLS = 60;
+    private boolean _hasBeenOverridden;
     private final Runnable _reenableGps = new Runnable(){
         @Override
         public void run() {
@@ -44,12 +45,13 @@ public class GPSManager extends BaseManager{
         _locMgr = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
         _handler = new Handler();
         _waitingCallbacks = new ArrayList<Runnable>();
-
+        _hasBeenOverridden = false;
         //region Update Listener Instantiation.
         _updateListener = new LocationListener(){
             @Override
             public void onLocationChanged(Location location) {
                 Log.Info("Updating location with Lat & Lon {0}, {1}", location.getLatitude(), location.getLongitude());
+                _hasBeenOverridden = false;
                 final LatLon newLoc = new LatLon(location.getLatitude(), location.getLongitude());
 
                 //region Update logic to run on new location found.
@@ -126,13 +128,16 @@ public class GPSManager extends BaseManager{
         return _currentLocation;
     }
 
+    public void OverrideCurrentLocation(LatLon loc){
+        _currentLocation = loc;
+        _hasBeenOverridden = true;
+    }
+
     public void WhenLocationSet(Runnable r){
-        if(!HasLocation()){
-            if(_waitingCallbacks == null){
-                _waitingCallbacks = new ArrayList<Runnable>();
-            }
-            _waitingCallbacks.add(r);
+        if(_waitingCallbacks == null){
+            _waitingCallbacks = new ArrayList<Runnable>();
         }
+        _waitingCallbacks.add(r);
     }
 
 }

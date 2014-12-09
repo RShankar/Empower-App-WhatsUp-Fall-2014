@@ -66,6 +66,10 @@ public class UserManager {
             SaveUser(u);
         }
         else{
+            if(u.get_lastKnownLocation() != null){
+                GPSManager.Instance().OverrideCurrentLocation(u.get_lastKnownLocation());
+            }
+
             GPSManager.Instance().WhenLocationSet(new Runnable() {
                 @Override
                 public void run() {
