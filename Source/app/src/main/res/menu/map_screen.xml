@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.group2.whatsup.MapScreen" >
+    tools:context="edu.fau.whatsup.MapScreen" >
     <!-- android:icon="@drawable/ic_action_search"
         android:Title="@string/action_search"-->
     <item android:id="@+id/menu_add_event"

@@ -17,7 +17,7 @@ boolean clearAllUsers;
 //Set your options up!
 void setup(){
   //What the primary color of the applicaton should be!
-  primaryColor = "#d23660";
+  primaryColor = "#efefef";
   
   //how many miles to search by
   milesToSearch = 30;
@@ -54,7 +54,7 @@ void setup(){
 //Now boot up our application & have at it!
 void doIntent(){
   try{
-    Intent wuIntent = getPackageManager().getLaunchIntentForPackage("com.group2.whatsup");
+    Intent wuIntent = getPackageManager().getLaunchIntentForPackage("edu.fau.whatsup");
     wuIntent.putExtra("PRIMARY_COLOR", primaryColor);
     wuIntent.putExtra("DISTANCE_PREF", milesToSearch);
     wuIntent.putExtra("USER_NAME", userName);
