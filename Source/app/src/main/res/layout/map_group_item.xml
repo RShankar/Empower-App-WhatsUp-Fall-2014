@@ -5,17 +5,39 @@
     android:focusable="false"
     >
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/mapgroupitem_title"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/map_group_item_margin"
-        android:focusable="false"
-        android:clickable="false"
-        />
+        android:layout_marginLeft="@dimen/map_group_item_margin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Text"
+            android:id="@+id/mapgroupitem_title"
+            android:focusable="false"
+            android:clickable="false"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:id="@+id/mapgroupitem_attendeecount"
+            android:layout_marginLeft="5dp" />
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/mapgroupitem_androidsucks"
+        android:background="#00ffffff"
+         />
 
     <ImageButton
         android:layout_width="24dp"
@@ -27,23 +49,5 @@
         android:focusable="false"
         android:clickable="false"
         />
-
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/mapgroupitem_androidsucks"
-        android:background="#00ffffff"
-        android:layout_toStartOf="@+id/mapgroupitem_attendbutton" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:id="@+id/mapgroupitem_attendeecount"
-        android:layout_below="@+id/mapgroupitem_title"
-        android:layout_alignStart="@+id/mapgroupitem_title"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp" />
 
 </RelativeLayout>

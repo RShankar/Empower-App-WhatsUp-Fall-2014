@@ -12,6 +12,7 @@
     <dimen name="map_group_item_margin">40dp</dimen>
     <dimen name="eventdetails_section_topandbottommargin">10dp</dimen>
     <dimen name="eventdetails_max_desc_size">250dp</dimen>
+    <dimen name="eventdetails_navigate_button_padding">25dp</dimen>
 
     <dimen name="eventdetails_titlesize">40sp</dimen>
     <dimen name="eventdetails_margins">10dp</dimen>

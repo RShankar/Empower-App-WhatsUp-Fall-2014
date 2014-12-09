@@ -269,7 +269,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/navigate_button"
-            android:id="@+id/eventdetails_navigate" />
+            android:id="@+id/eventdetails_navigate"
+            android:padding="@dimen/eventdetails_navigate_button_padding" />
 
     </LinearLayout>
 
