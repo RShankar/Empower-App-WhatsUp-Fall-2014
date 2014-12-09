@@ -17,7 +17,7 @@ boolean clearAllUsers;
 //Set your options up!
 void setup(){
   //What the primary color of the applicaton should be!
-  primaryColor = "#efefef";
+  primaryColor = "#cdcdcd";
   
   //how many miles to search by
   milesToSearch = 30;
