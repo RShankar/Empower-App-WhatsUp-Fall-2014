@@ -21,6 +21,8 @@
     <string name="placeholder_postalcode">Zip</string>
     <string name="placeholder_description">A short description of what\'s up</string>
     <string name="placeholder_phone">Phone Number</string>
+    <string name="placeholder_firstName">First Name</string>
+    <string name="placeholder_lastName">Last Name</string>
 
     <!-- Labels -->
     <string name="label_starttime">Starts At:</string>

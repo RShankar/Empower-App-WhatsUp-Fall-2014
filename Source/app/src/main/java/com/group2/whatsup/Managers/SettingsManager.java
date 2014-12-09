@@ -17,8 +17,9 @@ public class SettingsManager extends BaseManager {
 
     //region VarDecs avail from other applications
     static final String PRIMARY_COLOR_KEY = "PRIMARY_COLOR";
-    //Original value: #d23660
-    static final String PRIMARY_COLOR_DEFAULT_VALUE = "#efefef";
+    //Original value:
+    //Good value: #efefef
+    static final String PRIMARY_COLOR_DEFAULT_VALUE = "#d23660  ";
 
     static final String DISTANCE_PREF_KEY = "DISTANCE_PREF";
     static final int DISTANCE_PREF_DEFAULT_VALUE = 30;
@@ -117,15 +118,28 @@ public class SettingsManager extends BaseManager {
         return _settings.containsKey(PRIMARY_COLOR_KEY) ? _settings.get(PRIMARY_COLOR_KEY).toString() : PRIMARY_COLOR_DEFAULT_VALUE;
     }
     public int PrimaryColor(){
-        return ColorHelpers.GetColor(PrimaryColorHex());
+        int retVal = 0;
+        try{
+            retVal = ColorHelpers.GetColor(PrimaryColorHex());
+        }
+        catch(Exception ex){
+            ToastManager.Instance().SendMessage("Failed to parse your color, Android's color library can be a little wonky sometimes. Try another!", true);
+            _settings.put(PRIMARY_COLOR_KEY, PRIMARY_COLOR_DEFAULT_VALUE);
+            retVal = ColorHelpers.GetColor(PrimaryColorHex());
+        }
+
+        return retVal;
+
     }
     //endregion
 
     //region Secondary Color
     public String SecondaryColorHex(){
+        PrimaryColor();
         return ColorHelpers.GetHexCompliment(PrimaryColorHex());
     }
     public int SecondaryColor(){
+        PrimaryColor();
         return ColorHelpers.GetColor(SecondaryColorHex());
     }
     //endregion

@@ -24,6 +24,10 @@ public class UIUtils {
     }
     public static int getInt(EditText txt){
         String text = getText(txt);
+        if(text.isEmpty()){
+            return 0;
+        }
+
         return Integer.parseInt(text);
     }
     public static double getDouble(EditText txt){

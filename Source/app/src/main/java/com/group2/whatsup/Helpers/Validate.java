@@ -145,6 +145,86 @@ public class Validate {
         return retVal;
     }
 
+    public static Result FirstName(String val){
+        Result retVal = new Result();
+        retVal.valid = true;
+
+        if(val.length() == 0){
+            retVal.valid &= false;
+            retVal.message = "You must enter a first name";
+        }
+
+        if(val.length() > 15){
+            retVal.valid &= false;
+            retVal.message = "First names cannot be longer than 15 characters.";
+        }
+
+
+        return retVal;
+    }
+
+    public static Result LastName(String val){
+        Result retVal = new Result();
+        retVal.valid = true;
+
+        if(val.length() == 0){
+            retVal.valid &= false;
+            retVal.message = "You must enter a last name";
+        }
+
+        if(val.length() > 20){
+            retVal.valid &= false;
+            retVal.message = "Last names cannot be longer than 20 characters.";
+        }
+
+        return retVal;
+    }
+
+    public static Result Username(String val){
+        Result retVal = new Result();
+        retVal.valid = true;
+
+        if(!val.matches(".*@.*\\..*")){
+            retVal.valid &= false;
+            retVal.message = "Invalid email address entered!";
+        }
+
+        return retVal;
+    }
+
+    public static Result Password(String val){
+        Result retVal = new Result();
+        retVal.valid = true;
+
+        if(val.length() == 0){
+            retVal.valid &= false;
+            retVal.message = "You must enter a password!";
+        }
+
+        if(val.length() > 20){
+            retVal.valid &= false;
+            retVal.message = "Passwords can be a maximum of 20 characters";
+        }
+
+        return retVal;
+    }
+
+    public static Result Age(int age){
+        Result retVal = new Result();
+        retVal.valid = true;
+
+        if(age > 122){
+            retVal.valid &= false;
+            retVal.message = "There's no way you're that old! =)";
+        }
+
+        if(age <= 0){
+            retVal.valid &= false;
+            retVal.message = "Please enter your age";
+        }
+
+        return retVal;
+    }
 
 
     public static class Result{
