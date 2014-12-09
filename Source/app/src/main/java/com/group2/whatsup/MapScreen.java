@@ -138,7 +138,8 @@ public class MapScreen extends WUBaseActivity implements GoogleMap.OnMarkerClick
     private void addEventMarker(Event event){
         Marker m = _googleMap.addMarker(new MarkerOptions()
                         .title(event.get_title())
-                        .snippet(event.get_description())
+                        //.snippet(event.get_description())
+                        .snippet("Tap to view details")
                         .position(event.get_location_LatLng())
                         .draggable(false)
         );

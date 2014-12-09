@@ -20,7 +20,7 @@ import com.group2.whatsup.Entities.Location.Address;
 import com.group2.whatsup.Entities.Location.LatLon;
 import com.group2.whatsup.Helpers.LocationHelper;
 import com.group2.whatsup.Helpers.Validate;
-import com.group2.whatsup.Interop.WUBaseFragmentActivity;
+import com.group2.whatsup.Interop.WUBaseActivity;
 import com.group2.whatsup.Managers.Entities.EventManager;
 import com.group2.whatsup.Managers.Entities.UserManager;
 import com.group2.whatsup.Managers.GPSManager;
@@ -28,9 +28,6 @@ import com.group2.whatsup.Managers.ToastManager;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
-import java.text.DateFormat;
-import java.text.FieldPosition;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -38,7 +35,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class EventAddEdit extends WUBaseFragmentActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+public class EventAddEdit extends WUBaseActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private Event _context;
     private boolean _editMode;
@@ -72,7 +69,7 @@ public class EventAddEdit extends WUBaseFragmentActivity implements DatePickerDi
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState, R.layout.activity_event_add_edit);
+        super.onCreate(savedInstanceState, R.layout.activity_event_add_edit, true);
     }
 
     @Override

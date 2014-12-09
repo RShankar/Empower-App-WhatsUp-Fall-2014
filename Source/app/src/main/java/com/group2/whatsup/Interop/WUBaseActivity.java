@@ -3,9 +3,12 @@ package com.group2.whatsup.Interop;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewManager;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -15,7 +18,7 @@ import com.group2.whatsup.Entities.Event;
 import com.group2.whatsup.Managers.Entities.UserManager;
 import com.group2.whatsup.R;
 
-public class WUBaseActivity extends Activity {
+public class WUBaseActivity extends FragmentActivity {
 
     protected final static String BUNDLE_EVENT_ID_KEY = "event_ID";
     protected final static String BUNDLE_EVENT_TITLE_KEY = "event_title";
@@ -28,6 +31,14 @@ public class WUBaseActivity extends Activity {
         setContentView(viewId);
         initializeViewControls();
         setViewTheme();
+    }
+
+    protected void onCreate(Bundle savedInstanceState, int viewId, boolean hideTitle){
+        if(hideTitle){
+            this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
+        onCreate(savedInstanceState, viewId);
     }
 
     protected void initializeViewControls(){

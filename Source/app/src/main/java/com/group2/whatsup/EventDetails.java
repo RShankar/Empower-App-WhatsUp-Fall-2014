@@ -1,11 +1,15 @@
 package com.group2.whatsup;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.group2.whatsup.Debug.Log;
@@ -13,11 +17,15 @@ import com.group2.whatsup.Entities.Authentication.User;
 import com.group2.whatsup.Entities.Event;
 import com.group2.whatsup.Entities.Location.Address;
 import com.group2.whatsup.Helpers.LocationHelper;
+import com.group2.whatsup.Helpers.URIHelper;
 import com.group2.whatsup.Interop.WUBaseActivity;
 import com.group2.whatsup.Managers.Entities.EventManager;
 import com.group2.whatsup.Managers.Entities.UserManager;
 import com.group2.whatsup.Managers.GPSManager;
 import com.group2.whatsup.Managers.ToastManager;
+
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 
 
 public class EventDetails extends WUBaseActivity {
@@ -26,91 +34,136 @@ public class EventDetails extends WUBaseActivity {
 
     private Event _context;
 
-    private TextView _eventTitle;
-    private TextView _amountAttendees;
-    private TextView _timeStart;
-    private TextView _stl1;
-    private TextView _stl2;
-    private TextView _city;
-    private TextView _state;
-    private TextView _zip;
-    private TextView _description;
-    private TextView _website;
-    private Button   _addUser;
-    private Button   _btnNavigation;
+    private ImageButton _btnAttend;
+    private Button _btnNavigate;
+    private Button _btnWebsite;
+
+    private TextView _lblTitle;
+    private TextView _lblAttendees;
+    private TextView _lblStreet1;
+    private TextView _lblStreet2;
+    private TextView _lblCity;
+    private TextView _lblState;
+    private TextView _lblZip;
+    private TextView _lblDate;
+    private TextView _lblTime;
+    private TextView _lblCategory;
+    private TextView _lblDescription;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if(savedInstanceState != null){
-            Object possContext = savedInstanceState.get(EVENT_CONTEXT_KEY);
-            if(possContext != null) _context = (Event) possContext;
-        }
-        super.onCreate(savedInstanceState, R.layout.activity_event_details);
+        retrieveEvent();
+        super.onCreate(savedInstanceState, R.layout.activity_event_details, true);
     }
 
     @Override
     protected void initializeViewControls() {
         super.initializeViewControls();
-        _eventTitle = (TextView) findViewById(R.id.eventTitle);
-        _amountAttendees = (TextView) findViewById(R.id.amountAttendees);
-        _timeStart = (TextView) findViewById(R.id.time);
-        _stl1 = (TextView) findViewById(R.id.stl1);
-        _stl2 = (TextView) findViewById(R.id.stl2);
-        _city = (TextView) findViewById(R.id.city);
-        _state = (TextView) findViewById(R.id.state);
-        _zip = (TextView) findViewById(R.id.zip);
-        _description = (TextView) findViewById(R.id.description);
-        _website = (TextView) findViewById(R.id.website);
-        _addUser = (Button) findViewById(R.id.eventdetails_joinevent);
-        _btnNavigation = (Button) findViewById(R.id.eventdetails_navigateto);
+        _lblTitle = (TextView) findViewById(R.id.eventdetails_eventtitle);
+        _btnAttend = (ImageButton) findViewById(R.id.eventdetails_attendbutton);
+        _lblAttendees = (TextView) findViewById(R.id.eventdetails_peopleattendinglabel);
+        _lblStreet1 = (TextView) findViewById(R.id.eventdetails_addressstreet1);
+        _lblStreet2 = (TextView) findViewById(R.id.eventdetails_addressstreet2);
+        _lblCity = (TextView) findViewById(R.id.eventdetails_addresscity);
+        _lblState = (TextView) findViewById(R.id.eventdetails_addressstate);
+        _lblZip = (TextView) findViewById(R.id.eventdetails_addresspostalcode);
+        _btnWebsite = (Button) findViewById(R.id.eventdetails_visitwebsite);
+        _lblDate = (TextView) findViewById(R.id.eventdetails_startdate);
+        _lblTime = (TextView) findViewById(R.id.eventdetails_starttime);
+        _lblCategory = (TextView) findViewById(R.id.eventdetails_category);
+        _lblDescription = (TextView) findViewById(R.id.eventdetails_description);
+        _btnNavigate = (Button) findViewById(R.id.eventdetails_navigate);
     }
 
     @Override
     protected void setViewTheme(){
-        setViewContent();
+        _lblTitle.setText(_context.get_title());
+        Address loc = _context.get_address();
+
+        if(loc != null){
+            _lblStreet1.setText(loc.StreetLine1);
+            _lblStreet2.setText(loc.StreetLine2);
+            _lblCity.setText(loc.City);
+            _lblState.setText(loc.State);
+            _lblZip.setText(loc.PostalCode);
+        }
+
+        _lblCategory.setText(_context.get_category_name());
+        _lblDescription.setText(_context.get_description());
+        UIUtils.ThemeButtons(_btnNavigate, _btnWebsite);
+
+        initAttendButton();
+        initAttendeeCount();
+        initWebsiteButton();
+        initNavigateButton();
+        initDateTimeLabels();
     }
 
-    private void setViewContent() {
-        retrieveEvent();  // get event ID from the map marker clicked
-
-        UIUtils.ThemeButtons(_btnNavigation, _addUser);
-
-        _eventTitle.setText(_context.get_title());
-        _amountAttendees.setText(Integer.toString(_context.get_attendeesCount()));
-        _timeStart.setText(_context.get_startTime().toString());
-        _description.setText(_context.get_description());
-        _website.setText(_context.get_website());
-
-        Address a = _context.get_address();
-        _stl2.setText(a.StreetLine2);
-        _stl1.setText(a.StreetLine1);
-        _city.setText(a.City + ",");
-        _state.setText(a.State);
-        _zip.setText(a.PostalCode);
-
-        //_addUser.setOnClickListener(addUser);
-        _addUser.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (!_context.add_attendee(UserManager.Instance().GetActiveUser()))
-                    ToastManager.Instance().SendMessage("You're already attending", true);
-                else {
-                    // let the user know he's been added and update the amount of attendees
-                    ToastManager.Instance().SendMessage("You're attending!", true);
-                    EventManager.Instance().SaveInThread(_context, false);
-                    _amountAttendees.setText(Integer.toString(_context.get_attendeesCount()));
-                }
-            }
-        });
-
-        _btnNavigation.setOnClickListener(new View.OnClickListener() {
+    private void initNavigateButton(){
+        _btnNavigate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(GPSManager.Instance().HasLocation()){
-                    Intent target = LocationHelper.GetGoogleMapsIntent(GPSManager.Instance().CurrentLocation(), _context.get_location());
-                    startActivity(target);
-                }
+                Intent nav = LocationHelper.GetGoogleMapsIntent(GPSManager.Instance().CurrentLocation(), _context.get_location());
+                startActivity(nav);
             }
         });
+    }
+
+    private void initDateTimeLabels(){
+        SimpleDateFormat fmt = new SimpleDateFormat("MMMM dd, yyyy");
+        String date = fmt.format(_context.get_startTime());
+        _lblDate.setText(date);
+
+        fmt = new SimpleDateFormat("hh:mm a");
+        String time = fmt.format(_context.get_startTime());
+        _lblTime.setText(time);
+
+    }
+
+    private void initAttendButton(){
+        if(_context.has_attendee(UserManager.Instance().GetActiveUser())){
+            _btnAttend.setBackground(getResources().getDrawable(R.drawable.icon_minus));
+        }
+
+        _btnAttend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(_context.has_attendee(UserManager.Instance().GetActiveUser())){
+                    _context.get_attendees().remove(UserManager.Instance().GetActiveUser());
+                    EventManager.Instance().SaveInThread(_context, true);
+                    _btnAttend.setBackground(getResources().getDrawable(R.drawable.icon_plus));
+                }
+                else{
+                    _context.get_attendees().add(UserManager.Instance().GetActiveUser());
+                    EventManager.Instance().SaveInThread(_context, true);
+                    _btnAttend.setBackground(getResources().getDrawable(R.drawable.icon_minus));
+                }
+
+                initAttendeeCount();
+            }
+        });
+    }
+
+    private void initAttendeeCount(){
+        String str = MessageFormat.format("{0} {1} attending", _context.get_attendeesCount(), _context.get_attendeesCount() == 1 ? "person" : "people");
+        _lblAttendees.setText(str);
+    }
+
+    private void initWebsiteButton(){
+        if(_context.get_website().isEmpty()){
+            removeViews(_btnWebsite);
+        }
+        else{
+            _btnWebsite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(URIHelper.FormatIntoWebsite(_context.get_website())));
+                    startActivity(i);
+                }
+            });
+        }
     }
 
     // get event ID from the marker that was clicked.

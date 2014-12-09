@@ -94,9 +94,14 @@ public class Validate {
         Result retVal = new Result();
         retVal.valid = true;
 
-        if (val.equals("")) {
+        if (val.isEmpty()) {
             retVal.valid = false;
             retVal.message = "No event title entered";
+        }
+
+        else if (val.length() > 30){
+            retVal.valid = false;
+            retVal.message = "Event titles can only be up to 30 characters!";
         }
 
         return retVal;

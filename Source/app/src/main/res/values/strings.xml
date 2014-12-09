@@ -23,6 +23,10 @@
     <string name="placeholder_phone">Phone Number</string>
     <string name="placeholder_firstName">First Name</string>
     <string name="placeholder_lastName">Last Name</string>
+    <string name="placeholder_details_category">Filed Under</string>
+    <string name="placeholder_details_description">Event Description</string>
+    <string name="placeholder_details_starttime">Starts At</string>
+    <string name="placeholder_details_visitwebsite">Visit Website</string>
 
     <!-- Labels -->
     <string name="label_starttime">Starts At:</string>
@@ -47,6 +51,7 @@
     <!-- Other Labels -->
     <string name="eventaddedit_checkbox_location_current">Use Current Location</string>
     <string name="eventaddedit_checkbox_location_selected">Use Selected Location</string>
+    <string name="address_city_state_separator">,</string>
 
     <!-- Menu Stuff -->
     <string name="menu_add_event">ADD EVENT</string>

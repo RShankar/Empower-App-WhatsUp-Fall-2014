@@ -1,196 +1,276 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:id="@+id/eventdetails_background"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.group2.whatsup.EventDetails"
-    android:background="#444"
-    android:id="@+id/relative_event_layout">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Event Title"
-        android:id="@+id/eventTitle"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="People attending:  "
-        android:id="@+id/attendeesHead"
-        android:layout_below="@+id/eventTitle"
-        android:layout_alignStart="@+id/eventTitle" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Amount Attendees"
-        android:id="@+id/amountAttendees"
-        android:layout_below="@+id/eventTitle"
-        android:layout_toRightOf="@+id/attendeesHead" />
+    android:background="@color/white">
 
 
-    <!-- Address -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Address"
-        android:id="@+id/addressHead"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/amountAttendees" />
+    <GridLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="@dimen/eventdetails_margins">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="stl1"
-        android:id="@+id/stl1"
-        android:layout_below="@+id/addressHead"
-        android:layout_alignStart="@+id/addressHead" />
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_row="0">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="stl2"
-        android:id="@+id/stl2"
-        android:layout_below="@+id/stl1"
-        android:layout_alignStart="@+id/addressHead" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Random Event"
+                android:id="@+id/eventdetails_eventtitle"
+                android:layout_alignParentLeft="true"
+                android:textColor="@color/transparent_black"
+                android:textSize="@dimen/eventdetails_titlesize"
+                android:maxLines="3" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="city"
-        android:id="@+id/city"
-        android:layout_below="@+id/stl2"
-        android:layout_alignStart="@+id/addressHead" />
+            <ImageButton
+                android:layout_width="@dimen/eventdetails_titlesize"
+                android:layout_height="@dimen/eventdetails_titlesize"
+                android:id="@+id/eventdetails_attendbutton"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/icon_plus" />
+        </RelativeLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="state"
-        android:id="@+id/state"
-        android:layout_toRightOf="@+id/city"
-        android:layout_alignTop="@+id/city" />
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="1">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="zip"
-        android:id="@+id/zip"
-        android:layout_toRightOf="@+id/state"
-        android:layout_alignTop="@+id/city" />
-    <!-- End of Address -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="256 people attending"
+                android:id="@+id/eventdetails_peopleattendinglabel"
+                android:textColor="@color/transparent_black" />
 
-    <!-- Website -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Web Site"
-        android:id="@+id/websiteHead"
-        android:layout_alignTop="@+id/addressHead"
-        android:layout_alignParentEnd="true" />
+        </RelativeLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Go to web"
-        android:id="@+id/website"
-        android:layout_below="@+id/websiteHead"
-        android:layout_alignEnd="@+id/websiteHead" />
-    <!-- End Website -->
+        <GridLayout
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:layout_column="0"
+            android:layout_row="2"
+            android:background="@color/transparent_black"
+            android:id="@+id/eventdetails_borderline"
+            android:layout_marginTop="@dimen/eventdetails_section_topandbottommargin"></GridLayout>
 
-    <!-- Time -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Time"
-        android:id="@+id/timeHead"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/zip"
-        android:layout_alignParentStart="true" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_row="3"
+            android:layout_column="0"
+            android:layout_marginTop="@dimen/eventdetails_section_topandbottommargin">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="HHAM"
-        android:id="@+id/time"
-        android:layout_below="@+id/timeHead"
-        android:layout_alignLeft="@+id/timeHead" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/eventdetails_addresscontainer"
+                android:layout_weight="0.65">
 
-    <!-- End Time -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/placeholder_address"
+                    android:id="@+id/eventdetails_addresslabel"
+                    android:textColor="@color/transparent_black" />
 
-    <!-- Description -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Description"
-        android:id="@+id/descriptionHead"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/time"
-        android:layout_alignParentStart="true" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="8214 Shadow Wood blvd"
+                    android:id="@+id/eventdetails_addressstreet1"
+                    android:textColor="@color/transparent_black" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="No Description"
-        android:id="@+id/description"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/descriptionHead"
-        android:layout_alignLeft="@+id/eventdetails_navigateto" />
-    <!-- End of description -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Apt. 8214"
+                    android:id="@+id/eventdetails_addressstreet2"
+                    android:textColor="@color/transparent_black" />
 
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Coral Springs"
+                        android:id="@+id/eventdetails_addresscity"
+                        android:textColor="@color/transparent_black" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="@string/address_city_state_separator"
+                        android:id="@+id/eventdetails_addresscitystateseparator"
+                        android:textColor="@color/transparent_black" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="FL"
+                        android:id="@+id/eventdetails_addressstate"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="@color/transparent_black" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="33071"
+                    android:id="@+id/eventdetails_addresspostalcode"
+                    android:textColor="@color/transparent_black" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:id="@+id/eventdetails_websitecontainer"
+                android:layout_alignParentRight="true"
+                android:layout_weight="0.35">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/placeholder_details_visitwebsite"
+                    android:id="@+id/eventdetails_visitwebsite"
+                    android:layout_alignParentLeft="false"
+                    android:layout_alignParentTop="false"
+                    android:layout_alignParentEnd="false"
+                    android:layout_alignParentBottom="false"
+                    android:layout_centerHorizontal="true"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="5dp" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_row="4"
+            android:layout_column="0"
+            android:layout_marginTop="@dimen/eventdetails_section_topandbottommargin">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.5">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/placeholder_details_starttime"
+                    android:id="@+id/eventdetails_starttimelabel"
+                    android:textColor="@color/transparent_black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="December 8th, 2014"
+                    android:id="@+id/eventdetails_startdate"
+                    android:textColor="@color/transparent_black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="9:23pm"
+                    android:id="@+id/eventdetails_starttime"
+                    android:textColor="@color/transparent_black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.5" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/placeholder_details_category"
+                    android:id="@+id/eventdetails_categorylabel"
+                    android:textColor="@color/transparent_black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Sports"
+                    android:id="@+id/eventdetails_category"
+                    android:textColor="@color/transparent_black" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_row="5"
+            android:layout_column="0"
+            android:layout_marginTop="@dimen/eventdetails_section_topandbottommargin" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/placeholder_details_description"
+                android:id="@+id/eventdetails_descriptionlabel"
+                android:textColor="@color/transparent_black" />
+
+            <ScrollView android:layout_height="@dimen/eventdetails_max_desc_size"
+                android:layout_width="fill_parent">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="This is where a \n really long description will go"
+                    android:id="@+id/eventdetails_description"
+                    android:textColor="@color/transparent_black"
+                    />
+            </ScrollView>
+
+        </LinearLayout>
+
+    </GridLayout>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/eventdetails_buttoncontainer">
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="true">
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Join event"
-            android:id="@+id/eventdetails_joinevent"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_weight="0.5"
-            android:layout_marginLeft="@dimen/eventdetails_button_margin"
-            android:layout_marginRight="@dimen/eventdetails_button_margin" />
+            android:text="@string/navigate_button"
+            android:id="@+id/eventdetails_navigate" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Navigate"
-            android:id="@+id/eventdetails_navigateto"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:layout_weight="0.5"
-            android:layout_marginLeft="@dimen/eventdetails_button_margin"
-            android:layout_marginRight="@dimen/eventdetails_button_margin" />
     </LinearLayout>
-
 
 </RelativeLayout>

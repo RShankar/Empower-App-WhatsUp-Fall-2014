@@ -83,6 +83,9 @@ public class LoginScreen extends WUBaseActivity {
         _emailField.setText(SettingsManager.Instance().DefaultUsername());
         _passwordField.setText(SettingsManager.Instance().DefaultPassword());
 
+        _emailField.setText("phalpin@fau.edu");
+        _passwordField.setText("test");
+
 
         //Add placeholders.
         _emailField.setHint(R.string.placeholder_email_address);
