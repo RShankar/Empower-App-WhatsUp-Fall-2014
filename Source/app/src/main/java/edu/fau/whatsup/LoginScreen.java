@@ -170,7 +170,7 @@ public class LoginScreen extends WUBaseActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     switch(which){
                         case DialogInterface.BUTTON_POSITIVE:
-                            //UserManager.Instance().DeleteAll();
+                            UserManager.Instance().DeleteAll();
                             Log.Info("GO GO GO GO GO CLEAR IT GO GO GO GO GO GO");
                             break;
                         case DialogInterface.BUTTON_NEGATIVE:
