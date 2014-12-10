@@ -11,5 +11,8 @@
         android:id="@+id/mapgrouphead_category"
         android:layout_alignParentTop="false"
         android:layout_centerVertical="true"
-        android:layout_margin="@dimen/map_group_heading_margin" />
+        android:layout_marginTop="@dimen/map_group_heading_margin"
+        android:layout_marginRight="@dimen/map_group_heading_margin"
+        android:layout_marginBottom="@dimen/map_group_heading_margin"
+        android:layout_marginLeft="@dimen/map_group_heading_left_margin" />
 </RelativeLayout>

@@ -8,7 +8,8 @@
     <dimen name="eventaddedit_button_margin">10dp</dimen>
     <dimen name="eventdetails_button_margin">10dp</dimen>
     <dimen name="map_group_container_margin">10dp</dimen>
-    <dimen name="map_group_heading_margin">30dp</dimen>
+    <dimen name="map_group_heading_margin">20dp</dimen>
+    <dimen name="map_group_heading_left_margin">30dp</dimen>
     <dimen name="map_group_item_margin">40dp</dimen>
     <dimen name="eventdetails_section_topandbottommargin">10dp</dimen>
     <dimen name="eventdetails_max_desc_size">250dp</dimen>
