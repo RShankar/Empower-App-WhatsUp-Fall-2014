@@ -8,7 +8,8 @@ public enum EventCategory {
     Sports(0, "Sports"),
     Fitness(1, "Fitness"),
     Scholastic(2, "Scholastic"),
-    Volunteering(3, "Volunteering");
+    Volunteering(3, "Volunteering")
+    ;
 
 
     private String _name;

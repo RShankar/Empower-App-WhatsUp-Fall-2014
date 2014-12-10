@@ -22,7 +22,7 @@ public abstract class BaseManager {
         AuthenticationManager.Initialize(appContext);
         UserManager.Initialize(appContext);
         EventManager.Initialize(appContext);
-        FlurryManager.Initialize(appContext);
         GPSManager.Initialize(appContext);
+        FlurryManager.Initialize(appContext);
     }
 }

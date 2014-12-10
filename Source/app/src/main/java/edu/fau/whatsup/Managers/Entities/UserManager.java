@@ -53,7 +53,6 @@ public class UserManager {
         });
         t.setName("User Save Background Thread");
         t.run();
-
     }
 
     public boolean DeleteUser(User u){

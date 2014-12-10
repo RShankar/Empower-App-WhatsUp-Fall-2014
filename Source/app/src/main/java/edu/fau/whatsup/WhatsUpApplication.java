@@ -9,6 +9,11 @@ import edu.fau.whatsup.Managers.FlurryManager;
 public class WhatsUpApplication extends Application {
 
     private static final String FLURRY_APP_EVENT = "Ran Application";
+    private static WhatsUpApplication _instance;
+
+    public static WhatsUpApplication Instance(){
+        return _instance;
+    }
 
     @Override
     public void onCreate() {
